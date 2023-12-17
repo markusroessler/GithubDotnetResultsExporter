@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubSarifCollector.Csl", "GithubSarifCollector.Csl\GithubSarifCollector.Csl.csproj", "{7A50CE76-8E60-4F53-9B3C-7CD51DCC2849}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubSarifCollector.Model", "GithubSarifCollector.Model\GithubSarifCollector.Model.csproj", "{F8926BCC-6765-4E23-AE27-266884DD3C11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubSarifCollector.Model.Test", "GithubSarifCollector.Model.Test\GithubSarifCollector.Model.Test.csproj", "{D3971AE6-58E2-45DE-A157-06FECA12753B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A50CE76-8E60-4F53-9B3C-7CD51DCC2849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A50CE76-8E60-4F53-9B3C-7CD51DCC2849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A50CE76-8E60-4F53-9B3C-7CD51DCC2849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A50CE76-8E60-4F53-9B3C-7CD51DCC2849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8926BCC-6765-4E23-AE27-266884DD3C11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8926BCC-6765-4E23-AE27-266884DD3C11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8926BCC-6765-4E23-AE27-266884DD3C11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8926BCC-6765-4E23-AE27-266884DD3C11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3971AE6-58E2-45DE-A157-06FECA12753B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3971AE6-58E2-45DE-A157-06FECA12753B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3971AE6-58E2-45DE-A157-06FECA12753B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3971AE6-58E2-45DE-A157-06FECA12753B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
