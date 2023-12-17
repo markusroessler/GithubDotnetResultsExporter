@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "githubsarifcollector.csl": {
+      "version": "1.0.1",
+      "commands": [
+        "collect-sarifs-for-checkrun"
+      ]
+    }
+  }
+}
