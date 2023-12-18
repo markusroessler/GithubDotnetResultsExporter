@@ -38,6 +38,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget-
 
+    - name: Git Config
+      run: |
+        git config --global user.name 'Github Actions'
+        git config --global user.email 'github.actions@users.noreply.github.com'
+
     - name: Build
       id: build
       run: |
