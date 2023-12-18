@@ -6,9 +6,7 @@ on:
 permissions:
   contents: write
   checks: write
-  issues: read
   packages: read
-  pull-requests: write
 
 jobs:
   build-and-test:
@@ -33,6 +31,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget-
 
+    - name: Install dotnet tools
+      run: |
+        dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.2.0
+        dotnet tool install --global GithubSarifCollector.Csl --version 1.0.0-alpha.2
+
     - name: Build
       id: build
       run: |
@@ -44,9 +47,7 @@ jobs:
 
     - name: Generate Coverage Report
       if: always()
-      run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.2.0
-        reportgenerator
+      run: reportgenerator
     
     - name: Upload Coverage Report
       if: always()
@@ -81,17 +82,17 @@ jobs:
           {"summary":"see details"}
         output_text_description_file: TestResults/coverage-report/SummaryGithub.md
 
-    # - name: Collect Build Results
-    #   id: collect-build-results
-    #   if: always()
-    #   run: dotnet run --project Build.CollectResults.Csl
+    - name: Collect Build Results
+      id: collect-build-results
+      if: always()
+      run: collect-sarifs-for-checkrun
 
-    # - name: Publish Build Results
-    #   uses: LouisBrunner/checks-action@v1.6.1
-    #   if: always()
-    #   with:
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    #     name: "check: build results"
-    #     conclusion: ${{ steps.collect-build-results.outputs.checks-action-conclusion }}
-    #     output: ${{ steps.collect-build-results.outputs.checks-action-output }}
-    #     annotations: ${{ steps.collect-build-results.outputs.checks-action-annotations }}
+    - name: Publish Build Results
+      uses: LouisBrunner/checks-action@v1.6.1
+      if: always()
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: "check: build results"
+        conclusion: ${{ steps.collect-build-results.outputs.checks-action-conclusion }}
+        output: ${{ steps.collect-build-results.outputs.checks-action-output }}
+        annotations: ${{ steps.collect-build-results.outputs.checks-action-annotations }}
