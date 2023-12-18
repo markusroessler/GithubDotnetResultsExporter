@@ -1,4 +1,4 @@
-name: Release Build
+name: Release ${{ inputs.release-version }}
 
 on: 
   workflow_dispatch:
@@ -71,6 +71,7 @@ jobs:
     - name: Publish Github Release
       uses: ncipollo/release-action@v1
       with:
+        tag: ${{ inputs.release-version }}
         artifacts: GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.Csl.${{ inputs.release-version }}.nupkg
         generateReleaseNotes: true
         draft: false
