@@ -2,8 +2,6 @@ name: CI Build
 
 on: 
   push: 
-    paths-ignore:
-      - "foobar/foobar.txt" # don't run on push of release tag (https://github.com/orgs/community/discussions/9182)
   workflow_dispatch:
 
 permissions:
