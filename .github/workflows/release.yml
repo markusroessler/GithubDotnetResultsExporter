@@ -43,6 +43,11 @@ jobs:
         git config --global user.name 'Github Actions'
         git config --global user.email 'github.actions@users.noreply.github.com'
 
+    - name: Create Tag
+      run: |
+        git tag -a ${{ inputs.release-version }} -m "Release ${{ inputs.release-version }} [skip ci]"
+        git push origin ${{ inputs.release-version }}
+
     - name: Build
       id: build
       run: |
@@ -62,11 +67,6 @@ jobs:
       if: always()
       run: |
         dotnet tool install --global GithubSarifCollector.Csl --version ${{ inputs.release-version }}
-
-    - name: Create Tag
-      run: |
-        git tag -a ${{ inputs.release-version }} -m "Release ${{ inputs.release-version }} [skip ci]"
-        git push origin ${{ inputs.release-version }}
     
     - name: Publish Github Release
       uses: ncipollo/release-action@v1
