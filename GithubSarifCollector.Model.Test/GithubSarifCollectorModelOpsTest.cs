@@ -28,7 +28,7 @@ public class GithubSarifCollectorModelOpsTest
                                     {
                                         PhysicalLocation = new PhysicalLocation
                                         {
-                                            ArtifactLocation = new ArtifactLocation { Uri = new Uri("file://X:/repo/project/Foobar.cs") },
+                                            ArtifactLocation = new ArtifactLocation { Uri = new Uri("file:///repo/project/Foobar.cs") },
                                             Region = new Region
                                             {
                                                 StartLine = 1,
@@ -50,7 +50,7 @@ public class GithubSarifCollectorModelOpsTest
                                     {
                                         PhysicalLocation = new PhysicalLocation
                                         {
-                                            ArtifactLocation = new ArtifactLocation { Uri = new Uri("file://X:/repo/project/Blub.cs") },
+                                            ArtifactLocation = new ArtifactLocation { Uri = new Uri("file:///repo/project/Blub.cs") },
                                             Region = new Region
                                             {
                                                 StartLine = 1,
@@ -70,7 +70,7 @@ public class GithubSarifCollectorModelOpsTest
 
         var collectorRequest = new GithubSarifCollectorRequest("https://github.com", "markusroessler/GithubSarifCollector", "develop");
 
-        var requests = GithubSarifCollectorModelOps.MapToAnnotationRequests(sarifLogs, collectorRequest, "X:/repo");
+        var requests = GithubSarifCollectorModelOps.MapToAnnotationRequests(sarifLogs, collectorRequest, "/repo");
 
         Assert.That(requests, Has.Count.EqualTo(2));
 
