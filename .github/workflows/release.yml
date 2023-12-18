@@ -77,7 +77,7 @@ jobs:
       if: always()
       with:
         files: "**/TestResults/TestResults.trx"
-        check_name: "test results"
+        check_name: "Test Results"
         check_run_annotations_branch: "*"
 
     - name: Collect Build Results
