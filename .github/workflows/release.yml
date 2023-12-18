@@ -62,6 +62,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.Csl.${{ steps.get-version.outputs.version }}.nupkg
+        generateReleaseNotes: true
         draft: false
 
     - name: Upload Test Report
