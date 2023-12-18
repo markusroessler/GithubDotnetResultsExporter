@@ -9,24 +9,51 @@ namespace GithubSarifCollector.Model;
 
 internal static class GithubSarifCollectorModelOps
 {
-    internal static IList<GithubAnnotationRequest> MapToAnnotationRequests(IEnumerable<SarifLog> sarifLogs, string? githubServerUrl, string? githubRepo, string? githubRefName)
+    internal static GithubSarifCollectorRequest ParseArgs(string[] args)
     {
+        string? githubServerUrl = null;
+        string? githubRepo = null;
+        string? githubRefName = null;
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            switch (args[i])
+            {
+                case "--github-server-url":
+                    githubServerUrl = args.ElementAtOrDefault(++i);
+                    break;
+                case "--github-repo":
+                    githubRepo = args.ElementAtOrDefault(++i);
+                    break;
+                case "--github-ref-name":
+                    githubRefName = args.ElementAtOrDefault(++i);
+                    break;
+                default:
+                    throw new Exception($"unknown arg {args[i]}");
+            }
+        }
+
         if (githubServerUrl == null)
-            throw new ArgumentException("githubServerUrl is null");
+            throw new Exception("missing argument: --github-server-url");
 
         if (githubRepo == null)
-            throw new ArgumentException("githubRepo is null");
+            throw new Exception("missing argument: --github-repo");
 
         if (githubRefName == null)
-            throw new ArgumentException("githubRefName is null");
+            throw new Exception("missing argument: --github-ref-name");
 
+        return new(githubServerUrl, githubRepo, githubRefName);
+    }
+
+    internal static IList<GithubAnnotationRequest> MapToAnnotationRequests(IEnumerable<SarifLog> sarifLogs, GithubSarifCollectorRequest collectorRequest)
+    {
         return sarifLogs
             .SelectMany(log => log.Results().Select(result => result))
-            .Select(request => MapToGithubAnnotationRequest(request, githubServerUrl, githubRepo, githubRefName))
+            .Select(request => MapToGithubAnnotationRequest(request, collectorRequest))
             .ToList();
     }
 
-    private static GithubAnnotationRequest MapToGithubAnnotationRequest(Result result, string githubServerUrl, string githubRepo, string githubRefName)
+    private static GithubAnnotationRequest MapToGithubAnnotationRequest(Result result, GithubSarifCollectorRequest collectorRequest)
     {
         var physicalLocation = result.Locations.First().PhysicalLocation;
         var path = Path.GetRelativePath(Environment.CurrentDirectory, physicalLocation.ArtifactLocation.Uri.LocalPath);
@@ -39,7 +66,7 @@ internal static class GithubSarifCollectorModelOps
             EndColumn = physicalLocation.Region.EndColumn,
             SarifLevel = result.Level,
             Message = result.Message.Text,
-            RawDetails = $"{githubServerUrl}/{githubRepo}/blob/{githubRefName}/{path.Replace("\\", "/")}#L26"
+            RawDetails = $"{collectorRequest.GithubServerUrl}/{collectorRequest.GithubRepo}/blob/{collectorRequest.GithubRefName}/{path.Replace("\\", "/")}#L{physicalLocation.Region.StartLine}"
         };
     }
 

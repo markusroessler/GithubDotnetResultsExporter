@@ -16,15 +16,13 @@ public sealed class GithubSarifCollectorModel
         _sarifLogProvider = serviceProvider.GetRequiredService<SarifLogProvider>();
     }
 
-    public void CollectSarifResults()
+    public void CollectSarifResults(string[] args)
     {
+        var collectorRequest = ParseArgs(args);
         var workingDir = _fileProvider.WorkingDirectory;
         var sarifFiles = _fileProvider.EnumerateSarifFiles(workingDir);
         var sarifLogs = _sarifLogProvider.LoadSarifLogs(sarifFiles);
-        var annotationRequests = MapToAnnotationRequests(sarifLogs,
-            Environment.GetEnvironmentVariable("github.server_url"),
-            Environment.GetEnvironmentVariable("github.repository"),
-            Environment.GetEnvironmentVariable("github.ref_name"));
+        var annotationRequests = MapToAnnotationRequests(sarifLogs, collectorRequest);
         var maxLevel = GetMaxLevel(annotationRequests);
 
         var githubOutputFile = _fileProvider.GithubOutputFile;
@@ -33,3 +31,5 @@ public sealed class GithubSarifCollectorModel
         _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-annotations={JsonSerializer.Serialize(annotationRequests)}\n");
     }
 }
+
+internal sealed record GithubSarifCollectorRequest(string GithubServerUrl, string GithubRepo, string GithubRefName);

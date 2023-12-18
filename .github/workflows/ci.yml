@@ -92,7 +92,7 @@ jobs:
     - name: Collect Build Results
       id: collect-build-results
       if: always()
-      run: dotnet collect-sarifs-for-checkrun
+      run: dotnet collect-sarifs-for-checkrun --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
 
     - name: Publish Build Results
       uses: LouisBrunner/checks-action@v1.6.1

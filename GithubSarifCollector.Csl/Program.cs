@@ -20,6 +20,6 @@ class Program
             .Build();
 
         var model = host.Services.GetRequiredService<GithubSarifCollectorModel>();
-        model.CollectSarifResults();
+        model.CollectSarifResults(args);
     }
 }
