@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   build-and-test:
+    name: Build-Job
     runs-on: ubuntu-latest
 
     steps:
@@ -70,7 +71,7 @@ jobs:
       if: always()
       with:
         files: "**/TestResults/TestResults.trx"
-        check_name: "check: test results"
+        check_name: "Test Results"
         check_run_annotations_branch: "*"
 
     - name: Publish Coverage Results
@@ -78,7 +79,7 @@ jobs:
       if: always()
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        name: "check: coverage results"
+        name: "Coverage Results"
         conclusion: neutral
         output: |
           {"summary":"see details"}
@@ -94,7 +95,7 @@ jobs:
       if: always()
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        name: "check: build results"
+        name: "Build Results"
         conclusion: ${{ steps.collect-build-results.outputs.checks-action-conclusion }}
         output: ${{ steps.collect-build-results.outputs.checks-action-output }}
         annotations: ${{ steps.collect-build-results.outputs.checks-action-annotations }}

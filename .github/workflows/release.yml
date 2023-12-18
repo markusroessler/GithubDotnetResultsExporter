@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   release:
+    name: Release
     runs-on: ubuntu-latest
 
     steps:
@@ -71,20 +72,20 @@ jobs:
       if: always()
       with:
         files: "**/TestResults/TestResults.trx"
-        check_name: "check: test results"
+        check_name: "test results"
         check_run_annotations_branch: "*"
 
-    # - name: Collect Build Results
-    #   id: collect-build-results
-    #   if: always()
-    #   run: dotnet run --project Build.CollectResults.Csl
+    - name: Collect Build Results
+      id: collect-build-results
+      if: always()
+      run: collect-sarifs-for-checkrun
 
-    # - name: Publish Build Results
-    #   uses: LouisBrunner/checks-action@v1.6.1
-    #   if: always()
-    #   with:
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    #     name: "check: build results"
-    #     conclusion: ${{ steps.collect-build-results.outputs.checks-action-conclusion }}
-    #     output: ${{ steps.collect-build-results.outputs.checks-action-output }}
-    #     annotations: ${{ steps.collect-build-results.outputs.checks-action-annotations }}
+    - name: Publish Build Results
+      uses: LouisBrunner/checks-action@v1.6.1
+      if: always()
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: "Build Results"
+        conclusion: ${{ steps.collect-build-results.outputs.checks-action-conclusion }}
+        output: ${{ steps.collect-build-results.outputs.checks-action-output }}
+        annotations: ${{ steps.collect-build-results.outputs.checks-action-annotations }}
