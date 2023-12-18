@@ -1,9 +1,12 @@
 name: Release Build
 
 on: 
-  push:
-    tags:
-    - '*'
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'Version to release'
+        required: true
+        default: ''
 
 permissions:
   contents: write
@@ -18,10 +21,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Read version from tag
-      id: get-version
-      run: echo "version=$(git tag --points-at HEAD)" >> "$GITHUB_OUTPUT"
 
     - name: Setup .NET Core SDK 7.0.x
       uses: actions/setup-dotnet@v2
@@ -49,20 +48,25 @@ jobs:
       run: dotnet test -p:Configuration=Release --logger:html --logger:"trx;LogFileName=TestResults/TestResults.trx" --no-build
 
     - name: Pack nuget package
-      run: dotnet pack GithubSarifCollector.Csl -p:Configuration=Release -p:Version=${{ steps.get-version.outputs.version }}
+      run: dotnet pack GithubSarifCollector.Csl -p:Configuration=Release -p:Version=${{ inputs.release-version }}
 
     - name: Push nuget package
-      run: dotnet nuget push GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.Csl.${{ steps.get-version.outputs.version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+      run: dotnet nuget push GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.Csl.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
 
     - name: Install dotnet tools
       if: always()
       run: |
-        dotnet tool install --global GithubSarifCollector.Csl --version ${{ steps.get-version.outputs.version }}
+        dotnet tool install --global GithubSarifCollector.Csl --version ${{ inputs.release-version }}
 
+    - name: Create Tag
+      run: |
+        git tag -a ${{ inputs.release-version }} -m "Release ${{ inputs.release-version }} [skip ci]"
+        git push origin ${{ inputs.release-version }}
+    
     - name: Publish Github Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.Csl.${{ steps.get-version.outputs.version }}.nupkg
+        artifacts: GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.Csl.${{ inputs.release-version }}.nupkg
         generateReleaseNotes: true
         draft: false
 
