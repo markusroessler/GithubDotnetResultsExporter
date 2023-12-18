@@ -45,18 +45,18 @@ internal static class GithubSarifCollectorModelOps
         return new(githubServerUrl, githubRepo, githubRefName);
     }
 
-    internal static IList<GithubAnnotationRequest> MapToAnnotationRequests(IEnumerable<SarifLog> sarifLogs, GithubSarifCollectorRequest collectorRequest)
+    internal static IList<GithubAnnotationRequest> MapToAnnotationRequests(IEnumerable<SarifLog> sarifLogs, GithubSarifCollectorRequest collectorRequest, string workingDirectory)
     {
         return sarifLogs
             .SelectMany(log => log.Results().Select(result => result))
-            .Select(request => MapToGithubAnnotationRequest(request, collectorRequest))
+            .Select(request => MapToGithubAnnotationRequest(request, collectorRequest, workingDirectory))
             .ToList();
     }
 
-    private static GithubAnnotationRequest MapToGithubAnnotationRequest(Result result, GithubSarifCollectorRequest collectorRequest)
+    private static GithubAnnotationRequest MapToGithubAnnotationRequest(Result result, GithubSarifCollectorRequest collectorRequest, string workingDirectory)
     {
         var physicalLocation = result.Locations.First().PhysicalLocation;
-        var path = Path.GetRelativePath(Environment.CurrentDirectory, physicalLocation.ArtifactLocation.Uri.LocalPath);
+        var path = Path.GetRelativePath(workingDirectory, physicalLocation.ArtifactLocation.Uri.LocalPath);
         return new GithubAnnotationRequest
         {
             Path = path,
