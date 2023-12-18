@@ -36,8 +36,9 @@ jobs:
 
     - name: Install dotnet tools
       run: |
+        dotnet new tool-manifest
         dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.2.0
-        dotnet tool install --global GithubSarifCollector.Csl --version 1.0.0-alpha.2
+        dotnet tool install --add-source ./GithubSarifCollector.Csl/bin/Debug GithubSarifCollector.Csl --version 1.0.0-local.1
 
     - name: Build
       id: build

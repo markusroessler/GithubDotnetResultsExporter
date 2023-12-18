@@ -21,7 +21,10 @@ public sealed class GithubSarifCollectorModel
         var workingDir = _fileProvider.WorkingDirectory;
         var sarifFiles = _fileProvider.EnumerateSarifFiles(workingDir);
         var sarifLogs = _sarifLogProvider.LoadSarifLogs(sarifFiles);
-        var annotationRequests = MapToAnnotationRequests(sarifLogs);
+        var annotationRequests = MapToAnnotationRequests(sarifLogs,
+            Environment.GetEnvironmentVariable("github.server_url"),
+            Environment.GetEnvironmentVariable("github.repository"),
+            Environment.GetEnvironmentVariable("github.ref_name"));
         var maxLevel = GetMaxLevel(annotationRequests);
 
         var githubOutputFile = _fileProvider.GithubOutputFile;

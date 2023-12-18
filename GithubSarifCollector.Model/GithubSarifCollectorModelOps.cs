@@ -9,27 +9,37 @@ namespace GithubSarifCollector.Model;
 
 internal static class GithubSarifCollectorModelOps
 {
-    internal static IList<GithubAnnotationRequest> MapToAnnotationRequests(IEnumerable<SarifLog> sarifLogs)
+    internal static IList<GithubAnnotationRequest> MapToAnnotationRequests(IEnumerable<SarifLog> sarifLogs, string? githubServerUrl, string? githubRepo, string? githubRefName)
     {
+        if (githubServerUrl == null)
+            throw new ArgumentException("githubServerUrl is null");
+
+        if (githubRepo == null)
+            throw new ArgumentException("githubRepo is null");
+
+        if (githubRefName == null)
+            throw new ArgumentException("githubRefName is null");
+
         return sarifLogs
             .SelectMany(log => log.Results().Select(result => result))
-            .Select(MapToGithubAnnotationRequest)
+            .Select(request => MapToGithubAnnotationRequest(request, githubServerUrl, githubRepo, githubRefName))
             .ToList();
     }
 
-    private static GithubAnnotationRequest MapToGithubAnnotationRequest(Result result)
+    private static GithubAnnotationRequest MapToGithubAnnotationRequest(Result result, string githubServerUrl, string githubRepo, string githubRefName)
     {
         var physicalLocation = result.Locations.First().PhysicalLocation;
+        var path = Path.GetRelativePath(Environment.CurrentDirectory, physicalLocation.ArtifactLocation.Uri.LocalPath);
         return new GithubAnnotationRequest
         {
-            Path = Path.GetRelativePath(Environment.CurrentDirectory, physicalLocation.ArtifactLocation.Uri.LocalPath),
+            Path = path,
             StartLine = physicalLocation.Region.StartLine,
             StartColumn = physicalLocation.Region.StartColumn,
             EndLine = physicalLocation.Region.EndLine,
             EndColumn = physicalLocation.Region.EndColumn,
             SarifLevel = result.Level,
             Message = result.Message.Text,
-            RawDetails = "https://github.com/markusroessler/BackupDotnetConsole/blob/feature/9-implement-github-build/Backup.Model/BackupModel.cs#L26"
+            RawDetails = $"{githubServerUrl}/{githubRepo}/blob/{githubRefName}/{path.Replace("\\", "/")}#L26"
         };
     }
 
