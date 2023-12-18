@@ -92,7 +92,7 @@ jobs:
     - name: Collect Build Results
       id: collect-build-results
       if: always()
-      run: collect-sarifs-for-checkrun
+      run: dotnet collect-sarifs-for-checkrun
 
     - name: Publish Build Results
       uses: LouisBrunner/checks-action@v1.6.1
