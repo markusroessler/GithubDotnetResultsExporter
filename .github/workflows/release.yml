@@ -1,19 +1,12 @@
 name: Release Build
 
 on: 
-  workflow_dispatch:
-    inputs:
-        release-version:
-          description: 'Version to release'
-          required: true
-          default: ''
+  push:
+    tags:
+    - '*'
 
 permissions:
-  contents: write
-  checks: write
-  issues: read
   packages: write
-  pull-requests: write
 
 jobs:
   release:
@@ -21,6 +14,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Read version from tag
+      id: get-version
+      run: echo "version=$(git tag --points-at HEAD)" >> "$GITHUB_OUTPUT"
 
     - name: Setup .NET Core SDK 7.0.x
       uses: actions/setup-dotnet@v2
@@ -48,18 +45,15 @@ jobs:
       run: dotnet test -p:Configuration=Release --logger:html --logger:"trx;LogFileName=TestResults/TestResults.trx" --no-build
 
     - name: Pack nuget package
-      run: dotnet pack GithubSarifCollector.Csl -p:Configuration=Release -p:Version=${{ inputs.release-version }}
+      run: dotnet pack GithubSarifCollector.Csl -p:Configuration=Release -p:Version=${{ steps.get-version.outputs.version }}
 
     - name: Push nuget package
-      run: dotnet nuget push GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.Csl.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+      run: dotnet nuget push GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.Csl.${{ steps.get-version.outputs.version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
 
     - name: Publish Github Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.Csl.${{ inputs.release-version }}.nupkg
-        name: ${{ inputs.release-version }}
-        tag: ${{ steps.get-version.outputs.version }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.Csl.${{ steps.get-version.outputs.version }}.nupkg
         draft: false
 
     - name: Upload Test Report
