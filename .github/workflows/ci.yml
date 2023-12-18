@@ -43,6 +43,9 @@ jobs:
       if: always()
       run: dotnet test --logger:html --logger:"trx;LogFileName=TestResults/TestResults.trx" --collect:"XPlat Code Coverage" --settings coverlet.runsettings --no-build
 
+    - name: Pack nuget package
+      run: dotnet pack GithubSarifCollector.Csl -p:Version=1.0.0-local.1
+
     - name: Install dotnet tools
       run: |
         dotnet new tool-manifest
