@@ -55,6 +55,7 @@ jobs:
       run: dotnet nuget push GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.Csl.${{ steps.get-version.outputs.version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
 
     - name: Install dotnet tools
+      if: always()
       run: |
         dotnet tool install --global GithubSarifCollector.Csl --version ${{ steps.get-version.outputs.version }}
 
@@ -83,7 +84,7 @@ jobs:
     - name: Collect Build Results
       id: collect-build-results
       if: always()
-      run: collect-sarifs-for-checkrun
+      run: collect-sarifs-for-checkrun --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
 
     - name: Publish Build Results
       uses: LouisBrunner/checks-action@v1.6.1
