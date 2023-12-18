@@ -1,0 +1,97 @@
+name: CI Build
+
+on: 
+  push: 
+
+permissions:
+  contents: write
+  checks: write
+  issues: read
+  packages: read
+  pull-requests: write
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET Core SDK 7.0.x
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '7.0.x'
+
+    - name: Init nuget source
+      run: dotnet nuget add source --username markusroessler --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/markusroessler/index.json"
+
+    - name: Init nuget cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Build
+      id: build
+      run: |
+        dotnet build -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
+
+    - name: Test
+      if: always()
+      run: dotnet test --logger:html --logger:"trx;LogFileName=TestResults/TestResults.trx" --collect:"XPlat Code Coverage" --settings coverlet.runsettings --no-build
+
+    - name: Generate Coverage Report
+      if: always()
+      run: |
+        dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.2.0
+        reportgenerator
+    
+    - name: Upload Coverage Report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: BackupConsole-ci-quick-coverage-report
+        path: TestResults/coverage-report
+
+    - name: Upload Test Report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: BackupConsole-ci-quick-test-report
+        path: '**/TestResults/*.html'
+
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        files: "**/TestResults/TestResults.trx"
+        check_name: "check: test results"
+        check_run_annotations_branch: "*"
+
+    - name: Publish Coverage Results
+      uses: LouisBrunner/checks-action@v1.6.1
+      if: always()
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: "check: coverage results"
+        conclusion: neutral
+        output: |
+          {"summary":"see details"}
+        output_text_description_file: TestResults/coverage-report/SummaryGithub.md
+
+    # - name: Collect Build Results
+    #   id: collect-build-results
+    #   if: always()
+    #   run: dotnet run --project Build.CollectResults.Csl
+
+    # - name: Publish Build Results
+    #   uses: LouisBrunner/checks-action@v1.6.1
+    #   if: always()
+    #   with:
+    #     token: ${{ secrets.GITHUB_TOKEN }}
+    #     name: "check: build results"
+    #     conclusion: ${{ steps.collect-build-results.outputs.checks-action-conclusion }}
+    #     output: ${{ steps.collect-build-results.outputs.checks-action-output }}
+    #     annotations: ${{ steps.collect-build-results.outputs.checks-action-annotations }}

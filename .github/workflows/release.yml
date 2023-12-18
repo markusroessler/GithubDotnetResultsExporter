@@ -1,12 +1,18 @@
-# quick but incomplete CI build (Linux VM)
-name: CI Build (quick)
+name: Release Build
 
-on: [push, workflow_dispatch]
+on: 
+  workflow_dispatch:
+    inputs:
+        release-version:
+          description: 'Version to release'
+          required: true
+          default: ''
+
 permissions:
   contents: write
   checks: write
   issues: read
-  packages: read
+  packages: write
   pull-requests: write
 
 jobs:
@@ -35,30 +41,32 @@ jobs:
     - name: Build
       id: build
       run: |
-        dotnet build -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
+        dotnet build -p:Configuration=Release -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
 
     - name: Test
       if: always()
-      run: dotnet test --logger:html --logger:"trx;LogFileName=TestResults/TestResults.trx" --collect:"XPlat Code Coverage" --settings coverlet.runsettings --no-build
+      run: dotnet test -p:Configuration=Release --logger:html --logger:"trx;LogFileName=TestResults/TestResults.trx" --no-build
 
-    - name: Generate Coverage Report
-      if: always()
-      run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.2.0
-        reportgenerator
-    
-    - name: Upload Coverage Report
-      if: always()
-      uses: actions/upload-artifact@v3
+    - name: Pack nuget package
+      run: dotnet pack GithubSarifCollector.Csl -p:Configuration=Release -p:Version=${{ inputs.release-version }}
+
+    - name: Push nuget package
+      run: dotnet nuget push GithubSarifCollector.Csl/bin/Release/net7.0/GithubSarifCollector.Csl-${{ inputs.release-version }}.nuget --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+
+    - name: Publish Github Release
+      uses: ncipollo/release-action@v1
       with:
-        name: BackupConsole-ci-quick-coverage-report
-        path: TestResults/coverage-report
+        artifacts: GithubSarifCollector.Csl/bin/Release/net7.0/GithubSarifCollector.Csl-${{ inputs.release-version }}.nuget
+        name: ${{ inputs.release-version }}
+        tag: ${{ steps.get-version.outputs.version }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        draft: false
 
     - name: Upload Test Report
       if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: BackupConsole-ci-quick-test-report
+        name: GithubSarifCollector-ci-quick-test-report
         path: '**/TestResults/*.html'
 
     - name: Publish Unit Test Results
@@ -68,17 +76,6 @@ jobs:
         files: "**/TestResults/TestResults.trx"
         check_name: "check: test results"
         check_run_annotations_branch: "*"
-
-    - name: Publish Coverage Results
-      uses: LouisBrunner/checks-action@v1.6.1
-      if: always()
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        name: "check: coverage results"
-        conclusion: neutral
-        output: |
-          {"summary":"see details"}
-        output_text_description_file: TestResults/coverage-report/SummaryGithub.md
 
     # - name: Collect Build Results
     #   id: collect-build-results
