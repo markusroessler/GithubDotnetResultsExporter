@@ -11,6 +11,7 @@
     <Nullable>enable</Nullable>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>collect-sarifs-for-checkrun</ToolCommandName>
+    <PackageId>GithubSarifCollector</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
