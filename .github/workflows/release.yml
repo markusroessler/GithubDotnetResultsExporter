@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   release:
-    name: Release
+    name: Release ${{ inputs.release-version }}
     runs-on: ubuntu-latest
 
     steps:
