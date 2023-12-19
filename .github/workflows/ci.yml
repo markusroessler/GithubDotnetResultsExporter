@@ -62,14 +62,14 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: BackupConsole-ci-quick-coverage-report
+        name: GithubSarifCollector-ci-coverage-report
         path: TestResults/coverage-report
 
     - name: Upload Test Report
       if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: BackupConsole-ci-quick-test-report
+        name: GithubSarifCollector-ci-test-report
         path: '**/TestResults/*.html'
 
     - name: Publish Unit Test Results
