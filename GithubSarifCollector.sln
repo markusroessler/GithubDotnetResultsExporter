@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubSarifCollector.Model"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubSarifCollector.Model.Test", "GithubSarifCollector.Model.Test\GithubSarifCollector.Model.Test.csproj", "{D3971AE6-58E2-45DE-A157-06FECA12753B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubSarifCollector.IntegrationTest", "GithubSarifCollector.IntegrationTest\GithubSarifCollector.IntegrationTest.csproj", "{23BC34A3-45B3-455A-9BF5-1D49AF5F8DB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{D3971AE6-58E2-45DE-A157-06FECA12753B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3971AE6-58E2-45DE-A157-06FECA12753B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3971AE6-58E2-45DE-A157-06FECA12753B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23BC34A3-45B3-455A-9BF5-1D49AF5F8DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23BC34A3-45B3-455A-9BF5-1D49AF5F8DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23BC34A3-45B3-455A-9BF5-1D49AF5F8DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23BC34A3-45B3-455A-9BF5-1D49AF5F8DB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
