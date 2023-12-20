@@ -85,12 +85,6 @@ jobs:
         check_run_annotations_branch: "*"
 
     - name: Publish Coverage Results
-      uses: LouisBrunner/checks-action@v1.6.1
-      if: always()
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        name: "Coverage Results"
-        conclusion: neutral
-        output: |
-          {"summary":"see details"}
-        output_text_description_file: TestResults/coverage-report/SummaryGithub.md
+      run: | 
+        echo "## Coverage Results" >> $GITHUB_STEP_SUMMARY
+        cat TestResults/coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
