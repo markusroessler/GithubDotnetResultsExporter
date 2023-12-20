@@ -75,12 +75,12 @@ internal static class GithubSarifCollectorModelOps
     internal static string CreateSummaryMarkdown(IList<GithubAnnotationRequest> annotationRequests)
     {
         var result = new StringBuilder();
-        result.AppendLine("# Build Summary");
+        result.AppendLine("# Build Results");
 
         foreach (var annotationRequest in annotationRequests)
         {
             var fileUri = new Uri(annotationRequest.RawDetails!);
-            var fileUriText = $"{fileUri.Segments.LastOrDefault()}#{fileUri.Query}";
+            var fileUriText = $"{fileUri.Segments.LastOrDefault()}{fileUri.Fragment}";
             var symbol = annotationRequest.SarifLevel switch
             {
                 FailureLevel.Error => ":x:",
@@ -92,7 +92,7 @@ internal static class GithubSarifCollectorModelOps
                 $"""
                 {symbol} [{fileUriText}]({fileUri}) 
                 {annotationRequest.Message}  
-                 
+
                 """);
         }
 
