@@ -87,4 +87,4 @@ jobs:
     - name: Publish Coverage Results
       run: | 
         echo "## Coverage Results" >> $GITHUB_STEP_SUMMARY
-        cat TestResults/coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+        cat TestResults/coverage-report/SummaryGithub.md | sed -e 's/# Summary//g' >> $GITHUB_STEP_SUMMARY
