@@ -10,7 +10,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>collect-sarifs-for-checkrun</ToolCommandName>
+    <ToolCommandName>collect-sarifs-for-github</ToolCommandName>
     <PackageId>GithubSarifCollector</PackageId>
   </PropertyGroup>
 

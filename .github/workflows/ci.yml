@@ -38,6 +38,10 @@ jobs:
       id: build
       run: |
         dotnet build -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
+    
+    - name: Collect Build Results
+      if: always()
+      run: dotnet collect-sarifs-for-github --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
 
     - name: Test
       if: always()
@@ -90,18 +94,3 @@ jobs:
         output: |
           {"summary":"see details"}
         output_text_description_file: TestResults/coverage-report/SummaryGithub.md
-
-    - name: Collect Build Results
-      id: collect-build-results
-      if: always()
-      run: dotnet collect-sarifs-for-checkrun --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
-
-    - name: Publish Build Results
-      uses: LouisBrunner/checks-action@v1.6.1
-      if: always()
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        name: "Build Results"
-        conclusion: ${{ steps.collect-build-results.outputs.checks-action-conclusion }}
-        output: ${{ steps.collect-build-results.outputs.checks-action-output }}
-        annotations: ${{ steps.collect-build-results.outputs.checks-action-annotations }}
