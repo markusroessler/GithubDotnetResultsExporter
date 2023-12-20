@@ -42,11 +42,14 @@ jobs:
       run: |
         git config --global user.name 'Github Actions'
         git config --global user.email 'github.actions@users.noreply.github.com'
+    
+    - name: test annotation
+      run: echo "::error file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
 
-    - name: Create Tag
-      run: |
-        git tag -a ${{ inputs.release-version }} -m "Release ${{ inputs.release-version }} [skip ci]"
-        git push origin ${{ inputs.release-version }}
+    # - name: Create Tag
+    #   run: |
+    #     git tag -a ${{ inputs.release-version }} -m "Release ${{ inputs.release-version }} [skip ci]"
+    #     git push origin ${{ inputs.release-version }}
 
     - name: Build
       id: build
@@ -60,27 +63,27 @@ jobs:
     - name: Pack nuget package
       run: dotnet pack GithubSarifCollector.Csl -p:Configuration=Release -p:Version=${{ inputs.release-version }}
 
-    - name: Push nuget package
-      run: dotnet nuget push GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+    # - name: Push nuget package
+    #   run: dotnet nuget push GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
 
-    - name: Install dotnet tools
-      if: always()
-      run: |
-        dotnet tool install --global GithubSarifCollector --version ${{ inputs.release-version }}
+    # - name: Install dotnet tools
+    #   if: always()
+    #   run: |
+    #     dotnet tool install --global GithubSarifCollector --version ${{ inputs.release-version }}
     
-    - name: Publish Github Release
-      uses: ncipollo/release-action@v1
-      with:
-        tag: ${{ inputs.release-version }}
-        artifacts: GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.${{ inputs.release-version }}.nupkg
-        generateReleaseNotes: true
-        draft: false
+    # - name: Publish Github Release
+    #   uses: ncipollo/release-action@v1
+    #   with:
+    #     tag: ${{ inputs.release-version }}
+    #     artifacts: GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.${{ inputs.release-version }}.nupkg
+    #     generateReleaseNotes: true
+    #     draft: false
 
     - name: Upload Test Report
       if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: GithubSarifCollector-ci-quick-test-report
+        name: GithubSarifCollector-release-test-report
         path: '**/TestResults/*.html'
 
     - name: Publish Unit Test Results
@@ -88,20 +91,9 @@ jobs:
       if: always()
       with:
         files: "**/TestResults/TestResults.trx"
-        check_name: "Test Results"
-        check_run_annotations_branch: "*"
+        check_run: false
 
-    - name: Collect Build Results
-      id: collect-build-results
-      if: always()
-      run: collect-sarifs-for-checkrun --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
-
-    - name: Publish Build Results
-      uses: LouisBrunner/checks-action@v1.6.1
-      if: always()
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        name: "Build Results"
-        conclusion: ${{ steps.collect-build-results.outputs.checks-action-conclusion }}
-        output: ${{ steps.collect-build-results.outputs.checks-action-output }}
-        annotations: ${{ steps.collect-build-results.outputs.checks-action-annotations }}
+    # - name: Collect Build Results
+    #   id: collect-build-results
+    #   if: always()
+    #   run: collect-sarifs-for-checkrun --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
