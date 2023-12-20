@@ -23,18 +23,25 @@ public sealed class GithubSarifCollectorModel
         var sarifFiles = _fileProvider.EnumerateSarifFiles(workingDir);
         var sarifLogs = _sarifLogProvider.LoadSarifLogs(sarifFiles);
         var sarifResults = GetSarifResults(sarifLogs);
-        var annotationRequests = MapToAnnotationRequests(sarifResults, collectorRequest, workingDir);
-        var maxLevel = GetMaxLevel(annotationRequests);
-        var summaryMarkdown = CreateSummaryMarkdown(sarifResults, collectorRequest, workingDir);
 
-        var githubOutputFile = _fileProvider.GithubOutputFile;
-        _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-conclusion={MapToConclusion(maxLevel)}\n");
-        _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-output={JsonSerializer.Serialize(MapToOutput(maxLevel))}\n");
-        _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-annotations={JsonSerializer.Serialize(annotationRequests)}\n");
+        if (collectorRequest.exportChecksActionParams)
+        {
+            var annotationRequests = MapToAnnotationRequests(sarifResults, collectorRequest, workingDir);
+            var maxLevel = GetMaxLevel(annotationRequests);
 
-        var githubStepSummaryFile = _fileProvider.GithubStepSummaryFile;
-        _fileProvider.AppendTextToFile(githubStepSummaryFile, summaryMarkdown);
+            var githubOutputFile = _fileProvider.GithubOutputFile;
+            _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-conclusion={MapToConclusion(maxLevel)}\n");
+            _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-output={JsonSerializer.Serialize(MapToOutput(maxLevel))}\n");
+            _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-annotations={JsonSerializer.Serialize(annotationRequests)}\n");
+        }
+
+        if (collectorRequest.exportStepSummary)
+        {
+            var summaryMarkdown = CreateSummaryMarkdown(sarifResults, collectorRequest, workingDir);
+            var githubStepSummaryFile = _fileProvider.GithubStepSummaryFile;
+            _fileProvider.AppendTextToFile(githubStepSummaryFile, summaryMarkdown);
+        }
     }
 }
 
-internal sealed record GithubSarifCollectorRequest(string GithubServerUrl, string GithubRepo, string GithubRefName);
+internal sealed record GithubSarifCollectorRequest(bool exportChecksActionParams, bool exportStepSummary, string GithubServerUrl, string GithubRepo, string GithubRefName);

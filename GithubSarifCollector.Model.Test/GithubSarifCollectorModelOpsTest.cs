@@ -56,7 +56,7 @@ public class GithubSarifCollectorModelOpsTest
             }
         };
 
-        var collectorRequest = new GithubSarifCollectorRequest("https://github.com", "markusroessler/GithubSarifCollector", "develop");
+        var collectorRequest = new GithubSarifCollectorRequest(true, true, "https://github.com", "markusroessler/GithubSarifCollector", "develop");
 
         var requests = GithubSarifCollectorModelOps.MapToAnnotationRequests(sarifResults, collectorRequest, "/repo");
 
@@ -140,7 +140,7 @@ public class GithubSarifCollectorModelOpsTest
             }
         };
 
-        var collectorRequest = new GithubSarifCollectorRequest("https://github.com", "markusroessler/GithubSarifCollector", "develop");
+        var collectorRequest = new GithubSarifCollectorRequest(true, true, "https://github.com", "markusroessler/GithubSarifCollector", "develop");
 
         var markdown = GithubSarifCollectorModelOps.CreateSummaryMarkdown(sarifResults, collectorRequest, "/repo");
         Console.WriteLine(markdown);

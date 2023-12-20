@@ -12,6 +12,8 @@ internal static class GithubSarifCollectorModelOps
 {
     internal static GithubSarifCollectorRequest ParseArgs(string[] args)
     {
+        var exportChecksActionParams = false;
+        var exportStepSummary = false;
         string? githubServerUrl = null;
         string? githubRepo = null;
         string? githubRefName = null;
@@ -20,6 +22,12 @@ internal static class GithubSarifCollectorModelOps
         {
             switch (args[i])
             {
+                case "--export-checks-action-params":
+                    exportChecksActionParams = Convert.ToBoolean(args.ElementAtOrDefault(++i));
+                    break;
+                case "--export-step-summary":
+                    exportStepSummary = Convert.ToBoolean(args.ElementAtOrDefault(++i));
+                    break;
                 case "--github-server-url":
                     githubServerUrl = args.ElementAtOrDefault(++i);
                     break;
@@ -43,7 +51,7 @@ internal static class GithubSarifCollectorModelOps
         if (githubRefName == null)
             throw new Exception("missing argument: --github-ref-name");
 
-        return new(githubServerUrl, githubRepo, githubRefName);
+        return new(exportChecksActionParams, exportStepSummary, githubServerUrl, githubRepo, githubRefName);
     }
 
     internal static IList<Result> GetSarifResults(IEnumerable<SarifLog> sarifLogs)
