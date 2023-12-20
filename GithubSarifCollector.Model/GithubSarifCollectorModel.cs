@@ -22,9 +22,10 @@ public sealed class GithubSarifCollectorModel
         var workingDir = _fileProvider.WorkingDirectory;
         var sarifFiles = _fileProvider.EnumerateSarifFiles(workingDir);
         var sarifLogs = _sarifLogProvider.LoadSarifLogs(sarifFiles);
-        var annotationRequests = MapToAnnotationRequests(sarifLogs, collectorRequest, workingDir);
+        var sarifResults = GetSarifResults(sarifLogs);
+        var annotationRequests = MapToAnnotationRequests(sarifResults, collectorRequest, workingDir);
         var maxLevel = GetMaxLevel(annotationRequests);
-        var summaryMarkdown = CreateSummaryMarkdown(annotationRequests);
+        var summaryMarkdown = CreateSummaryMarkdown(sarifResults, collectorRequest, workingDir);
 
         var githubOutputFile = _fileProvider.GithubOutputFile;
         _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-conclusion={MapToConclusion(maxLevel)}\n");
