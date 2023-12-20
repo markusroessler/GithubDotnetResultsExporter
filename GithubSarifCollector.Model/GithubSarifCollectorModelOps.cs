@@ -79,9 +79,20 @@ internal static class GithubSarifCollectorModelOps
 
         foreach (var annotationRequest in annotationRequests)
         {
+            var fileUri = new Uri(annotationRequest.RawDetails!);
+            var fileUriText = $"{fileUri.Segments.LastOrDefault()}#{fileUri.Query}";
+            var symbol = annotationRequest.SarifLevel switch
+            {
+                FailureLevel.Error => ":x:",
+                FailureLevel.Warning => ":warning:",
+                _ => "🛈",
+            };
+
             result.AppendLine(
                 $"""
-                {annotationRequest.AnnotationLevel} {annotationRequest.Message} {annotationRequest.RawDetails}  
+                {symbol} [{fileUriText}]({fileUri}) 
+                {annotationRequest.Message}  
+                 
                 """);
         }
 

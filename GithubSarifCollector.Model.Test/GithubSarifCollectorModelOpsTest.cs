@@ -77,19 +77,6 @@ public class GithubSarifCollectorModelOpsTest
         var request = requests[0];
         Assert.Multiple(() =>
         {
-            Assert.That(request.Path, Is.EqualTo($"project{Path.DirectorySeparatorChar}Foobar.cs"));
-            Assert.That(request.RawDetails, Is.EqualTo("https://github.com/markusroessler/GithubSarifCollector/blob/develop/project/Foobar.cs#L1"));
-            Assert.That(request.StartLine, Is.EqualTo(1));
-            Assert.That(request.StartColumn, Is.EqualTo(2));
-            Assert.That(request.EndLine, Is.EqualTo(3));
-            Assert.That(request.EndColumn, Is.EqualTo(4));
-            Assert.That(request.Message, Is.EqualTo("Warning Message"));
-            Assert.That(request.AnnotationLevel, Is.EqualTo("warning"));
-        });
-
-        request = requests[1];
-        Assert.Multiple(() =>
-        {
             Assert.That(request.Path, Is.EqualTo($"project{Path.DirectorySeparatorChar}Blub.cs"));
             Assert.That(request.RawDetails, Is.EqualTo("https://github.com/markusroessler/GithubSarifCollector/blob/develop/project/Blub.cs#L1"));
             Assert.That(request.StartLine, Is.EqualTo(1));
@@ -98,6 +85,19 @@ public class GithubSarifCollectorModelOpsTest
             Assert.That(request.EndColumn, Is.EqualTo(4));
             Assert.That(request.Message, Is.EqualTo("Error Message"));
             Assert.That(request.AnnotationLevel, Is.EqualTo("failure"));
+        });
+
+        request = requests[1];
+        Assert.Multiple(() =>
+        {
+            Assert.That(request.Path, Is.EqualTo($"project{Path.DirectorySeparatorChar}Foobar.cs"));
+            Assert.That(request.RawDetails, Is.EqualTo("https://github.com/markusroessler/GithubSarifCollector/blob/develop/project/Foobar.cs#L1"));
+            Assert.That(request.StartLine, Is.EqualTo(1));
+            Assert.That(request.StartColumn, Is.EqualTo(2));
+            Assert.That(request.EndLine, Is.EqualTo(3));
+            Assert.That(request.EndColumn, Is.EqualTo(4));
+            Assert.That(request.Message, Is.EqualTo("Warning Message"));
+            Assert.That(request.AnnotationLevel, Is.EqualTo("warning"));
         });
     }
 }
