@@ -96,4 +96,4 @@ jobs:
     # - name: Collect Build Results
     #   id: collect-build-results
     #   if: always()
-    #   run: collect-sarifs-for-checkrun --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
+    #   run: collect-sarifs-for-github --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Sarif;
@@ -11,6 +12,8 @@ internal static class GithubSarifCollectorModelOps
 {
     internal static GithubSarifCollectorRequest ParseArgs(string[] args)
     {
+        var exportChecksActionParams = false;
+        var exportStepSummary = false;
         string? githubServerUrl = null;
         string? githubRepo = null;
         string? githubRefName = null;
@@ -19,6 +22,12 @@ internal static class GithubSarifCollectorModelOps
         {
             switch (args[i])
             {
+                case "--export-checks-action-params":
+                    exportChecksActionParams = Convert.ToBoolean(args.ElementAtOrDefault(++i));
+                    break;
+                case "--export-step-summary":
+                    exportStepSummary = Convert.ToBoolean(args.ElementAtOrDefault(++i));
+                    break;
                 case "--github-server-url":
                     githubServerUrl = args.ElementAtOrDefault(++i);
                     break;
@@ -42,13 +51,20 @@ internal static class GithubSarifCollectorModelOps
         if (githubRefName == null)
             throw new Exception("missing argument: --github-ref-name");
 
-        return new(githubServerUrl, githubRepo, githubRefName);
+        return new(exportChecksActionParams, exportStepSummary, githubServerUrl, githubRepo, githubRefName);
     }
 
-    internal static IList<GithubAnnotationRequest> MapToAnnotationRequests(IEnumerable<SarifLog> sarifLogs, GithubSarifCollectorRequest collectorRequest, string workingDirectory)
+    internal static IList<Result> GetSarifResults(IEnumerable<SarifLog> sarifLogs)
     {
         return sarifLogs
-            .SelectMany(log => log.Results().Select(result => result))
+            .SelectMany(log => log.Results())
+            .OrderByDescending(result => result.Level)
+            .ToList();
+    }
+
+    internal static IList<GithubAnnotationRequest> MapToAnnotationRequests(IList<Result> sarifResults, GithubSarifCollectorRequest collectorRequest, string workingDirectory)
+    {
+        return sarifResults
             .Select(request => MapToGithubAnnotationRequest(request, collectorRequest, workingDirectory))
             .ToList();
     }
@@ -56,18 +72,58 @@ internal static class GithubSarifCollectorModelOps
     private static GithubAnnotationRequest MapToGithubAnnotationRequest(Result result, GithubSarifCollectorRequest collectorRequest, string workingDirectory)
     {
         var physicalLocation = result.Locations.First().PhysicalLocation;
-        var path = Path.GetRelativePath(workingDirectory, physicalLocation.ArtifactLocation.Uri.LocalPath);
+        var relativePath = ToRelativePath(physicalLocation, workingDirectory);
+
         return new GithubAnnotationRequest
         {
-            Path = path,
+            Path = relativePath,
             StartLine = physicalLocation.Region.StartLine,
             StartColumn = physicalLocation.Region.StartColumn,
             EndLine = physicalLocation.Region.EndLine,
             EndColumn = physicalLocation.Region.EndColumn,
             SarifLevel = result.Level,
             Message = result.Message.Text,
-            RawDetails = $"{collectorRequest.GithubServerUrl}/{collectorRequest.GithubRepo}/blob/{collectorRequest.GithubRefName}/{path.Replace("\\", "/")}#L{physicalLocation.Region.StartLine}"
+            RawDetails = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest, workingDirectory).ToString()
         };
+    }
+
+    private static string ToRelativePath(PhysicalLocation physicalLocation, string workingDirectory)
+    {
+        return Path.GetRelativePath(workingDirectory, physicalLocation.ArtifactLocation.Uri.LocalPath);
+    }
+
+    private static Uri ToGithubFileUri(string relativePath, int startLine, GithubSarifCollectorRequest collectorRequest, string workingDirectory)
+    {
+        return new Uri($"{collectorRequest.GithubServerUrl}/{collectorRequest.GithubRepo}/blob/{collectorRequest.GithubRefName}/{relativePath.Replace("\\", "/")}#L{startLine}");
+    }
+
+    internal static string CreateSummaryMarkdown(IList<Result> sarifResults, GithubSarifCollectorRequest collectorRequest, string workingDirectory)
+    {
+        var result = new StringBuilder();
+        result.AppendLine("## Build Results");
+
+        foreach (var sarifResult in sarifResults)
+        {
+            var physicalLocation = sarifResult.Locations.First().PhysicalLocation;
+            var relativePath = ToRelativePath(physicalLocation, workingDirectory);
+            var fileUri = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest, workingDirectory);
+            var fileUriText = $"{fileUri.Segments.LastOrDefault()}{fileUri.Fragment}";
+            var symbol = sarifResult.Level switch
+            {
+                FailureLevel.Error => ":x:",
+                FailureLevel.Warning => ":warning:",
+                _ => "🛈",
+            };
+
+            result.AppendLine(
+                $"""
+                {symbol} [{fileUriText}]({fileUri}) 
+                {sarifResult.Message.Text}  
+
+                """);
+        }
+
+        return result.ToString();
     }
 
     internal static GithubChecksApiOutput MapToOutput(FailureLevel logLevel)
