@@ -8,6 +8,7 @@ dotnet collect-sarifs-for-checkrun --github-server-url https://github.com --gith
 ```
 OR
 ```bash
-$env:GITHUB_OUTPUT="D:\Entwicklung\DotNet\GithubSarifCollector\githuboutput.txt"
+$env:GITHUB_OUTPUT="D:\Entwicklung\DotNet\GithubSarifCollector\github-output.txt"
+$env:GITHUB_STEP_SUMMARY="D:\Entwicklung\DotNet\GithubSarifCollector\github-step-summary.md"  
 dotnet run --project GithubSarifCollector.Csl -- --github-server-url https://github.com --github-repo markusroessler/GithubSarifCollector --github-ref-name develop
 ```

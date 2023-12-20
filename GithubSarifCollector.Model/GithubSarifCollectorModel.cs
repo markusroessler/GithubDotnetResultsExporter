@@ -24,11 +24,15 @@ public sealed class GithubSarifCollectorModel
         var sarifLogs = _sarifLogProvider.LoadSarifLogs(sarifFiles);
         var annotationRequests = MapToAnnotationRequests(sarifLogs, collectorRequest, workingDir);
         var maxLevel = GetMaxLevel(annotationRequests);
+        var summaryMarkdown = CreateSummaryMarkdown(annotationRequests);
 
         var githubOutputFile = _fileProvider.GithubOutputFile;
         _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-conclusion={MapToConclusion(maxLevel)}\n");
         _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-output={JsonSerializer.Serialize(MapToOutput(maxLevel))}\n");
         _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-annotations={JsonSerializer.Serialize(annotationRequests)}\n");
+
+        var githubStepSummaryFile = _fileProvider.GithubStepSummaryFile;
+        _fileProvider.AppendTextToFile(githubStepSummaryFile, summaryMarkdown);
     }
 }
 

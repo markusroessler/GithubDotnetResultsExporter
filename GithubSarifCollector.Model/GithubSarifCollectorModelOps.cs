@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Sarif;
@@ -50,6 +51,7 @@ internal static class GithubSarifCollectorModelOps
         return sarifLogs
             .SelectMany(log => log.Results().Select(result => result))
             .Select(request => MapToGithubAnnotationRequest(request, collectorRequest, workingDirectory))
+            .OrderByDescending(request => request.SarifLevel)
             .ToList();
     }
 
@@ -68,6 +70,22 @@ internal static class GithubSarifCollectorModelOps
             Message = result.Message.Text,
             RawDetails = $"{collectorRequest.GithubServerUrl}/{collectorRequest.GithubRepo}/blob/{collectorRequest.GithubRefName}/{path.Replace("\\", "/")}#L{physicalLocation.Region.StartLine}"
         };
+    }
+
+    internal static string CreateSummaryMarkdown(IList<GithubAnnotationRequest> annotationRequests)
+    {
+        var result = new StringBuilder();
+        result.AppendLine("# Build Summary");
+
+        foreach (var annotationRequest in annotationRequests)
+        {
+            result.AppendLine(
+                $"""
+                {annotationRequest.AnnotationLevel} {annotationRequest.Message} {annotationRequest.RawDetails}  
+                """);
+        }
+
+        return result.ToString();
     }
 
     internal static GithubChecksApiOutput MapToOutput(FailureLevel logLevel)

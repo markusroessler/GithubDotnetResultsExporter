@@ -480,5 +480,6 @@ Backup.Playground/journal
 Backup.Playground/realm
 Backup.Playground/compress-test
 compiler-diagnostics.sarif
-githuboutput.txt
+github-output.txt
+github-step-summary.md
 .config/dotnet-tools.json

@@ -11,6 +11,8 @@ internal sealed class FileProvider
 
     public string GithubOutputFile => Environment.GetEnvironmentVariable("GITHUB_OUTPUT") ?? throw new Exception("GITHUB_OUTPUT not defined");
 
+    public string GithubStepSummaryFile => Environment.GetEnvironmentVariable("GITHUB_STEP_SUMMARY") ?? throw new Exception("GITHUB_STEP_SUMMARY not defined");
+
     public IEnumerable<string> EnumerateSarifFiles(string repoDir)
     {
         return Directory.EnumerateFiles(repoDir, "compiler-diagnostics.sarif", new EnumerationOptions { RecurseSubdirectories = true, MaxRecursionDepth = 1 });
