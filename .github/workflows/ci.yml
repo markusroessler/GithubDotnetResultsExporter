@@ -39,14 +39,6 @@ jobs:
       run: |
         dotnet build -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
     
-    - name: Collect Build Results
-      if: always()
-      run: dotnet collect-sarifs-for-github --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
-
-    - name: Test
-      if: always()
-      run: dotnet test --logger:html --logger:"trx;LogFileName=TestResults/TestResults.trx" --collect:"XPlat Code Coverage" --settings coverlet.runsettings --no-build
-
     - name: Pack nuget package
       if: always()
       run: dotnet pack GithubSarifCollector.Csl -p:Version=1.0.0-local.1
@@ -58,6 +50,14 @@ jobs:
         dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.2.0
         dotnet tool install --add-source ./GithubSarifCollector.Csl/bin/Debug GithubSarifCollector --version 1.0.0-local.1
         
+    - name: Collect Build Results
+      if: always()
+      run: dotnet collect-sarifs-for-github --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
+
+    - name: Test
+      if: always()
+      run: dotnet test --logger:html --logger:"trx;LogFileName=TestResults/TestResults.trx" --collect:"XPlat Code Coverage" --settings coverlet.runsettings --no-build
+
     - name: Generate Coverage Report
       if: always()
       run: reportgenerator
