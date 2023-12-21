@@ -1,4 +1,4 @@
-namespace GithubSarifCollector.IntegrationTest;
+namespace GithubDotnetResultsExporter.IntegrationTest;
 
 public class Tests
 {

@@ -1,8 +1,8 @@
-﻿using GithubSarifCollector.Model;
+﻿using GithubDotnetResultsExporter.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace GithubSarifCollector.Csl;
+namespace GithubDotnetResultsExporter.Csl;
 
 class Program
 {
@@ -16,7 +16,7 @@ class Program
         });
         using var serviceProvider = serviceCollection.BuildServiceProvider();
 
-        var model = serviceProvider.GetRequiredService<GithubSarifCollectorModel>();
+        var model = serviceProvider.GetRequiredService<GithubDotnetResultsExporterModel>();
         model.CollectSarifResults(args);
     }
 }

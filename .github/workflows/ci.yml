@@ -41,14 +41,14 @@ jobs:
     
     - name: Pack nuget package
       if: always()
-      run: dotnet pack GithubSarifCollector.Csl -p:Version=1.0.0-local.1
+      run: dotnet pack GithubDotnetResultsExporter.Csl -p:Version=1.0.0-local.1
 
     - name: Install dotnet tools
       if: always()
       run: |
         dotnet new tool-manifest
         dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.2.0
-        dotnet tool install --add-source ./GithubSarifCollector.Csl/bin/Debug GithubSarifCollector --version 1.0.0-local.1
+        dotnet tool install --add-source ./GithubDotnetResultsExporter.Csl/bin/Debug GithubDotnetResultsExporter --version 1.0.0-local.1
 
     - name: Collect Build Results
       if: always()
@@ -66,14 +66,14 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: GithubSarifCollector-ci-coverage-report
+        name: GithubDotnetResultsExporter-ci-coverage-report
         path: TestResults/coverage-report
 
     - name: Upload Test Report
       if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: GithubSarifCollector-ci-test-report
+        name: GithubDotnetResultsExporter-ci-test-report
         path: '**/TestResults/*.html'
 
     - name: Publish Unit Test Results

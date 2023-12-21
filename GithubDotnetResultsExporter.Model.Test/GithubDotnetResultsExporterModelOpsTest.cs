@@ -1,8 +1,8 @@
 using Microsoft.CodeAnalysis.Sarif;
 
-namespace GithubSarifCollector.Model.Test;
+namespace GithubDotnetResultsExporter.Model.Test;
 
-public class GithubSarifCollectorModelOpsTest
+public class GithubDotnetResultsExporterModelOpsTest
 {
 
     [Test]
@@ -56,9 +56,9 @@ public class GithubSarifCollectorModelOpsTest
             }
         };
 
-        var collectorRequest = new GithubSarifCollectorRequest(true, true, "https://github.com", "markusroessler/GithubSarifCollector", "develop");
+        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop");
 
-        var requests = GithubSarifCollectorModelOps.MapToAnnotationRequests(sarifResults, collectorRequest, "/repo");
+        var requests = GithubDotnetResultsExporterModelOps.MapToAnnotationRequests(sarifResults, collectorRequest, "/repo");
 
         Assert.That(requests, Has.Count.EqualTo(2));
 
@@ -66,7 +66,7 @@ public class GithubSarifCollectorModelOpsTest
         Assert.Multiple(() =>
         {
             Assert.That(request.Path, Is.EqualTo($"project{Path.DirectorySeparatorChar}Foobar.cs"));
-            Assert.That(request.RawDetails, Is.EqualTo("https://github.com/markusroessler/GithubSarifCollector/blob/develop/project/Foobar.cs#L1"));
+            Assert.That(request.RawDetails, Is.EqualTo("https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Foobar.cs#L1"));
             Assert.That(request.StartLine, Is.EqualTo(1));
             Assert.That(request.StartColumn, Is.EqualTo(2));
             Assert.That(request.EndLine, Is.EqualTo(3));
@@ -79,7 +79,7 @@ public class GithubSarifCollectorModelOpsTest
         Assert.Multiple(() =>
         {
             Assert.That(request.Path, Is.EqualTo($"project{Path.DirectorySeparatorChar}Blub.cs"));
-            Assert.That(request.RawDetails, Is.EqualTo("https://github.com/markusroessler/GithubSarifCollector/blob/develop/project/Blub.cs#L1"));
+            Assert.That(request.RawDetails, Is.EqualTo("https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Blub.cs#L1"));
             Assert.That(request.StartLine, Is.EqualTo(1));
             Assert.That(request.StartColumn, Is.EqualTo(2));
             Assert.That(request.EndLine, Is.EqualTo(3));
@@ -140,18 +140,18 @@ public class GithubSarifCollectorModelOpsTest
             }
         };
 
-        var collectorRequest = new GithubSarifCollectorRequest(true, true, "https://github.com", "markusroessler/GithubSarifCollector", "develop");
+        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop");
 
-        var markdown = GithubSarifCollectorModelOps.CreateSummaryMarkdown(sarifResults, collectorRequest, "/repo");
+        var markdown = GithubDotnetResultsExporterModelOps.CreateSummaryMarkdown(sarifResults, collectorRequest, "/repo");
         Console.WriteLine(markdown);
 
         Assert.That(markdown, Is.EqualTo(
             """
             ## Build Results
-            :warning: [Foobar.cs#L1](https://github.com/markusroessler/GithubSarifCollector/blob/develop/project/Foobar.cs#L1) 
+            :warning: [Foobar.cs#L1](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Foobar.cs#L1) 
             Warning Message  
 
-            :x: [Blub.cs#L1](https://github.com/markusroessler/GithubSarifCollector/blob/develop/project/Blub.cs#L1) 
+            :x: [Blub.cs#L1](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Blub.cs#L1) 
             Error Message  
 
 

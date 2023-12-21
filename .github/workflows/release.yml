@@ -61,21 +61,21 @@ jobs:
       run: dotnet test -p:Configuration=Release --logger:html --logger:"trx;LogFileName=TestResults/TestResults.trx" --no-build
 
     - name: Pack nuget package
-      run: dotnet pack GithubSarifCollector.Csl -p:Configuration=Release -p:Version=${{ inputs.release-version }}
+      run: dotnet pack GithubDotnetResultsExporter.Csl -p:Configuration=Release -p:Version=${{ inputs.release-version }}
 
     # - name: Push nuget package
-    #   run: dotnet nuget push GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+    #   run: dotnet nuget push GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
 
     # - name: Install dotnet tools
     #   if: always()
     #   run: |
-    #     dotnet tool install --global GithubSarifCollector --version ${{ inputs.release-version }}
+    #     dotnet tool install --global GithubDotnetResultsExporter --version ${{ inputs.release-version }}
     
     # - name: Publish Github Release
     #   uses: ncipollo/release-action@v1
     #   with:
     #     tag: ${{ inputs.release-version }}
-    #     artifacts: GithubSarifCollector.Csl/bin/Release/GithubSarifCollector.${{ inputs.release-version }}.nupkg
+    #     artifacts: GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg
     #     generateReleaseNotes: true
     #     draft: false
 
@@ -83,7 +83,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: GithubSarifCollector-release-test-report
+        name: GithubDotnetResultsExporter-release-test-report
         path: '**/TestResults/*.html'
 
     - name: Publish Unit Test Results

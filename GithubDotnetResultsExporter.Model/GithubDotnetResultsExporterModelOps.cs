@@ -6,11 +6,11 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Sarif;
 
-namespace GithubSarifCollector.Model;
+namespace GithubDotnetResultsExporter.Model;
 
-internal static class GithubSarifCollectorModelOps
+internal static class GithubDotnetResultsExporterModelOps
 {
-    internal static GithubSarifCollectorRequest ParseArgs(string[] args)
+    internal static GithubDotnetResultsExporterRequest ParseArgs(string[] args)
     {
         var exportChecksActionParams = false;
         var exportStepSummary = false;
@@ -62,14 +62,14 @@ internal static class GithubSarifCollectorModelOps
             .ToList();
     }
 
-    internal static IList<GithubAnnotationRequest> MapToAnnotationRequests(IList<Result> sarifResults, GithubSarifCollectorRequest collectorRequest, string workingDirectory)
+    internal static IList<GithubAnnotationRequest> MapToAnnotationRequests(IList<Result> sarifResults, GithubDotnetResultsExporterRequest collectorRequest, string workingDirectory)
     {
         return sarifResults
             .Select(request => MapToGithubAnnotationRequest(request, collectorRequest, workingDirectory))
             .ToList();
     }
 
-    private static GithubAnnotationRequest MapToGithubAnnotationRequest(Result result, GithubSarifCollectorRequest collectorRequest, string workingDirectory)
+    private static GithubAnnotationRequest MapToGithubAnnotationRequest(Result result, GithubDotnetResultsExporterRequest collectorRequest, string workingDirectory)
     {
         var physicalLocation = result.Locations.First().PhysicalLocation;
         var relativePath = ToRelativePath(physicalLocation, workingDirectory);
@@ -92,12 +92,12 @@ internal static class GithubSarifCollectorModelOps
         return Path.GetRelativePath(workingDirectory, physicalLocation.ArtifactLocation.Uri.LocalPath);
     }
 
-    private static Uri ToGithubFileUri(string relativePath, int startLine, GithubSarifCollectorRequest collectorRequest, string workingDirectory)
+    private static Uri ToGithubFileUri(string relativePath, int startLine, GithubDotnetResultsExporterRequest collectorRequest, string workingDirectory)
     {
         return new Uri($"{collectorRequest.GithubServerUrl}/{collectorRequest.GithubRepo}/blob/{collectorRequest.GithubRefName}/{relativePath.Replace("\\", "/")}#L{startLine}");
     }
 
-    internal static string CreateSummaryMarkdown(IList<Result> sarifResults, GithubSarifCollectorRequest collectorRequest, string workingDirectory)
+    internal static string CreateSummaryMarkdown(IList<Result> sarifResults, GithubDotnetResultsExporterRequest collectorRequest, string workingDirectory)
     {
         var result = new StringBuilder();
         result.AppendLine("## Build Results");
