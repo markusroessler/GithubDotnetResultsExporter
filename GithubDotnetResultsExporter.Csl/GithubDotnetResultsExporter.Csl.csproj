@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\GithubSarifCollector.Model\GithubSarifCollector.Model.csproj" />
+    <ProjectReference Include="..\GithubDotnetResultsExporter.Model\GithubDotnetResultsExporter.Model.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -11,7 +11,7 @@
     <Nullable>enable</Nullable>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>collect-sarifs-for-github</ToolCommandName>
-    <PackageId>GithubSarifCollector</PackageId>
+    <PackageId>GithubDotnetResultsExporter</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

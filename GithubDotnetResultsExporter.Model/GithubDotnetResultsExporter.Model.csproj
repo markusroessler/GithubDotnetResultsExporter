@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>GithubSarifCollector.Model.Test</_Parameter1>
+      <_Parameter1>GithubDotnetResultsExporter.Model.Test</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
 </Project>
