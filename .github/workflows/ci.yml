@@ -52,7 +52,7 @@ jobs:
 
     - name: Collect Build Results
       if: always()
-      run: dotnet collect-sarifs-for-github --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
+      run: dotnet export-dotnet-results-for-github --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
 
     - name: Test
       if: always()

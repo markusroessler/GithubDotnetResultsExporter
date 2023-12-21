@@ -10,7 +10,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>collect-sarifs-for-github</ToolCommandName>
+    <ToolCommandName>export-dotnet-results-for-github</ToolCommandName>
     <PackageId>GithubDotnetResultsExporter</PackageId>
   </PropertyGroup>
 
