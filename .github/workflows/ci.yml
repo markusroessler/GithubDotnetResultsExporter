@@ -12,27 +12,23 @@ jobs:
     name: Build-Job
     runs-on: ubuntu-latest
 
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+    
     steps:
     - uses: actions/checkout@v3
 
     - name: Setup .NET Core SDK 7.0.x
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '7.0.x'
+        cache: true
 
     - name: Remove setup-dotnet problem matcher
       run: echo "::remove-matcher owner=csc::"
 
     - name: Init nuget source
       run: dotnet nuget add source --username markusroessler --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/markusroessler/index.json"
-
-    - name: Init nuget cache
-      uses: actions/cache@v3
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
 
     - name: Build
       id: build
