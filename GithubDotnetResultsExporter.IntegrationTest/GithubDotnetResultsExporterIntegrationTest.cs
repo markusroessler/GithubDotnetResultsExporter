@@ -98,7 +98,10 @@ public class GithubDotnetResultsExporterIntegrationTest
         foobar
 
         </details>
-        :heavy_check_mark: Test_Pass
+        <details><summary>:heavy_check_mark: Test_Pass</summary>
+
+
+        </details>
 
         """.Replace("\r\n", "\n")));
     }
