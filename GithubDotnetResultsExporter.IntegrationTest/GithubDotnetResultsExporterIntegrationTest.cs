@@ -20,7 +20,7 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         {
             var assembly = typeof(GithubDotnetResultsExporterIntegrationTest).Assembly;
-            using var testResultsStream = assembly.GetManifestResourceStream("GithubDotnetResultsExporter.IntegrationTest.TestResults.trx")!;
+            using var testResultsStream = assembly.GetManifestResourceStream("GithubDotnetResultsExporter.IntegrationTest.SampleTestResults.trx")!;
             using var outputStream = File.OpenWrite(Path.Combine(testResultsDir, "TestResults.trx"));
             testResultsStream.CopyTo(outputStream);
         }

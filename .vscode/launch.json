@@ -13,7 +13,8 @@
             "args": [
                 "--github-server-url", "https://github.com",
                 "--github-repo", "markusroessler/GithubDotnetResultsExporter",
-                "--github-ref-name", "develop"
+                "--github-ref-name", "develop",
+                "--export-step-summary", "true"
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
