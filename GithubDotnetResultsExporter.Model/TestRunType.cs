@@ -41,6 +41,7 @@ public partial class TestRunType
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("ResultSummary", typeof(TestRunTypeResultSummary))]
     [System.Xml.Serialization.XmlElementAttribute("Results", typeof(ResultsType))]
+    [System.Xml.Serialization.XmlElementAttribute("TestDefinitions", typeof(TestDefinitionType))]
     public object[] Items
     {
         get
@@ -1140,6 +1141,346 @@ public partial class OutputTypeErrorInfo
         set
         {
             this.stackTraceField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")]
+public partial class TestDefinitionType
+{
+
+    private object[] itemsField;
+
+    private ItemsChoiceType2[] itemsElementNameField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAnyElementAttribute()]
+    [System.Xml.Serialization.XmlElementAttribute("UnitTest", typeof(UnitTestType))]
+    [System.Xml.Serialization.XmlElementAttribute("UnitTestElement", typeof(UnitTestType))]
+    [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemsElementName")]
+    public object[] Items
+    {
+        get
+        {
+            return this.itemsField;
+        }
+        set
+        {
+            this.itemsField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public ItemsChoiceType2[] ItemsElementName
+    {
+        get
+        {
+            return this.itemsElementNameField;
+        }
+        set
+        {
+            this.itemsElementNameField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010", IncludeInSchema = false)]
+public enum ItemsChoiceType2
+{
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlEnumAttribute("##any:")]
+    Item,
+
+    /// <remarks/>
+    CodedWebTest,
+
+    /// <remarks/>
+    GenericTest,
+
+    /// <remarks/>
+    LoadTest,
+
+    /// <remarks/>
+    ManualTest,
+
+    /// <remarks/>
+    OrderedTest,
+
+    /// <remarks/>
+    UnitTest,
+
+    /// <remarks/>
+    UnitTestElement,
+
+    /// <remarks/>
+    WebTest,
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")]
+public partial class UnitTestType : BaseTestType
+{
+
+    private UnitTestTypeTestMethod testMethodField;
+
+    /// <remarks/>
+    public UnitTestTypeTestMethod TestMethod
+    {
+        get
+        {
+            return this.testMethodField;
+        }
+        set
+        {
+            this.testMethodField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(UnitTestType))]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")]
+public abstract partial class BaseTestType
+{
+
+    private object[] itemsField;
+
+    private bool enabledField;
+
+    private string idField;
+
+    private string nameField;
+
+    private bool isGroupableField;
+
+    private int priorityField;
+
+    private string namedCategoryField;
+
+    private string storageField;
+
+    public BaseTestType()
+    {
+        this.enabledField = true;
+        this.isGroupableField = true;
+        this.priorityField = 2147483647;
+        this.namedCategoryField = "";
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(true)]
+    public bool enabled
+    {
+        get
+        {
+            return this.enabledField;
+        }
+        set
+        {
+            this.enabledField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string id
+    {
+        get
+        {
+            return this.idField;
+        }
+        set
+        {
+            this.idField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string name
+    {
+        get
+        {
+            return this.nameField;
+        }
+        set
+        {
+            this.nameField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(true)]
+    public bool isGroupable
+    {
+        get
+        {
+            return this.isGroupableField;
+        }
+        set
+        {
+            this.isGroupableField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(2147483647)]
+    public int priority
+    {
+        get
+        {
+            return this.priorityField;
+        }
+        set
+        {
+            this.priorityField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute("")]
+    public string namedCategory
+    {
+        get
+        {
+            return this.namedCategoryField;
+        }
+        set
+        {
+            this.namedCategoryField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string storage
+    {
+        get
+        {
+            return this.storageField;
+        }
+        set
+        {
+            this.storageField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")]
+public partial class UnitTestTypeTestMethod
+{
+
+    private string codeBaseField;
+
+    private string classNameField;
+
+    private string nameField;
+
+    private bool isValidField;
+
+    private string adapterTypeNameField;
+
+    public UnitTestTypeTestMethod()
+    {
+        this.isValidField = false;
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string codeBase
+    {
+        get
+        {
+            return this.codeBaseField;
+        }
+        set
+        {
+            this.codeBaseField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string className
+    {
+        get
+        {
+            return this.classNameField;
+        }
+        set
+        {
+            this.classNameField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string name
+    {
+        get
+        {
+            return this.nameField;
+        }
+        set
+        {
+            this.nameField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(false)]
+    public bool isValid
+    {
+        get
+        {
+            return this.isValidField;
+        }
+        set
+        {
+            this.isValidField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string adapterTypeName
+    {
+        get
+        {
+            return this.adapterTypeNameField;
+        }
+        set
+        {
+            this.adapterTypeNameField = value;
         }
     }
 }

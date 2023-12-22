@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -129,6 +130,8 @@ internal static class GithubDotnetResultsExporterModelOps
         return result.ToString();
     }
 
+    private readonly record struct TestDefAndResult(UnitTestType TestDef, TestResultType TestResult);
+
     internal static string CreateSummaryMarkdown(IEnumerable<TestRunType> testRuns)
     {
         var result = new StringBuilder();
@@ -159,13 +162,19 @@ internal static class GithubDotnetResultsExporterModelOps
 
             """);
 
+        var unitTestsPerId = testRuns
+            .Select(testRun => testRun.Items.OfType<TestDefinitionType>().First())
+            .SelectMany(testDef => testDef.Items.OfType<UnitTestType>())
+            .ToImmutableDictionary(test => test.id);
+
         var testResults = testRuns
             .Select(testRun => testRun.Items.OfType<ResultsType>().First())
             .SelectMany(testRun => testRun.Items.OfType<UnitTestResultType>())
-            .Order(Comparer<UnitTestResultType>.Create(CompareUnitTestResults))
+            .Select(testResult => new TestDefAndResult(unitTestsPerId[testResult.testId], testResult))
+            .Order(Comparer<TestDefAndResult>.Create(CompareUnitTestResults))
             .ToList();
 
-        foreach (var testResult in testResults)
+        foreach (var (testDef, testResult) in testResults)
         {
             var symbol = testResult.outcome switch
             {
@@ -217,7 +226,7 @@ internal static class GithubDotnetResultsExporterModelOps
             }
 
             result.AppendLine($"""
-                <details><summary>{symbol} {testResult.testName}</summary>
+                <details><summary>{symbol} {testDef.TestMethod.className}.{testDef.TestMethod.name}</summary>
 
                 {errorText}{stdOutText}{stdErrText}
                 </details>
@@ -234,12 +243,20 @@ internal static class GithubDotnetResultsExporterModelOps
         "Passed",
     };
 
-    private static int CompareUnitTestResults(UnitTestResultType result1, UnitTestResultType result2)
+    private static int CompareUnitTestResults(TestDefAndResult result1, TestDefAndResult result2)
     {
-        var compare = TestOutcomeOrder.IndexOf(result1.outcome) - TestOutcomeOrder.IndexOf(result2.outcome);
+        var compare = TestOutcomeOrder.IndexOf(result1.TestResult.outcome) - TestOutcomeOrder.IndexOf(result2.TestResult.outcome);
         if (compare != 0)
             return compare;
-        return result1.testName.CompareTo(result2.testName);
+
+        var testMethod1 = result1.TestDef.TestMethod;
+        var testMethod2 = result2.TestDef.TestMethod;
+
+        compare = testMethod1.className.CompareTo(testMethod2.className);
+        if (compare != 0)
+            return compare;
+
+        return testMethod1.name.CompareTo(testMethod2.name);
     }
 
     internal static GithubChecksApiOutput MapToOutput(FailureLevel logLevel)

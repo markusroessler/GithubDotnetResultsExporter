@@ -49,7 +49,7 @@ public class GithubDotnetResultsExporterIntegrationTest
         skipped: 3  
         passed: 2
         
-        <details><summary>:x: Test_Fail</summary>
+        <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail</summary>
 
         **Error**  
         ```
@@ -62,7 +62,7 @@ public class GithubDotnetResultsExporterIntegrationTest
         ```
 
         </details>
-        <details><summary>:x: Test_Timeout</summary>
+        <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Timeout</summary>
 
         **Error**  
         ```
@@ -71,7 +71,7 @@ public class GithubDotnetResultsExporterIntegrationTest
         ```
 
         </details>
-        <details><summary>:zzz: Test_Skipped</summary>
+        <details><summary>:zzz: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Skipped</summary>
 
         **Error**  
         ```
@@ -84,7 +84,7 @@ public class GithubDotnetResultsExporterIntegrationTest
         ```
 
         </details>
-        <details><summary>:zzz: Test_SkippedOnPlatform</summary>
+        <details><summary>:zzz: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_SkippedOnPlatform</summary>
 
         **Error**  
         ```
@@ -97,7 +97,7 @@ public class GithubDotnetResultsExporterIntegrationTest
         ```
 
         </details>
-        <details><summary>:zzz: Test_SkippedUsingAssume</summary>
+        <details><summary>:zzz: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_SkippedUsingAssume</summary>
 
         **Error**  
         ```
@@ -113,11 +113,11 @@ public class GithubDotnetResultsExporterIntegrationTest
         ```
 
         </details>
-        <details><summary>:heavy_check_mark: Test_Pass</summary>
+        <details><summary>:heavy_check_mark: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Pass</summary>
 
 
         </details>
-        <details><summary>:heavy_check_mark: Test_StdOut</summary>
+        <details><summary>:heavy_check_mark: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_StdOut</summary>
 
         **StdOut**  
         ```
