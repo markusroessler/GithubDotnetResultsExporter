@@ -21,4 +21,8 @@
     <ProjectReference Include="..\GithubDotnetResultsExporter.Csl\GithubDotnetResultsExporter.Csl.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="TestResults.trx" />
+  </ItemGroup>
+
 </Project>

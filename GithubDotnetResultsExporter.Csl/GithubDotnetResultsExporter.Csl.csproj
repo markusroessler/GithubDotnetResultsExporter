@@ -20,4 +20,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>GithubDotnetResultsExporter.IntegrationTest</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>

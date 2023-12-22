@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="bdcd958d-4cf9-4ba9-8b0d-29ed81fc49d7" name="mroessler@DESKTOP-FQKOHME 2023-12-21 15:40:13" runUser="DESKTOP-FQKOHME\mroessler" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2023-12-21T15:40:13.4807447+01:00" queuing="2023-12-21T15:40:13.4807453+01:00" start="2023-12-21T15:40:12.5545343+01:00" finish="2023-12-21T15:40:13.5645341+01:00" />
+  <TestSettings name="default" id="8dbd4587-93c0-4091-a4b3-c74bdcc4760c">
+    <Deployment runDeploymentRoot="mroessler_DESKTOP-FQKOHME_2023-12-21_15_40_13" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="f1dc0703-e933-4d57-aecb-7fb53c3e53d9" testId="cd6bef40-e45d-0627-e442-16b472d08b77" testName="Test_Timeout" computerName="DESKTOP-FQKOHME" duration="00:00:00.1027140" startTime="2023-12-21T15:40:13.2671457+01:00" endTime="2023-12-21T15:40:13.3698588+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f1dc0703-e933-4d57-aecb-7fb53c3e53d9">
+      <Output>
+        <ErrorInfo>
+          <Message>Test exceeded Timeout value of 100ms</Message>
+          <StackTrace>
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4dc9b1fd-9e4c-4f4c-8bf8-f5b28328a5ab" testId="5e8e106a-4ac4-8908-54f3-cc275fac3dda" testName="Test_SkippedUsingAssume" computerName="DESKTOP-FQKOHME" duration="00:00:00.0047840" startTime="2023-12-21T15:40:13.2623427+01:00" endTime="2023-12-21T15:40:13.2671259+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4dc9b1fd-9e4c-4f4c-8bf8-f5b28328a5ab">
+      <Output>
+        <StdOut>Expected: True&#xD;
+  But was:  False</StdOut>
+        <ErrorInfo>
+          <Message>  Expected: True&#xD;
+  But was:  False&#xD;
+</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ed6b1e1b-21a4-4cc3-b4ba-6f2959916ca4" testId="d2521a84-a4d9-6f99-e60a-1a03fb43bf65" testName="Test_SkippedOnPlatform" computerName="DESKTOP-FQKOHME" duration="00:00:00.0000520" startTime="2023-12-21T15:40:13.2622685+01:00" endTime="2023-12-21T15:40:13.2623208+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ed6b1e1b-21a4-4cc3-b4ba-6f2959916ca4">
+      <Output>
+        <StdOut>Not supported on Win</StdOut>
+        <ErrorInfo>
+          <Message>Not supported on Win</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5c82b85e-3002-48a6-b1c3-e93196f5169e" testId="7ad5422d-395e-c4e8-46ee-a18d0dd405cd" testName="Test_Skipped" computerName="DESKTOP-FQKOHME" duration="00:00:00.0003280" startTime="2023-12-21T15:40:13.2619318+01:00" endTime="2023-12-21T15:40:13.2622594+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5c82b85e-3002-48a6-b1c3-e93196f5169e">
+      <Output>
+        <StdOut>foobar</StdOut>
+        <ErrorInfo>
+          <Message>foobar</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="57d4d68d-5a65-4be6-ba2a-450e542dc7ff" testId="ecb0ca81-d912-cbc5-6e72-1a34c083875a" testName="Test_Pass" computerName="DESKTOP-FQKOHME" duration="00:00:00.0005070" startTime="2023-12-21T15:40:13.2613919+01:00" endTime="2023-12-21T15:40:13.2618990+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="57d4d68d-5a65-4be6-ba2a-450e542dc7ff" />
+    <UnitTestResult executionId="7407cbe5-516b-45d8-bd48-c42eac1f2663" testId="ad733cba-dd92-5370-aa91-577bcb801277" testName="Test_Fail" computerName="DESKTOP-FQKOHME" duration="00:00:00.0214479" startTime="2023-12-21T15:40:13.2385303+01:00" endTime="2023-12-21T15:40:13.2599090+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7407cbe5-516b-45d8-bd48-c42eac1f2663">
+      <Output>
+        <ErrorInfo>
+          <Message>foobar</Message>
+          <StackTrace>   at GithubDotnetResultsExporter.IntegrationTest.Tests.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\UnitTest1.cs:line 14&#xD;
+
+1)    at GithubDotnetResultsExporter.IntegrationTest.Tests.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\UnitTest1.cs:line 14&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Test_Skipped" storage="d:\entwicklung\dotnet\githubdotnetresultsexporter\githubdotnetresultsexporter.integrationtest\bin\debug\net7.0\githubdotnetresultsexporter.integrationtest.dll" id="7ad5422d-395e-c4e8-46ee-a18d0dd405cd">
+      <Execution id="5c82b85e-3002-48a6-b1c3-e93196f5169e" />
+      <TestMethod codeBase="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\bin\Debug\net7.0\GithubDotnetResultsExporter.IntegrationTest.dll" adapterTypeName="executor://nunit3testexecutor/" className="GithubDotnetResultsExporter.IntegrationTest.Tests" name="Test_Skipped" />
+    </UnitTest>
+    <UnitTest name="Test_Timeout" storage="d:\entwicklung\dotnet\githubdotnetresultsexporter\githubdotnetresultsexporter.integrationtest\bin\debug\net7.0\githubdotnetresultsexporter.integrationtest.dll" id="cd6bef40-e45d-0627-e442-16b472d08b77">
+      <Execution id="f1dc0703-e933-4d57-aecb-7fb53c3e53d9" />
+      <TestMethod codeBase="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\bin\Debug\net7.0\GithubDotnetResultsExporter.IntegrationTest.dll" adapterTypeName="executor://nunit3testexecutor/" className="GithubDotnetResultsExporter.IntegrationTest.Tests" name="Test_Timeout" />
+    </UnitTest>
+    <UnitTest name="Test_Fail" storage="d:\entwicklung\dotnet\githubdotnetresultsexporter\githubdotnetresultsexporter.integrationtest\bin\debug\net7.0\githubdotnetresultsexporter.integrationtest.dll" id="ad733cba-dd92-5370-aa91-577bcb801277">
+      <Execution id="7407cbe5-516b-45d8-bd48-c42eac1f2663" />
+      <TestMethod codeBase="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\bin\Debug\net7.0\GithubDotnetResultsExporter.IntegrationTest.dll" adapterTypeName="executor://nunit3testexecutor/" className="GithubDotnetResultsExporter.IntegrationTest.Tests" name="Test_Fail" />
+    </UnitTest>
+    <UnitTest name="Test_SkippedOnPlatform" storage="d:\entwicklung\dotnet\githubdotnetresultsexporter\githubdotnetresultsexporter.integrationtest\bin\debug\net7.0\githubdotnetresultsexporter.integrationtest.dll" id="d2521a84-a4d9-6f99-e60a-1a03fb43bf65">
+      <Execution id="ed6b1e1b-21a4-4cc3-b4ba-6f2959916ca4" />
+      <TestMethod codeBase="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\bin\Debug\net7.0\GithubDotnetResultsExporter.IntegrationTest.dll" adapterTypeName="executor://nunit3testexecutor/" className="GithubDotnetResultsExporter.IntegrationTest.Tests" name="Test_SkippedOnPlatform" />
+    </UnitTest>
+    <UnitTest name="Test_Pass" storage="d:\entwicklung\dotnet\githubdotnetresultsexporter\githubdotnetresultsexporter.integrationtest\bin\debug\net7.0\githubdotnetresultsexporter.integrationtest.dll" id="ecb0ca81-d912-cbc5-6e72-1a34c083875a">
+      <Execution id="57d4d68d-5a65-4be6-ba2a-450e542dc7ff" />
+      <TestMethod codeBase="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\bin\Debug\net7.0\GithubDotnetResultsExporter.IntegrationTest.dll" adapterTypeName="executor://nunit3testexecutor/" className="GithubDotnetResultsExporter.IntegrationTest.Tests" name="Test_Pass" />
+    </UnitTest>
+    <UnitTest name="Test_SkippedUsingAssume" storage="d:\entwicklung\dotnet\githubdotnetresultsexporter\githubdotnetresultsexporter.integrationtest\bin\debug\net7.0\githubdotnetresultsexporter.integrationtest.dll" id="5e8e106a-4ac4-8908-54f3-cc275fac3dda">
+      <Execution id="4dc9b1fd-9e4c-4f4c-8bf8-f5b28328a5ab" />
+      <TestMethod codeBase="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\bin\Debug\net7.0\GithubDotnetResultsExporter.IntegrationTest.dll" adapterTypeName="executor://nunit3testexecutor/" className="GithubDotnetResultsExporter.IntegrationTest.Tests" name="Test_SkippedUsingAssume" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="cd6bef40-e45d-0627-e442-16b472d08b77" executionId="f1dc0703-e933-4d57-aecb-7fb53c3e53d9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5e8e106a-4ac4-8908-54f3-cc275fac3dda" executionId="4dc9b1fd-9e4c-4f4c-8bf8-f5b28328a5ab" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d2521a84-a4d9-6f99-e60a-1a03fb43bf65" executionId="ed6b1e1b-21a4-4cc3-b4ba-6f2959916ca4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7ad5422d-395e-c4e8-46ee-a18d0dd405cd" executionId="5c82b85e-3002-48a6-b1c3-e93196f5169e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ecb0ca81-d912-cbc5-6e72-1a34c083875a" executionId="57d4d68d-5a65-4be6-ba2a-450e542dc7ff" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ad733cba-dd92-5370-aa91-577bcb801277" executionId="7407cbe5-516b-45d8-bd48-c42eac1f2663" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="6" executed="3" passed="1" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started&#xD;
+Running all tests in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\bin\Debug\net7.0\GithubDotnetResultsExporter.IntegrationTest.dll&#xD;
+   NUnit3TestExecutor discovered 6 of 6 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+Test_Skipped: foobar&#xD;
+Test_SkippedOnPlatform: Not supported on Win&#xD;
+Test_SkippedUsingAssume:   Expected: True&#xD;
+  But was:  False&#xD;
+&#xD;
+NUnit Adapter 4.5.0.0: Test execution complete&#xD;
+Test 'Test_Skipped' was skipped in the test run.&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

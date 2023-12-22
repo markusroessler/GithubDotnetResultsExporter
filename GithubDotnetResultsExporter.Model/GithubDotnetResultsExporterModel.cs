@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using GithubDotnetResultsExporter.Model.Vstst;
 using Microsoft.CodeAnalysis.Sarif;
 using Microsoft.Extensions.DependencyInjection;
 using static GithubDotnetResultsExporter.Model.GithubDotnetResultsExporterModelOps;
@@ -9,20 +10,23 @@ public sealed class GithubDotnetResultsExporterModel
 {
     private readonly FileProvider _fileProvider;
     private readonly SarifLogProvider _sarifLogProvider;
+    private readonly TrxProvider _trxProvider;
 
     public GithubDotnetResultsExporterModel(IServiceProvider serviceProvider)
     {
         _fileProvider = serviceProvider.GetRequiredService<FileProvider>();
         _sarifLogProvider = serviceProvider.GetRequiredService<SarifLogProvider>();
+        _trxProvider = serviceProvider.GetRequiredService<TrxProvider>();
     }
 
-    public void CollectSarifResults(string[] args)
+    public void ExportResults(string[] args)
     {
         var collectorRequest = ParseArgs(args);
         var workingDir = _fileProvider.WorkingDirectory;
         var sarifFiles = _fileProvider.EnumerateSarifFiles(workingDir);
         var sarifLogs = _sarifLogProvider.LoadSarifLogs(sarifFiles);
         var sarifResults = GetSarifResults(sarifLogs);
+        var githubStepSummaryFile = _fileProvider.GithubStepSummaryFile;
 
         if (collectorRequest.exportChecksActionParams)
         {
@@ -38,7 +42,11 @@ public sealed class GithubDotnetResultsExporterModel
         if (collectorRequest.exportStepSummary)
         {
             var summaryMarkdown = CreateSummaryMarkdown(sarifResults, collectorRequest, workingDir);
-            var githubStepSummaryFile = _fileProvider.GithubStepSummaryFile;
+
+            var trxFiles = _fileProvider.EnumerateTrxFiles(workingDir);
+            var testRuns = _trxProvider.LoadTestRuns(trxFiles);
+            summaryMarkdown += CreateSummaryMarkdown(testRuns);
+
             _fileProvider.AppendTextToFile(githubStepSummaryFile, summaryMarkdown);
         }
     }

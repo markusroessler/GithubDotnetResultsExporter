@@ -12,3 +12,9 @@ $env:GITHUB_OUTPUT="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\github-out
 $env:GITHUB_STEP_SUMMARY="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\github-step-summary.md"  
 dotnet run --project GithubDotnetResultsExporter.Csl -- --github-server-url https://github.com --github-repo markusroessler/GithubDotnetResultsExporter --github-ref-name develop
 ```
+
+# Howto generate classes from trx xsd
+```bash
+Set-Alias xsd "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\xsd.exe"   
+xsd /c "C:\Program Files\Microsoft Visual Studio\2022\Community\Xml\Schemas\vstst.xsd"
+```

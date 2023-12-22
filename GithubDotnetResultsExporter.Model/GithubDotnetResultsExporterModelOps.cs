@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using GithubDotnetResultsExporter.Model.Vstst;
 using Microsoft.CodeAnalysis.Sarif;
 
 namespace GithubDotnetResultsExporter.Model;
@@ -122,6 +123,38 @@ internal static class GithubDotnetResultsExporterModelOps
 
                 """);
         }
+
+        return result.ToString();
+    }
+
+    internal static string CreateSummaryMarkdown(IEnumerable<TestRunType> testRuns)
+    {
+        var result = new StringBuilder();
+        result.AppendLine("## Test Results");
+
+        var counters = testRuns
+            .Select(testRun => testRun.Items.OfType<TestRunTypeResultSummary>().First())
+            .Select(summary => summary.Items.OfType<CountersType>().First())
+            .ToList();
+
+        var successCount = 0;
+        var failCount = 0;
+        var skipCount = 0;
+
+        // note: some counters like notExecuted are not populated
+        foreach (var counter in counters)
+        {
+            successCount += counter.passed;
+            failCount += counter.executed - counter.passed;
+            skipCount += counter.total - counter.executed;
+        }
+
+        result.AppendLine(
+            $"""
+            passed: {successCount}  
+            failed: {failCount}  
+            skipped: {skipCount}
+            """);
 
         return result.ToString();
     }
