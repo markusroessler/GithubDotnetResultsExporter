@@ -50,13 +50,13 @@ jobs:
         dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.2.0
         dotnet tool install --add-source ./GithubDotnetResultsExporter.Csl/bin/Debug GithubDotnetResultsExporter --version 1.0.0-local.1
 
+    - name: Test
+      if: always()
+      run: dotnet test --logger:html --logger:"trx;LogFileName=TestResults.trx" --collect:"XPlat Code Coverage" --settings coverlet.runsettings --no-build
+
     - name: Collect Build Results
       if: always()
       run: dotnet export-dotnet-results-for-github --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
-
-    - name: Test
-      if: always()
-      run: dotnet test --logger:html --logger:"trx;LogFileName=TestResults/TestResults.trx" --collect:"XPlat Code Coverage" --settings coverlet.runsettings --no-build
 
     - name: Generate Coverage Report
       if: always()
