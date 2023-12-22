@@ -185,8 +185,10 @@ internal static class GithubDotnetResultsExporterModelOps
                 {
                     errorText = $"""
                         **Error**  
+                        ```
                         {(errorInfo.Message as XmlNode[])?.FirstOrDefault()?.Value}
                         {(errorInfo.StackTrace as XmlNode[])?.FirstOrDefault()?.Value}
+                        ```
 
                         """;
                 }
@@ -195,7 +197,9 @@ internal static class GithubDotnetResultsExporterModelOps
                 {
                     stdOutText = $"""
                         **StdOut**  
+                        ```
                         {WebUtility.HtmlEncode(stdOut.First().Value)}
+                        ```
 
                         """;
                 }
@@ -204,7 +208,9 @@ internal static class GithubDotnetResultsExporterModelOps
                 {
                     stdErrText = $"""
                         **StdErr**  
+                        ```
                         {WebUtility.HtmlEncode(stdErr.First().Value)}
+                        ```
 
                         """;
                 }

@@ -53,49 +53,65 @@ public class GithubDotnetResultsExporterIntegrationTest
         <details><summary>:x: Test_Timeout</summary>
 
         **Error**  
+        ```
         Test exceeded Timeout value of 100ms
 
+        ```
 
         </details>
         <details><summary>:x: Test_Fail</summary>
 
         **Error**  
+        ```
         foobar
            at GithubDotnetResultsExporter.IntegrationTest.Tests.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\UnitTest1.cs:line 14
 
         1)    at GithubDotnetResultsExporter.IntegrationTest.Tests.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\UnitTest1.cs:line 14
 
 
+        ```
 
         </details>
         <details><summary>:zzz: Test_SkippedUsingAssume</summary>
 
         **Error**  
+        ```
           Expected: True
           But was:  False
 
-
+        
+        ```
         **StdOut**  
+        ```
         Expected: True
           But was:  False
+        ```
 
         </details>
         <details><summary>:zzz: Test_SkippedOnPlatform</summary>
 
         **Error**  
+        ```
         Not supported on Win
 
+        ```
         **StdOut**  
+        ```
         Not supported on Win
+        ```
 
         </details>
         <details><summary>:zzz: Test_Skipped</summary>
 
         **Error**  
+        ```
         foobar
-
+        
+        ```
         **StdOut**  
+        ```
         foobar
+        ```
 
         </details>
         <details><summary>:heavy_check_mark: Test_Pass</summary>
