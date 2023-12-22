@@ -15,6 +15,7 @@ internal sealed class FileProvider
 
     public string GithubStepSummaryFile => _environment.GetEnvironmentVariable("GITHUB_STEP_SUMMARY") ?? throw new Exception("GITHUB_STEP_SUMMARY not defined");
 
+    private readonly string _foo;
 
     public FileProvider(IEnvironment environment)
     {
