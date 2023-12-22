@@ -43,13 +43,10 @@ jobs:
         git config --global user.name 'Github Actions'
         git config --global user.email 'github.actions@users.noreply.github.com'
     
-    - name: test annotation
-      run: echo "::error file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
-
-    # - name: Create Tag
-    #   run: |
-    #     git tag -a ${{ inputs.release-version }} -m "Release ${{ inputs.release-version }} [skip ci]"
-    #     git push origin ${{ inputs.release-version }}
+    - name: Create Tag
+      run: |
+        git tag -a ${{ inputs.release-version }} -m "Release ${{ inputs.release-version }} [skip ci]"
+        git push origin ${{ inputs.release-version }}
 
     - name: Build
       id: build
@@ -63,21 +60,26 @@ jobs:
     - name: Pack nuget package
       run: dotnet pack GithubDotnetResultsExporter.Csl -p:Configuration=Release -p:Version=${{ inputs.release-version }}
 
-    # - name: Push nuget package
-    #   run: dotnet nuget push GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+    - name: Push nuget package
+      run: dotnet nuget push GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
 
-    # - name: Install dotnet tools
-    #   if: always()
-    #   run: |
-    #     dotnet tool install --global GithubDotnetResultsExporter --version ${{ inputs.release-version }}
-    
-    # - name: Publish Github Release
-    #   uses: ncipollo/release-action@v1
-    #   with:
-    #     tag: ${{ inputs.release-version }}
-    #     artifacts: GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg
-    #     generateReleaseNotes: true
-    #     draft: false
+    - name: Install dotnet tools
+      if: always()
+      run: |
+        dotnet tool install --global GithubDotnetResultsExporter --version ${{ inputs.release-version }}
+
+    - name: Collect Build Results
+      id: collect-build-results
+      if: always()
+      run: dotnet export-dotnet-results-for-github --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
+
+    - name: Publish Github Release
+      uses: ncipollo/release-action@v1
+      with:
+        tag: ${{ inputs.release-version }}
+        artifacts: GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg
+        generateReleaseNotes: true
+        draft: false
 
     - name: Upload Test Report
       if: always()
@@ -85,15 +87,3 @@ jobs:
       with:
         name: GithubDotnetResultsExporter-release-test-report
         path: '**/TestResults/*.html'
-
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v2
-      if: always()
-      with:
-        files: "**/TestResults/TestResults.trx"
-        check_run: false
-
-    # - name: Collect Build Results
-    #   id: collect-build-results
-    #   if: always()
-    #   run: export-dotnet-results-for-github --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
