@@ -118,7 +118,7 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         </details>
         <details><summary>:heavy_check_mark: Test_StdOut</summary>
-        
+
         **StdOut**  
         ```
         <b>Hello from Test_StdOut</b>
@@ -129,48 +129,48 @@ public class GithubDotnetResultsExporterIntegrationTest
         """.Replace("\r\n", "\n")));
     }
 
-    // [Test]
-    // public void Test_Pass()
-    // {
-    //     Assert.Pass();
-    // }
+    [Test]
+    public void Test_Pass()
+    {
+        Assert.Pass();
+    }
 
-    // [Test]
-    // public void Test_Fail()
-    // {
-    //     Assert.Fail("foobar");
-    // }
+    [Test]
+    public void Test_Fail()
+    {
+        Assert.Fail("foobar");
+    }
 
-    // [Test]
-    // [Ignore("foobar")]
-    // public void Test_Skipped()
-    // {
-    //     Assert.Fail("foobar");
-    // }
+    [Test]
+    [Ignore("foobar")]
+    public void Test_Skipped()
+    {
+        Assert.Fail("foobar");
+    }
 
-    // [Test]
-    // [Platform(Exclude = "Win")]
-    // public void Test_SkippedOnPlatform()
-    // {
-    //     Assert.Fail("foobar");
-    // }
+    [Test]
+    [Platform(Exclude = "Win")]
+    public void Test_SkippedOnPlatform()
+    {
+        Assert.Fail("foobar");
+    }
 
-    // [Test]
-    // public void Test_SkippedUsingAssume()
-    // {
-    //     Assume.That(false);
-    // }
+    [Test]
+    public void Test_SkippedUsingAssume()
+    {
+        Assume.That(false);
+    }
 
-    // [Test]
-    // [Timeout(100)]
-    // public void Test_Timeout()
-    // {
-    //     Thread.Sleep(1000);
-    // }
+    [Test]
+    [Timeout(100)]
+    public void Test_Timeout()
+    {
+        Thread.Sleep(1000);
+    }
 
-    // [Test]
-    // public void Test_StdOut()
-    // {
-    //     Console.WriteLine("<b>Hello from Test_StdOut</b>");
-    // }
+    [Test]
+    public void Test_StdOut()
+    {
+        Console.WriteLine("<b>Hello from Test_StdOut</b>");
+    }
 }
