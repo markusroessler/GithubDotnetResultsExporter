@@ -39,7 +39,7 @@ jobs:
     
     - name: Pack nuget package
       if: always()
-      run: dotnet pack GithubDotnetResultsExporter.Csl -p:Version=1.0.0-local.1
+      run: dotnet pack GithubDotnetResultsExporter.Csl -p:Configuration=Debug -p:Version=1.0.0-local.1
 
     - name: Install dotnet tools
       if: always()
