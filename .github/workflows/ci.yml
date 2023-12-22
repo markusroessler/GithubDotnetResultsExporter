@@ -35,7 +35,7 @@ jobs:
     - name: Build
       id: build
       run: |
-        dotnet build --source offline -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
+        dotnet build -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
     
     - name: Pack nuget package
       if: always()
