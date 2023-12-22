@@ -45,9 +45,9 @@ public class GithubDotnetResultsExporterIntegrationTest
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
         ## Test Results
-        passed: 2  
         failed: 2  
-        skipped: 3
+        skipped: 3  
+        passed: 2
         
         <details><summary>:x: Test_Timeout</summary>
 

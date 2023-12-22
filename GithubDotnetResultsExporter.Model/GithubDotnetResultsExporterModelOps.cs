@@ -153,9 +153,9 @@ internal static class GithubDotnetResultsExporterModelOps
 
         result.AppendLine(
             $"""
-            passed: {successCount}  
             failed: {failCount}  
-            skipped: {skipCount}
+            skipped: {skipCount}  
+            passed: {successCount}
 
             """);
 
