@@ -10,7 +10,7 @@ OR
 ```bash
 $env:GITHUB_OUTPUT="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\github-output.txt"
 $env:GITHUB_STEP_SUMMARY="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\github-step-summary.md"  
-dotnet run --project GithubDotnetResultsExporter.Csl -- --github-server-url https://github.com --github-repo markusroessler/GithubDotnetResultsExporter --github-ref-name develop
+dotnet run --project GithubDotnetResultsExporter.Csl -- --github-server-url https://github.com --github-repo markusroessler/GithubDotnetResultsExporter --github-ref-name develop --export-step-summary true
 ```
 
 # Howto generate classes from trx xsd

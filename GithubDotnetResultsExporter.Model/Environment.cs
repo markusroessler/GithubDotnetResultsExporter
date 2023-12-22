@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace GithubDotnetResultsExporter.Model;
 
+/// <summary>
+/// Mockable Environment
+/// </summary>
 internal interface IEnvironment
 {
     string CurrentDirectory { get; }
