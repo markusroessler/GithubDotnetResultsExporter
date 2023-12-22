@@ -28,16 +28,6 @@ public partial class TestRunType
 
     private object[] itemsField;
 
-    private string idField;
-
-    private string nameField;
-
-    private string runUserField;
-
-    private int tcmPassIdField;
-
-    private bool tcmPassIdFieldSpecified;
-
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("ResultSummary", typeof(TestRunTypeResultSummary))]
     [System.Xml.Serialization.XmlElementAttribute("Results", typeof(ResultsType))]
@@ -53,76 +43,6 @@ public partial class TestRunType
             this.itemsField = value;
         }
     }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string id
-    {
-        get
-        {
-            return this.idField;
-        }
-        set
-        {
-            this.idField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string name
-    {
-        get
-        {
-            return this.nameField;
-        }
-        set
-        {
-            this.nameField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string runUser
-    {
-        get
-        {
-            return this.runUserField;
-        }
-        set
-        {
-            this.runUserField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public int tcmPassId
-    {
-        get
-        {
-            return this.tcmPassIdField;
-        }
-        set
-        {
-            this.tcmPassIdField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool tcmPassIdSpecified
-    {
-        get
-        {
-            return this.tcmPassIdFieldSpecified;
-        }
-        set
-        {
-            this.tcmPassIdFieldSpecified = value;
-        }
-    }
 }
 
 /// <remarks/>
@@ -135,15 +55,6 @@ public partial class TestRunTypeResultSummary
 {
 
     private object[] itemsField;
-
-    private string outcomeField;
-
-    private bool isPartialRunField;
-
-    public TestRunTypeResultSummary()
-    {
-        this.isPartialRunField = false;
-    }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("Counters", typeof(CountersType))]
@@ -158,35 +69,6 @@ public partial class TestRunTypeResultSummary
             this.itemsField = value;
         }
     }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string outcome
-    {
-        get
-        {
-            return this.outcomeField;
-        }
-        set
-        {
-            this.outcomeField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(false)]
-    public bool isPartialRun
-    {
-        get
-        {
-            return this.isPartialRunField;
-        }
-        set
-        {
-            this.isPartialRunField = value;
-        }
-    }
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
@@ -199,57 +81,16 @@ public partial class CountersType
 
     private int totalField;
 
-    private bool totalFieldSpecified;
-
-    private int errorField;
-
-    private int failedField;
-
-    private int timeoutField;
-
-    private int abortedField;
-
-    private int inconclusiveField;
-
-    private int passedButRunAbortedField;
-
-    private int notRunnableField;
-
-    private int notExecutedField;
-
     private int executedField;
-
-    private int disconnectedField;
-
-    private int warningField;
 
     private int passedField;
 
-    private int completedField;
 
-    private int inProgressField;
-
-    private int pendingField;
-
-    private string valueField;
 
     public CountersType()
     {
-        this.errorField = 0;
-        this.failedField = 0;
-        this.timeoutField = 0;
-        this.abortedField = 0;
-        this.inconclusiveField = 0;
-        this.passedButRunAbortedField = 0;
-        this.notRunnableField = 0;
-        this.notExecutedField = 0;
         this.executedField = 0;
-        this.disconnectedField = 0;
-        this.warningField = 0;
         this.passedField = 0;
-        this.completedField = 0;
-        this.inProgressField = 0;
-        this.pendingField = 0;
     }
 
     /// <remarks/>
@@ -263,140 +104,6 @@ public partial class CountersType
         set
         {
             this.totalField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool totalSpecified
-    {
-        get
-        {
-            return this.totalFieldSpecified;
-        }
-        set
-        {
-            this.totalFieldSpecified = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int error
-    {
-        get
-        {
-            return this.errorField;
-        }
-        set
-        {
-            this.errorField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int failed
-    {
-        get
-        {
-            return this.failedField;
-        }
-        set
-        {
-            this.failedField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int timeout
-    {
-        get
-        {
-            return this.timeoutField;
-        }
-        set
-        {
-            this.timeoutField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int aborted
-    {
-        get
-        {
-            return this.abortedField;
-        }
-        set
-        {
-            this.abortedField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int inconclusive
-    {
-        get
-        {
-            return this.inconclusiveField;
-        }
-        set
-        {
-            this.inconclusiveField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int passedButRunAborted
-    {
-        get
-        {
-            return this.passedButRunAbortedField;
-        }
-        set
-        {
-            this.passedButRunAbortedField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int notRunnable
-    {
-        get
-        {
-            return this.notRunnableField;
-        }
-        set
-        {
-            this.notRunnableField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int notExecuted
-    {
-        get
-        {
-            return this.notExecutedField;
-        }
-        set
-        {
-            this.notExecutedField = value;
         }
     }
 
@@ -418,36 +125,6 @@ public partial class CountersType
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
     [System.ComponentModel.DefaultValueAttribute(0)]
-    public int disconnected
-    {
-        get
-        {
-            return this.disconnectedField;
-        }
-        set
-        {
-            this.disconnectedField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int warning
-    {
-        get
-        {
-            return this.warningField;
-        }
-        set
-        {
-            this.warningField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
     public int passed
     {
         get
@@ -457,65 +134,6 @@ public partial class CountersType
         set
         {
             this.passedField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int completed
-    {
-        get
-        {
-            return this.completedField;
-        }
-        set
-        {
-            this.completedField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int inProgress
-    {
-        get
-        {
-            return this.inProgressField;
-        }
-        set
-        {
-            this.inProgressField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(0)]
-    public int pending
-    {
-        get
-        {
-            return this.pendingField;
-        }
-        set
-        {
-            this.pendingField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string value
-    {
-        get
-        {
-            return this.valueField;
-        }
-        set
-        {
-            this.valueField = value;
         }
     }
 }
@@ -556,74 +174,6 @@ public partial class ResultsType
 public partial class UnitTestResultType : TestResultAggregationType
 {
 
-    private System.Xml.XmlNode extensionResultField;
-
-    private string resultTypeField;
-
-    private string dataRowInfoField;
-
-    private bool hasSufficientAccessField;
-
-    public UnitTestResultType()
-    {
-        this.hasSufficientAccessField = true;
-    }
-
-    /// <remarks/>
-    public System.Xml.XmlNode ExtensionResult
-    {
-        get
-        {
-            return this.extensionResultField;
-        }
-        set
-        {
-            this.extensionResultField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string resultType
-    {
-        get
-        {
-            return this.resultTypeField;
-        }
-        set
-        {
-            this.resultTypeField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string dataRowInfo
-    {
-        get
-        {
-            return this.dataRowInfoField;
-        }
-        set
-        {
-            this.dataRowInfoField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(true)]
-    public bool hasSufficientAccess
-    {
-        get
-        {
-            return this.hasSufficientAccessField;
-        }
-        set
-        {
-            this.hasSufficientAccessField = value;
-        }
-    }
 }
 
 /// <remarks/>
@@ -680,46 +230,9 @@ public partial class TestResultType
 
     private object[] itemsField;
 
-    private string testNameField;
-
-    private string testTypeField;
-
     private string testIdField;
 
-    private string executionIdField;
-
-    private string parentExecutionIdField;
-
-    private string testListIdField;
-
     private string outcomeField;
-
-    private string computerNameField;
-
-    private string relativeResultsDirectoryField;
-
-    private string startTimeField;
-
-    private string endTimeField;
-
-    private string durationField;
-
-    private bool spoolMessageField;
-
-    private int processExitCodeField;
-
-    private bool processExitCodeFieldSpecified;
-
-    private bool isAbortedField;
-
-    private bool isAbortedFieldSpecified;
-
-    private string relativeTestOutputDirectoryField;
-
-    public TestResultType()
-    {
-        this.spoolMessageField = true;
-    }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("Output", typeof(OutputType))]
@@ -732,34 +245,6 @@ public partial class TestResultType
         set
         {
             this.itemsField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string testName
-    {
-        get
-        {
-            return this.testNameField;
-        }
-        set
-        {
-            this.testNameField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string testType
-    {
-        get
-        {
-            return this.testTypeField;
-        }
-        set
-        {
-            this.testTypeField = value;
         }
     }
 
@@ -779,48 +264,6 @@ public partial class TestResultType
 
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string executionId
-    {
-        get
-        {
-            return this.executionIdField;
-        }
-        set
-        {
-            this.executionIdField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string parentExecutionId
-    {
-        get
-        {
-            return this.parentExecutionIdField;
-        }
-        set
-        {
-            this.parentExecutionIdField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string testListId
-    {
-        get
-        {
-            return this.testListIdField;
-        }
-        set
-        {
-            this.testListIdField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
     public string outcome
     {
         get
@@ -833,160 +276,6 @@ public partial class TestResultType
         }
     }
 
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string computerName
-    {
-        get
-        {
-            return this.computerNameField;
-        }
-        set
-        {
-            this.computerNameField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string relativeResultsDirectory
-    {
-        get
-        {
-            return this.relativeResultsDirectoryField;
-        }
-        set
-        {
-            this.relativeResultsDirectoryField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string startTime
-    {
-        get
-        {
-            return this.startTimeField;
-        }
-        set
-        {
-            this.startTimeField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string endTime
-    {
-        get
-        {
-            return this.endTimeField;
-        }
-        set
-        {
-            this.endTimeField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string duration
-    {
-        get
-        {
-            return this.durationField;
-        }
-        set
-        {
-            this.durationField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(true)]
-    public bool spoolMessage
-    {
-        get
-        {
-            return this.spoolMessageField;
-        }
-        set
-        {
-            this.spoolMessageField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public int processExitCode
-    {
-        get
-        {
-            return this.processExitCodeField;
-        }
-        set
-        {
-            this.processExitCodeField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool processExitCodeSpecified
-    {
-        get
-        {
-            return this.processExitCodeFieldSpecified;
-        }
-        set
-        {
-            this.processExitCodeFieldSpecified = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public bool isAborted
-    {
-        get
-        {
-            return this.isAbortedField;
-        }
-        set
-        {
-            this.isAbortedField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool isAbortedSpecified
-    {
-        get
-        {
-            return this.isAbortedFieldSpecified;
-        }
-        set
-        {
-            this.isAbortedFieldSpecified = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string relativeTestOutputDirectory
-    {
-        get
-        {
-            return this.relativeTestOutputDirectoryField;
-        }
-        set
-        {
-            this.relativeTestOutputDirectoryField = value;
-        }
-    }
 }
 
 /// <remarks/>
@@ -1002,15 +291,8 @@ public partial class OutputType
 
     private object stdErrField;
 
-    private object debugTraceField;
-
-    private object traceInfoField;
-
     private OutputTypeErrorInfo errorInfoField;
 
-    private object exceptionField;
-
-    private object[] textMessagesField;
 
     /// <remarks/>
     public object StdOut
@@ -1039,32 +321,6 @@ public partial class OutputType
     }
 
     /// <remarks/>
-    public object DebugTrace
-    {
-        get
-        {
-            return this.debugTraceField;
-        }
-        set
-        {
-            this.debugTraceField = value;
-        }
-    }
-
-    /// <remarks/>
-    public object TraceInfo
-    {
-        get
-        {
-            return this.traceInfoField;
-        }
-        set
-        {
-            this.traceInfoField = value;
-        }
-    }
-
-    /// <remarks/>
     public OutputTypeErrorInfo ErrorInfo
     {
         get
@@ -1074,33 +330,6 @@ public partial class OutputType
         set
         {
             this.errorInfoField = value;
-        }
-    }
-
-    /// <remarks/>
-    public object Exception
-    {
-        get
-        {
-            return this.exceptionField;
-        }
-        set
-        {
-            this.exceptionField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlArrayItemAttribute("Message", IsNullable = false)]
-    public object[] TextMessages
-    {
-        get
-        {
-            return this.textMessagesField;
-        }
-        set
-        {
-            this.textMessagesField = value;
         }
     }
 }
@@ -1264,42 +493,7 @@ public abstract partial class BaseTestType
 
     private object[] itemsField;
 
-    private bool enabledField;
-
     private string idField;
-
-    private string nameField;
-
-    private bool isGroupableField;
-
-    private int priorityField;
-
-    private string namedCategoryField;
-
-    private string storageField;
-
-    public BaseTestType()
-    {
-        this.enabledField = true;
-        this.isGroupableField = true;
-        this.priorityField = 2147483647;
-        this.namedCategoryField = "";
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(true)]
-    public bool enabled
-    {
-        get
-        {
-            return this.enabledField;
-        }
-        set
-        {
-            this.enabledField = value;
-        }
-    }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -1314,79 +508,6 @@ public abstract partial class BaseTestType
             this.idField = value;
         }
     }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string name
-    {
-        get
-        {
-            return this.nameField;
-        }
-        set
-        {
-            this.nameField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(true)]
-    public bool isGroupable
-    {
-        get
-        {
-            return this.isGroupableField;
-        }
-        set
-        {
-            this.isGroupableField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(2147483647)]
-    public int priority
-    {
-        get
-        {
-            return this.priorityField;
-        }
-        set
-        {
-            this.priorityField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute("")]
-    public string namedCategory
-    {
-        get
-        {
-            return this.namedCategoryField;
-        }
-        set
-        {
-            this.namedCategoryField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string storage
-    {
-        get
-        {
-            return this.storageField;
-        }
-        set
-        {
-            this.storageField = value;
-        }
-    }
 }
 
 /// <remarks/>
@@ -1398,34 +519,9 @@ public abstract partial class BaseTestType
 public partial class UnitTestTypeTestMethod
 {
 
-    private string codeBaseField;
-
     private string classNameField;
 
     private string nameField;
-
-    private bool isValidField;
-
-    private string adapterTypeNameField;
-
-    public UnitTestTypeTestMethod()
-    {
-        this.isValidField = false;
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string codeBase
-    {
-        get
-        {
-            return this.codeBaseField;
-        }
-        set
-        {
-            this.codeBaseField = value;
-        }
-    }
 
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -1452,35 +548,6 @@ public partial class UnitTestTypeTestMethod
         set
         {
             this.nameField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    [System.ComponentModel.DefaultValueAttribute(false)]
-    public bool isValid
-    {
-        get
-        {
-            return this.isValidField;
-        }
-        set
-        {
-            this.isValidField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string adapterTypeName
-    {
-        get
-        {
-            return this.adapterTypeNameField;
-        }
-        set
-        {
-            this.adapterTypeNameField = value;
         }
     }
 }
