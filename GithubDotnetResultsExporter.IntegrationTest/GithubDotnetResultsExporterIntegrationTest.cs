@@ -41,12 +41,11 @@ public class GithubDotnetResultsExporterIntegrationTest
         });
 
         var summaryText = File.ReadAllText(environment.GithubStepSummaryFile);
-        Console.WriteLine(summaryText);
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
         ## Test Results
-        passed: 1  
+        passed: 2  
         failed: 2  
         skipped: 3
         
@@ -64,9 +63,9 @@ public class GithubDotnetResultsExporterIntegrationTest
         **Error**  
         ```
         foobar
-           at GithubDotnetResultsExporter.IntegrationTest.Tests.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\UnitTest1.cs:line 14
+           at GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\GithubDotnetResultsExporterIntegrationTest.cs:line 140
 
-        1)    at GithubDotnetResultsExporter.IntegrationTest.Tests.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\UnitTest1.cs:line 14
+        1)    at GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\GithubDotnetResultsExporterIntegrationTest.cs:line 140
 
 
         ```
@@ -106,7 +105,7 @@ public class GithubDotnetResultsExporterIntegrationTest
         **Error**  
         ```
         foobar
-        
+
         ```
         **StdOut**  
         ```
@@ -116,6 +115,14 @@ public class GithubDotnetResultsExporterIntegrationTest
         </details>
         <details><summary>:heavy_check_mark: Test_Pass</summary>
 
+
+        </details>
+        <details><summary>:heavy_check_mark: Test_StdOut</summary>
+        
+        **StdOut**  
+        ```
+        <b>Hello from Test_StdOut</b>
+        ```
 
         </details>
 
@@ -159,5 +166,11 @@ public class GithubDotnetResultsExporterIntegrationTest
     // public void Test_Timeout()
     // {
     //     Thread.Sleep(1000);
+    // }
+
+    // [Test]
+    // public void Test_StdOut()
+    // {
+    //     Console.WriteLine("<b>Hello from Test_StdOut</b>");
     // }
 }

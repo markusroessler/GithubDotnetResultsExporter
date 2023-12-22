@@ -198,7 +198,7 @@ internal static class GithubDotnetResultsExporterModelOps
                     stdOutText = $"""
                         **StdOut**  
                         ```
-                        {WebUtility.HtmlEncode(stdOut.First().Value)}
+                        {stdOut.First().Value}
                         ```
 
                         """;
@@ -209,7 +209,7 @@ internal static class GithubDotnetResultsExporterModelOps
                     stdErrText = $"""
                         **StdErr**  
                         ```
-                        {WebUtility.HtmlEncode(stdErr.First().Value)}
+                        {stdErr.First().Value}
                         ```
 
                         """;
