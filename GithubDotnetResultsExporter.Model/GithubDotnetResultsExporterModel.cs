@@ -10,13 +10,13 @@ public sealed class GithubDotnetResultsExporterModel
 {
     private readonly FileProvider _fileProvider;
     private readonly SarifLogProvider _sarifLogProvider;
-    private readonly TrxProvider _trxProvider;
+    private readonly TestRunProvider _testRunProvider;
 
     public GithubDotnetResultsExporterModel(IServiceProvider serviceProvider)
     {
         _fileProvider = serviceProvider.GetRequiredService<FileProvider>();
         _sarifLogProvider = serviceProvider.GetRequiredService<SarifLogProvider>();
-        _trxProvider = serviceProvider.GetRequiredService<TrxProvider>();
+        _testRunProvider = serviceProvider.GetRequiredService<TestRunProvider>();
     }
 
     public void ExportResults(string[] args)
@@ -44,7 +44,7 @@ public sealed class GithubDotnetResultsExporterModel
             var summaryMarkdown = CreateSummaryMarkdown(sarifResults, collectorRequest, workingDir);
 
             var trxFiles = _fileProvider.EnumerateTrxFiles(workingDir);
-            var testRuns = _trxProvider.LoadTestRuns(trxFiles);
+            var testRuns = _testRunProvider.LoadTestRuns(trxFiles);
             summaryMarkdown += CreateSummaryMarkdown(testRuns);
 
             _fileProvider.AppendTextToFile(githubStepSummaryFile, summaryMarkdown);

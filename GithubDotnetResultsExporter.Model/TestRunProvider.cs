@@ -8,11 +8,11 @@ using Microsoft.Extensions.Logging;
 
 namespace GithubDotnetResultsExporter.Model;
 
-internal sealed class TrxProvider
+internal sealed class TestRunProvider
 {
     private readonly ILogger _logger;
 
-    public TrxProvider(ILogger<TrxProvider> logger)
+    public TestRunProvider(ILogger<TestRunProvider> logger)
     {
         _logger = logger;
     }

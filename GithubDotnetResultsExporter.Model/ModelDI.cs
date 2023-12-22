@@ -13,7 +13,7 @@ public static class ModelDI
         services
             .AddTransient<FileProvider>()
             .AddTransient<SarifLogProvider>()
-            .AddTransient<TrxProvider>()
+            .AddTransient<TestRunProvider>()
             .AddSingleton<IEnvironment, DefaultEnvironment>()
             .AddSingleton<GithubDotnetResultsExporterModel>();
     }
