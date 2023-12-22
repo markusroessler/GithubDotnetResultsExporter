@@ -5,10 +5,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  checks: write
   packages: read
-  pull-requests: write # for EnricoMi/publish-unit-test-result-action
 
 jobs:
   build-and-test:

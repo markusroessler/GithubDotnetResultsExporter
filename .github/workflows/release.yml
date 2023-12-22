@@ -11,8 +11,6 @@ on:
 permissions:
   contents: write
   packages: write
-  checks: write
-  pull-requests: write # for EnricoMi/publish-unit-test-result-action
 
 jobs:
   release:
