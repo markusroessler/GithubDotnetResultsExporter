@@ -49,6 +49,19 @@ public class GithubDotnetResultsExporterIntegrationTest
         skipped: 3  
         passed: 2
         
+        <details><summary>:x: Test_Fail</summary>
+
+        **Error**  
+        ```
+        foobar
+           at GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\GithubDotnetResultsExporterIntegrationTest.cs:line 141
+
+        1)    at GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\GithubDotnetResultsExporterIntegrationTest.cs:line 141
+
+
+        ```
+
+        </details>
         <details><summary>:x: Test_Timeout</summary>
 
         **Error**  
@@ -58,16 +71,29 @@ public class GithubDotnetResultsExporterIntegrationTest
         ```
 
         </details>
-        <details><summary>:x: Test_Fail</summary>
+        <details><summary>:zzz: Test_Skipped</summary>
 
         **Error**  
         ```
         foobar
-           at GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\GithubDotnetResultsExporterIntegrationTest.cs:line 140
 
-        1)    at GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\GithubDotnetResultsExporterIntegrationTest.cs:line 140
+        ```
+        **StdOut**  
+        ```
+        foobar
+        ```
 
+        </details>
+        <details><summary>:zzz: Test_SkippedOnPlatform</summary>
 
+        **Error**  
+        ```
+        Not supported on Win
+
+        ```
+        **StdOut**  
+        ```
+        Not supported on Win
         ```
 
         </details>
@@ -87,32 +113,6 @@ public class GithubDotnetResultsExporterIntegrationTest
         ```
 
         </details>
-        <details><summary>:zzz: Test_SkippedOnPlatform</summary>
-
-        **Error**  
-        ```
-        Not supported on Win
-
-        ```
-        **StdOut**  
-        ```
-        Not supported on Win
-        ```
-
-        </details>
-        <details><summary>:zzz: Test_Skipped</summary>
-
-        **Error**  
-        ```
-        foobar
-
-        ```
-        **StdOut**  
-        ```
-        foobar
-        ```
-
-        </details>
         <details><summary>:heavy_check_mark: Test_Pass</summary>
 
 
@@ -122,6 +122,10 @@ public class GithubDotnetResultsExporterIntegrationTest
         **StdOut**  
         ```
         <b>Hello from Test_StdOut</b>
+        ```
+        **StdErr**  
+        ```
+        <b>Error from Test_StdOut</b>
         ```
 
         </details>
@@ -172,5 +176,6 @@ public class GithubDotnetResultsExporterIntegrationTest
     public void Test_StdOut()
     {
         Console.WriteLine("<b>Hello from Test_StdOut</b>");
+        Console.Error.WriteLine("<b>Error from Test_StdOut</b>");
     }
 }

@@ -162,7 +162,7 @@ internal static class GithubDotnetResultsExporterModelOps
         var testResults = testRuns
             .Select(testRun => testRun.Items.OfType<ResultsType>().First())
             .SelectMany(testRun => testRun.Items.OfType<UnitTestResultType>())
-            .OrderBy(testResult => testResult.outcome, Comparer<string>.Create(CompareTestOutcome))
+            .Order(Comparer<UnitTestResultType>.Create(CompareUnitTestResults))
             .ToList();
 
         foreach (var testResult in testResults)
@@ -234,9 +234,12 @@ internal static class GithubDotnetResultsExporterModelOps
         "Passed",
     };
 
-    private static int CompareTestOutcome(string outcome1, string outcome2)
+    private static int CompareUnitTestResults(UnitTestResultType result1, UnitTestResultType result2)
     {
-        return TestOutcomeOrder.IndexOf(outcome1) - TestOutcomeOrder.IndexOf(outcome2);
+        var compare = TestOutcomeOrder.IndexOf(result1.outcome) - TestOutcomeOrder.IndexOf(result2.outcome);
+        if (compare != 0)
+            return compare;
+        return result1.testName.CompareTo(result2.testName);
     }
 
     internal static GithubChecksApiOutput MapToOutput(FailureLevel logLevel)
