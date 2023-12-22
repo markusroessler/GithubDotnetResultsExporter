@@ -210,12 +210,23 @@ internal static class GithubDotnetResultsExporterModelOps
                 }
             }
 
-            result.AppendLine($"""
-                <details><summary>{symbol} {testResult.testName}</summary>
+            var testSummary = $"{symbol} {testResult.testName}";
+            var details = $"{errorText}{stdOutText}{stdErrText}";
+            if (details == "")
+            {
+                result.AppendLine($"""
+                    {testSummary}
+                    """);
+            }
+            else
+            {
+                result.AppendLine($"""
+                    <details><summary>{testSummary}</summary>
 
-                {errorText}{stdOutText}{stdErrText}
-                </details>
-                """);
+                    {details}
+                    </details>
+                    """);
+            }
         }
 
         return result.ToString();
