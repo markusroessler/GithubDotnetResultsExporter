@@ -24,6 +24,7 @@ jobs:
       with:
         dotnet-version: '7.0.x'
         cache: true
+        cache-dependency-path: GithubDotnetResultsExporter.Csl/packages.lock.json
 
     - name: Remove setup-dotnet problem matcher
       run: echo "::remove-matcher owner=csc::"
