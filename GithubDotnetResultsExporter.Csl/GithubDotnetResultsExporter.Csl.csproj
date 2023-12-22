@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\GithubSarifCollector.Model\GithubSarifCollector.Model.csproj" />
+    <ProjectReference Include="..\GithubDotnetResultsExporter.Model\GithubDotnetResultsExporter.Model.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -10,8 +10,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>collect-sarifs-for-github</ToolCommandName>
-    <PackageId>GithubSarifCollector</PackageId>
+    <ToolCommandName>export-dotnet-results-for-github</ToolCommandName>
+    <PackageId>GithubDotnetResultsExporter</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,4 +20,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>GithubDotnetResultsExporter.IntegrationTest</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Sarif;
 
-namespace GithubSarifCollector.Model;
+namespace GithubDotnetResultsExporter.Model;
 
 /// <summary>
 /// https://docs.github.com/en/rest/checks/runs?apiVersion=2022-11-28#annotations-object

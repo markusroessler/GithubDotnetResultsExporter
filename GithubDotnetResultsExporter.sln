@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubSarifCollector.Csl", "GithubSarifCollector.Csl\GithubSarifCollector.Csl.csproj", "{7A50CE76-8E60-4F53-9B3C-7CD51DCC2849}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubDotnetResultsExporter.Csl", "GithubDotnetResultsExporter.Csl\GithubDotnetResultsExporter.Csl.csproj", "{7A50CE76-8E60-4F53-9B3C-7CD51DCC2849}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubSarifCollector.Model", "GithubSarifCollector.Model\GithubSarifCollector.Model.csproj", "{F8926BCC-6765-4E23-AE27-266884DD3C11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubDotnetResultsExporter.Model", "GithubDotnetResultsExporter.Model\GithubDotnetResultsExporter.Model.csproj", "{F8926BCC-6765-4E23-AE27-266884DD3C11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubSarifCollector.Model.Test", "GithubSarifCollector.Model.Test\GithubSarifCollector.Model.Test.csproj", "{D3971AE6-58E2-45DE-A157-06FECA12753B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubDotnetResultsExporter.Model.Test", "GithubDotnetResultsExporter.Model.Test\GithubDotnetResultsExporter.Model.Test.csproj", "{D3971AE6-58E2-45DE-A157-06FECA12753B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubSarifCollector.IntegrationTest", "GithubSarifCollector.IntegrationTest\GithubSarifCollector.IntegrationTest.csproj", "{23BC34A3-45B3-455A-9BF5-1D49AF5F8DB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubDotnetResultsExporter.IntegrationTest", "GithubDotnetResultsExporter.IntegrationTest\GithubDotnetResultsExporter.IntegrationTest.csproj", "{23BC34A3-45B3-455A-9BF5-1D49AF5F8DB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

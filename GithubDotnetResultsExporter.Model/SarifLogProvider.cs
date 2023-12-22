@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Sarif;
 using Microsoft.Extensions.Logging;
 
-namespace GithubSarifCollector.Model;
+namespace GithubDotnetResultsExporter.Model;
 
 internal sealed class SarifLogProvider
 {

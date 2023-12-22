@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GithubSarifCollector.Model;
+namespace GithubDotnetResultsExporter.Model;
 
 public static class ModelDI
 {
@@ -13,6 +13,8 @@ public static class ModelDI
         services
             .AddTransient<FileProvider>()
             .AddTransient<SarifLogProvider>()
-            .AddSingleton<GithubSarifCollectorModel>();
+            .AddTransient<TestRunProvider>()
+            .AddSingleton<IEnvironment, DefaultEnvironment>()
+            .AddSingleton<GithubDotnetResultsExporterModel>();
     }
 }

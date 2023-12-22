@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace GithubSarifCollector.Model;
+namespace GithubDotnetResultsExporter.Model;
 
 internal sealed class GithubChecksApiOutput
 {

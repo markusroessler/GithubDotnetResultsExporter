@@ -18,7 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GithubSarifCollector.Csl\GithubSarifCollector.Csl.csproj" />
+    <ProjectReference Include="..\GithubDotnetResultsExporter.Csl\GithubDotnetResultsExporter.Csl.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SampleTestResults.trx" />
   </ItemGroup>
 
 </Project>
