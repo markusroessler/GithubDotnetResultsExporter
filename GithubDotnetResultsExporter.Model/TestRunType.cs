@@ -40,6 +40,7 @@ public partial class TestRunType
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("ResultSummary", typeof(TestRunTypeResultSummary))]
+    [System.Xml.Serialization.XmlElementAttribute("Results", typeof(ResultsType))]
     public object[] Items
     {
         get
@@ -514,6 +515,631 @@ public partial class CountersType
         set
         {
             this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")]
+public partial class ResultsType
+{
+
+    private object[] itemsField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAnyElementAttribute()]
+    [System.Xml.Serialization.XmlElementAttribute("UnitTestResult", typeof(UnitTestResultType))]
+    public object[] Items
+    {
+        get
+        {
+            return this.itemsField;
+        }
+        set
+        {
+            this.itemsField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")]
+public partial class UnitTestResultType : TestResultAggregationType
+{
+
+    private System.Xml.XmlNode extensionResultField;
+
+    private string resultTypeField;
+
+    private string dataRowInfoField;
+
+    private bool hasSufficientAccessField;
+
+    public UnitTestResultType()
+    {
+        this.hasSufficientAccessField = true;
+    }
+
+    /// <remarks/>
+    public System.Xml.XmlNode ExtensionResult
+    {
+        get
+        {
+            return this.extensionResultField;
+        }
+        set
+        {
+            this.extensionResultField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string resultType
+    {
+        get
+        {
+            return this.resultTypeField;
+        }
+        set
+        {
+            this.resultTypeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string dataRowInfo
+    {
+        get
+        {
+            return this.dataRowInfoField;
+        }
+        set
+        {
+            this.dataRowInfoField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(true)]
+    public bool hasSufficientAccess
+    {
+        get
+        {
+            return this.hasSufficientAccessField;
+        }
+        set
+        {
+            this.hasSufficientAccessField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(UnitTestResultType))]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")]
+public partial class TestResultAggregationType : TestResultType
+{
+
+    private CountersType countersField;
+
+    private ResultsType innerResultsField;
+
+    /// <remarks/>
+    public CountersType Counters
+    {
+        get
+        {
+            return this.countersField;
+        }
+        set
+        {
+            this.countersField = value;
+        }
+    }
+
+    /// <remarks/>
+    public ResultsType InnerResults
+    {
+        get
+        {
+            return this.innerResultsField;
+        }
+        set
+        {
+            this.innerResultsField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(TestResultAggregationType))]
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(UnitTestResultType))]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")]
+public partial class TestResultType
+{
+
+    private object[] itemsField;
+
+    private string testNameField;
+
+    private string testTypeField;
+
+    private string testIdField;
+
+    private string executionIdField;
+
+    private string parentExecutionIdField;
+
+    private string testListIdField;
+
+    private string outcomeField;
+
+    private string computerNameField;
+
+    private string relativeResultsDirectoryField;
+
+    private string startTimeField;
+
+    private string endTimeField;
+
+    private string durationField;
+
+    private bool spoolMessageField;
+
+    private int processExitCodeField;
+
+    private bool processExitCodeFieldSpecified;
+
+    private bool isAbortedField;
+
+    private bool isAbortedFieldSpecified;
+
+    private string relativeTestOutputDirectoryField;
+
+    public TestResultType()
+    {
+        this.spoolMessageField = true;
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("Output", typeof(OutputType))]
+    public object[] Items
+    {
+        get
+        {
+            return this.itemsField;
+        }
+        set
+        {
+            this.itemsField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string testName
+    {
+        get
+        {
+            return this.testNameField;
+        }
+        set
+        {
+            this.testNameField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string testType
+    {
+        get
+        {
+            return this.testTypeField;
+        }
+        set
+        {
+            this.testTypeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string testId
+    {
+        get
+        {
+            return this.testIdField;
+        }
+        set
+        {
+            this.testIdField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string executionId
+    {
+        get
+        {
+            return this.executionIdField;
+        }
+        set
+        {
+            this.executionIdField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string parentExecutionId
+    {
+        get
+        {
+            return this.parentExecutionIdField;
+        }
+        set
+        {
+            this.parentExecutionIdField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string testListId
+    {
+        get
+        {
+            return this.testListIdField;
+        }
+        set
+        {
+            this.testListIdField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string outcome
+    {
+        get
+        {
+            return this.outcomeField;
+        }
+        set
+        {
+            this.outcomeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string computerName
+    {
+        get
+        {
+            return this.computerNameField;
+        }
+        set
+        {
+            this.computerNameField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string relativeResultsDirectory
+    {
+        get
+        {
+            return this.relativeResultsDirectoryField;
+        }
+        set
+        {
+            this.relativeResultsDirectoryField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string startTime
+    {
+        get
+        {
+            return this.startTimeField;
+        }
+        set
+        {
+            this.startTimeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string endTime
+    {
+        get
+        {
+            return this.endTimeField;
+        }
+        set
+        {
+            this.endTimeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string duration
+    {
+        get
+        {
+            return this.durationField;
+        }
+        set
+        {
+            this.durationField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(true)]
+    public bool spoolMessage
+    {
+        get
+        {
+            return this.spoolMessageField;
+        }
+        set
+        {
+            this.spoolMessageField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public int processExitCode
+    {
+        get
+        {
+            return this.processExitCodeField;
+        }
+        set
+        {
+            this.processExitCodeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool processExitCodeSpecified
+    {
+        get
+        {
+            return this.processExitCodeFieldSpecified;
+        }
+        set
+        {
+            this.processExitCodeFieldSpecified = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public bool isAborted
+    {
+        get
+        {
+            return this.isAbortedField;
+        }
+        set
+        {
+            this.isAbortedField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool isAbortedSpecified
+    {
+        get
+        {
+            return this.isAbortedFieldSpecified;
+        }
+        set
+        {
+            this.isAbortedFieldSpecified = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string relativeTestOutputDirectory
+    {
+        get
+        {
+            return this.relativeTestOutputDirectoryField;
+        }
+        set
+        {
+            this.relativeTestOutputDirectoryField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")]
+public partial class OutputType
+{
+
+    private object stdOutField;
+
+    private object stdErrField;
+
+    private object debugTraceField;
+
+    private object traceInfoField;
+
+    private OutputTypeErrorInfo errorInfoField;
+
+    private object exceptionField;
+
+    private object[] textMessagesField;
+
+    /// <remarks/>
+    public object StdOut
+    {
+        get
+        {
+            return this.stdOutField;
+        }
+        set
+        {
+            this.stdOutField = value;
+        }
+    }
+
+    /// <remarks/>
+    public object StdErr
+    {
+        get
+        {
+            return this.stdErrField;
+        }
+        set
+        {
+            this.stdErrField = value;
+        }
+    }
+
+    /// <remarks/>
+    public object DebugTrace
+    {
+        get
+        {
+            return this.debugTraceField;
+        }
+        set
+        {
+            this.debugTraceField = value;
+        }
+    }
+
+    /// <remarks/>
+    public object TraceInfo
+    {
+        get
+        {
+            return this.traceInfoField;
+        }
+        set
+        {
+            this.traceInfoField = value;
+        }
+    }
+
+    /// <remarks/>
+    public OutputTypeErrorInfo ErrorInfo
+    {
+        get
+        {
+            return this.errorInfoField;
+        }
+        set
+        {
+            this.errorInfoField = value;
+        }
+    }
+
+    /// <remarks/>
+    public object Exception
+    {
+        get
+        {
+            return this.exceptionField;
+        }
+        set
+        {
+            this.exceptionField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlArrayItemAttribute("Message", IsNullable = false)]
+    public object[] TextMessages
+    {
+        get
+        {
+            return this.textMessagesField;
+        }
+        set
+        {
+            this.textMessagesField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")]
+public partial class OutputTypeErrorInfo
+{
+
+    private object messageField;
+
+    private object stackTraceField;
+
+    /// <remarks/>
+    public object Message
+    {
+        get
+        {
+            return this.messageField;
+        }
+        set
+        {
+            this.messageField = value;
+        }
+    }
+
+    /// <remarks/>
+    public object StackTrace
+    {
+        get
+        {
+            return this.stackTraceField;
+        }
+        set
+        {
+            this.stackTraceField = value;
         }
     }
 }

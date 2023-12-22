@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml;
 using GithubDotnetResultsExporter.Model.Vstst;
 using Microsoft.CodeAnalysis.Sarif;
 
@@ -154,9 +156,81 @@ internal static class GithubDotnetResultsExporterModelOps
             passed: {successCount}  
             failed: {failCount}  
             skipped: {skipCount}
+
             """);
 
+        var testResults = testRuns
+            .Select(testRun => testRun.Items.OfType<ResultsType>().First())
+            .SelectMany(testRun => testRun.Items.OfType<UnitTestResultType>())
+            .OrderBy(testResult => testResult.outcome, Comparer<string>.Create(CompareTestOutcome))
+            .ToList();
+
+        foreach (var testResult in testResults)
+        {
+            var symbol = testResult.outcome switch
+            {
+                "Passed" => ":heavy_check_mark:",
+                "NotExecuted" => ":zzz:",
+                _ => ":x:",
+            };
+
+            var output = testResult.Items?.OfType<OutputType>().FirstOrDefault();
+            var errorText = "";
+            var stdOutText = "";
+            var stdErrText = "";
+            if (output != null)
+            {
+                var errorInfo = output.ErrorInfo;
+                if (errorInfo != null)
+                {
+                    errorText = $"""
+                        **Error**  
+                        {(errorInfo.Message as XmlNode[])?.FirstOrDefault()?.Value}
+                        {(errorInfo.StackTrace as XmlNode[])?.FirstOrDefault()?.Value}
+
+                        """;
+                }
+                var stdOut = output.StdOut as XmlNode[];
+                if (stdOut != null)
+                {
+                    stdOutText = $"""
+                        **StdOut**  
+                        {WebUtility.HtmlEncode(stdOut.First().Value)}
+
+                        """;
+                }
+                var stdErr = output.StdErr as XmlNode[];
+                if (stdErr != null)
+                {
+                    stdErrText = $"""
+                        **StdErr**  
+                        {WebUtility.HtmlEncode(stdErr.First().Value)}
+
+                        """;
+                }
+            }
+
+            result.AppendLine($"""
+                <details><summary>{symbol} {testResult.testName}</summary>
+
+                {errorText}{stdOutText}{stdErrText}
+                </details>
+                """);
+        }
+
         return result.ToString();
+    }
+
+    private static List<string> TestOutcomeOrder = new()
+    {
+        "Failed",
+        "NotExecuted",
+        "Passed",
+    };
+
+    private static int CompareTestOutcome(string outcome1, string outcome2)
+    {
+        return TestOutcomeOrder.IndexOf(outcome1) - TestOutcomeOrder.IndexOf(outcome2);
     }
 
     internal static GithubChecksApiOutput MapToOutput(FailureLevel logLevel)
