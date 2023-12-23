@@ -27,6 +27,6 @@ internal class Program
             model.ExportResults(args);
         }
 
-        Console.Out.Flush();
+        Console.WriteLine("results exported!");
     }
 }
