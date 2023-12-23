@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       git-branch:
-        description: 'git branch to archive'
+        description: 'Branch to archive'
         required: true
         type: string
 
