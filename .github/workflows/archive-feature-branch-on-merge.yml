@@ -4,6 +4,9 @@ on:
   pull_request:
     types: [closed]
 
+permissions:
+  contents: write
+  
 jobs:
   call-archive-workflow:
     uses: ./.github/workflows/archive-feature-branch.yml
