@@ -1,18 +1,7 @@
 name: Archive feature branch (manual2)
 
 on:
-  workflow_call:
-    inputs:
-      git-branch:
-        required: true
-        type: string
-  
-  workflow_dispatch:
-    inputs:
-      git-branch:
-        description: 'Branch to archive'
-        required: true
-        type: string
+  push: 
 
 permissions:
   contents: write
@@ -21,4 +10,4 @@ jobs:
   call-archive-workflow:
     uses: markusroessler/Github.Actions.Playground/.github/workflows/archive-feature-branch.yml@develop
     with:
-      git-branch: ${{ github.head_ref }}
+      git-branch: ${{ github.ref_name }}
