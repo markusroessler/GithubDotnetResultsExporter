@@ -1,4 +1,4 @@
-name: archive-feature-branch-on-merge
+name: Archive feature branch (after merge)
 
 on:
   pull_request:
