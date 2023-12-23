@@ -12,6 +12,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>export-dotnet-results-for-github</ToolCommandName>
     <PackageId>GithubDotnetResultsExporter</PackageId>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
   <ItemGroup>
