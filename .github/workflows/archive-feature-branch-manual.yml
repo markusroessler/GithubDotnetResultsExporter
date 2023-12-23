@@ -1,4 +1,4 @@
-name: Archive feature branch (manual)
+name: Archive feature branch (manual2)
 
 on:
   workflow_call:
