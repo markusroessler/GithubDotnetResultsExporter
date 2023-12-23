@@ -5,6 +5,9 @@ on:
     types: [closed]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   archive-feature-branch:
     if: startsWith(github.head_ref, 'feature/') && ${{ github.event.pull_request.merged }}
