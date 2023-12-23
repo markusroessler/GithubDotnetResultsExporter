@@ -1,4 +1,4 @@
-name: Archive feature branch
+name: Archive feature branch (manual)
 
 on:
   workflow_call:
@@ -7,6 +7,13 @@ on:
         required: true
         type: string
   
+  workflow_dispatch:
+    inputs:
+      git-branch:
+        description: 'git branch to archive'
+        required: true
+        type: string
+
 permissions:
   contents: write
 
