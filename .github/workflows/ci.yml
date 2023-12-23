@@ -41,7 +41,7 @@ jobs:
       run: |
         if [[ "${{ github.ref_name }}" == "feature/"* ]]; then
           git tag -f -a "attic/${{ github.ref_name }}" -m "${{ github.ref_name }} [skip ci]"
-          git push origin "refs/tags/attic/${{ github.ref_name }}"
+          git push -f origin "refs/tags/attic/${{ github.ref_name }}"
         fi
 
     - name: Build
