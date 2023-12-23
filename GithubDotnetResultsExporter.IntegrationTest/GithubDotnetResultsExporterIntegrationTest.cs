@@ -8,22 +8,36 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 public class GithubDotnetResultsExporterIntegrationTest
 {
 
+    private string _tempDir;
+    private string _slnDir;
+    private string _testResultsDir;
+    private TestEnvironment _environment;
+
+    [SetUp]
+    public void Setup()
+    {
+        _tempDir = Path.Combine(Environment.CurrentDirectory, "test-temp", TestContext.CurrentContext.Test.MethodName);
+        if (Directory.Exists(_tempDir))
+            Directory.Delete(_tempDir, recursive: true);
+        Directory.CreateDirectory(_tempDir);
+
+        _slnDir = Path.Combine(_tempDir, "TestSln");
+        if (Directory.Exists(_slnDir))
+            Directory.Delete(_slnDir, recursive: true);
+
+        _testResultsDir = Path.Combine(_slnDir, "TestResults");
+        Directory.CreateDirectory(_testResultsDir);
+
+        _environment = new TestEnvironment
+        {
+            CurrentDirectory = _slnDir
+        };
+    }
+
     [Test]
     public void Test_ExportResults()
     {
-        var slnDir = Path.Combine(Environment.CurrentDirectory, "TestSln");
-        if (Directory.Exists(slnDir))
-            Directory.Delete(slnDir, recursive: true);
-
-        var testResultsDir = Path.Combine(slnDir, "TestResults");
-        Directory.CreateDirectory(testResultsDir);
-
-        {
-            var assembly = typeof(GithubDotnetResultsExporterIntegrationTest).Assembly;
-            using var testResultsStream = assembly.GetManifestResourceStream("GithubDotnetResultsExporter.IntegrationTest.SampleTestResults.trx")!;
-            using var outputStream = File.OpenWrite(Path.Combine(testResultsDir, "TestResults.trx"));
-            testResultsStream.CopyTo(outputStream);
-        }
+        CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.SampleTestResults.trx");
 
         var args = new string[]
         {
@@ -33,14 +47,12 @@ public class GithubDotnetResultsExporterIntegrationTest
             "--export-step-summary", "true"
         };
 
-        var environment = new TestEnvironment();
-
         Program.ExportResults(args, services =>
         {
-            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(environment));
+            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(_environment));
         });
 
-        var summaryText = File.ReadAllText(environment.GithubStepSummaryFile);
+        var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
@@ -131,5 +143,55 @@ public class GithubDotnetResultsExporterIntegrationTest
         </details>
 
         """.Replace("\r\n", "\n")));
+    }
+
+    [Test]
+    public void Test_ExportResults_OnetimeSetupFail()
+    {
+        CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.OneTimeSetUpFailSampleTestResults.trx");
+
+        var args = new string[]
+        {
+            "--github-server-url", "https://github.com",
+            "--github-repo", "markusroessler/GithubDotnetResultsExporter",
+            "--github-ref-name", "develop",
+            "--export-step-summary", "true"
+        };
+
+        Program.ExportResults(args, services =>
+        {
+            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(_environment));
+        });
+
+        var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
+
+        Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
+        ## Build Results
+        ## Test Results
+        failed: 1  
+        skipped: 0  
+        passed: 0
+        
+        <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetupFailSampleTest.Test_Pass</summary>
+
+        **Error**  
+        ```
+        OneTimeSetUp: OneTimeSetUp failed
+           at GithubDotnetResultsExporter.IntegrationTest.SetupFailSampleTest.OneTimeSetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetupFailSampleTest.cs:line 13
+
+
+        ```
+
+        </details>
+
+        """.Replace("\r\n", "\n")));
+    }
+
+    private void CopyTestResultsTrxToTestDir(string trxName)
+    {
+        var assembly = typeof(GithubDotnetResultsExporterIntegrationTest).Assembly;
+        using var testResultsStream = assembly.GetManifestResourceStream(trxName);
+        using var outputStream = File.OpenWrite(Path.Combine(_testResultsDir, "TestResults.trx"));
+        testResultsStream.CopyTo(outputStream);
     }
 }
