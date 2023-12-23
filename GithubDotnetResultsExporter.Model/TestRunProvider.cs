@@ -17,14 +17,14 @@ internal sealed class TestRunProvider
         _logger = logger;
     }
 
-    public IEnumerable<TestRunType> LoadTestRuns(IEnumerable<string> files)
+    public IList<TestRunType> LoadTestRuns(IEnumerable<string> files)
     {
         var serializer = new XmlSerializer(typeof(TestRunType));
-        foreach (var file in files)
+        return files.Select(file =>
         {
             _logger.LogInformation("Loading trx file: {file}", file);
             using var myFileStream = new FileStream(file, FileMode.Open);
-            yield return (TestRunType?)serializer.Deserialize(myFileStream) ?? throw new Exception("XmlSerializer.Deserialize returned null");
-        }
+            return (TestRunType?)serializer.Deserialize(myFileStream) ?? throw new Exception("XmlSerializer.Deserialize returned null");
+        }).ToList();
     }
 }
