@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   packages: read
 
 jobs:
@@ -31,6 +31,18 @@ jobs:
 
     - name: Init nuget source
       run: dotnet nuget add source --username markusroessler --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/markusroessler/index.json"
+
+    - name: Git Config
+      run: |
+        git config --global user.name 'Github Actions'
+        git config --global user.email 'github.actions@users.noreply.github.com'
+    
+    - name: Create Tag
+      run: |
+        if [[ ${{ github.ref_name }} ?? "feature" ]]; then
+          git tag -f -a "${{ github.ref_name }}" -m "${{ github.ref_name }} [skip ci]"
+          git push origin "${{ github.ref_name }}"
+        fi
 
     - name: Build
       id: build
