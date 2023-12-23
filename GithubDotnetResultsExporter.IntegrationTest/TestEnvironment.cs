@@ -8,11 +8,11 @@ namespace GithubDotnetResultsExporter.IntegrationTest;
 
 public sealed class TestEnvironment : IEnvironment
 {
-    public string CurrentDirectory => Path.Combine(Environment.CurrentDirectory, "TestSln");
+    public string CurrentDirectory { get; set; }
 
     public string GithubStepSummaryFile => Path.Combine(CurrentDirectory, "github-step-summary.md");
 
-    public string? GetEnvironmentVariable(string variable)
+    public string GetEnvironmentVariable(string variable)
     {
         return variable switch
         {

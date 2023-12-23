@@ -16,12 +16,12 @@ internal sealed class SarifLogProvider
         _logger = logger;
     }
 
-    public IEnumerable<SarifLog> LoadSarifLogs(IEnumerable<string> files)
+    public IList<SarifLog> LoadSarifLogs(IEnumerable<string> files)
     {
-        foreach (var file in files)
+        return files.Select(file =>
         {
             _logger.LogInformation("Loading sarif log: {file}", file);
-            yield return SarifLog.Load(file);
-        }
+            return SarifLog.Load(file);
+        }).ToList();
     }
 }
