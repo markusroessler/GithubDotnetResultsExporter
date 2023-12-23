@@ -21,9 +21,12 @@ internal class Program
             builder.AddConsole();
         });
 
-        using var serviceProvider = serviceCollection.BuildServiceProvider();
+        {
+            using var serviceProvider = serviceCollection.BuildServiceProvider();
+            var model = serviceProvider.GetRequiredService<GithubDotnetResultsExporterModel>();
+            model.ExportResults(args);
+        }
 
-        var model = serviceProvider.GetRequiredService<GithubDotnetResultsExporterModel>();
-        model.ExportResults(args);
+        Console.Out.Flush();
     }
 }
