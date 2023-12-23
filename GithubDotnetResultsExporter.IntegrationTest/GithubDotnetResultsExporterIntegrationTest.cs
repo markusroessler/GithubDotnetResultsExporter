@@ -187,6 +187,67 @@ public class GithubDotnetResultsExporterIntegrationTest
         """.Replace("\r\n", "\n")));
     }
 
+    [Test]
+    public void Test_ExportResults_SetupFail()
+    {
+        CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTestResults.trx");
+
+        var args = new string[]
+        {
+            "--github-server-url", "https://github.com",
+            "--github-repo", "markusroessler/GithubDotnetResultsExporter",
+            "--github-ref-name", "develop",
+            "--export-step-summary", "true"
+        };
+
+        Program.ExportResults(args, services =>
+        {
+            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(_environment));
+        });
+
+        var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
+        // Console.WriteLine(summaryText);
+
+        // note: don't know why the stacktrace of the second test method differs from the first one ("at InvokeStub_SetUpFailSampleTest")
+        Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
+        ## Build Results
+        ## Test Results
+        failed: 2  
+        skipped: 0  
+        passed: 0
+        
+        <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.Test_Pass</summary>
+
+        **Error**  
+        ```
+        SetUp failed
+           at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14
+
+        1)    at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14
+
+
+        ```
+
+        </details>
+        <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.Test_Pass_2</summary>
+
+        **Error**  
+        ```
+        SetUp failed
+           at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14
+           at InvokeStub_SetUpFailSampleTest.SetUp(Object, Object, IntPtr*)
+
+        1)    at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14
+           at InvokeStub_SetUpFailSampleTest.SetUp(Object, Object, IntPtr*)
+
+
+        ```
+
+        </details>
+
+        """.Replace("\r\n", "\n")));
+    }
+
     private void CopyTestResultsTrxToTestDir(string trxName)
     {
         var assembly = typeof(GithubDotnetResultsExporterIntegrationTest).Assembly;

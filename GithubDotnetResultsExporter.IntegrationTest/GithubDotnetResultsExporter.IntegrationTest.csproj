@@ -25,6 +25,7 @@
   <ItemGroup>
     <EmbeddedResource Include="SampleTestResults.trx" />
     <EmbeddedResource Include="OneTimeSetUpFailSampleTestResults.trx" />
+    <EmbeddedResource Include="SetUpFailSampleTestResults.trx" />
   </ItemGroup>
 
 </Project>

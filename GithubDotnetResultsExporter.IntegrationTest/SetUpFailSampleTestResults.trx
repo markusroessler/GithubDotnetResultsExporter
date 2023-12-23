@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0a2de092-dbaf-4c25-94e4-ac624ca51b5b" name="mroessler@DESKTOP-FQKOHME 2023-12-23 15:12:24" runUser="DESKTOP-FQKOHME\mroessler" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2023-12-23T15:12:24.2823819+01:00" queuing="2023-12-23T15:12:24.2823821+01:00" start="2023-12-23T15:12:23.4158146+01:00" finish="2023-12-23T15:12:24.3646389+01:00" />
+  <TestSettings name="default" id="5369480c-68b8-434e-97b6-e86d12f954a7">
+    <Deployment runDeploymentRoot="mroessler_DESKTOP-FQKOHME_2023-12-23_15_12_24" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="cbabdd41-4f0b-4e71-b2e5-ec7b6104e4a2" testId="2b39e78f-d23c-2b46-3881-1ea7497d4566" testName="Test_Pass" computerName="DESKTOP-FQKOHME" duration="00:00:00.0197580" startTime="2023-12-23T15:12:24.1454742+01:00" endTime="2023-12-23T15:12:24.1651633+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cbabdd41-4f0b-4e71-b2e5-ec7b6104e4a2">
+      <Output>
+        <ErrorInfo>
+          <Message>SetUp failed</Message>
+          <StackTrace>   at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14&#xD;
+
+1)    at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d5a3e367-4d1e-4870-b472-3b030a22ca17" testId="40317061-c52a-db54-da38-85aa0579694c" testName="Test_Pass_2" computerName="DESKTOP-FQKOHME" duration="00:00:00.0006900" startTime="2023-12-23T15:12:24.1666691+01:00" endTime="2023-12-23T15:12:24.1673589+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d5a3e367-4d1e-4870-b472-3b030a22ca17">
+      <Output>
+        <ErrorInfo>
+          <Message>SetUp failed</Message>
+          <StackTrace>   at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14&#xD;
+   at InvokeStub_SetUpFailSampleTest.SetUp(Object, Object, IntPtr*)&#xD;
+
+1)    at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14&#xD;
+   at InvokeStub_SetUpFailSampleTest.SetUp(Object, Object, IntPtr*)&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Test_Pass" storage="d:\entwicklung\dotnet\githubdotnetresultsexporter\githubdotnetresultsexporter.integrationtest\bin\debug\net7.0\githubdotnetresultsexporter.integrationtest.dll" id="2b39e78f-d23c-2b46-3881-1ea7497d4566">
+      <Execution id="cbabdd41-4f0b-4e71-b2e5-ec7b6104e4a2" />
+      <TestMethod codeBase="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\bin\Debug\net7.0\GithubDotnetResultsExporter.IntegrationTest.dll" adapterTypeName="executor://nunit3testexecutor/" className="GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest" name="Test_Pass" />
+    </UnitTest>
+    <UnitTest name="Test_Pass_2" storage="d:\entwicklung\dotnet\githubdotnetresultsexporter\githubdotnetresultsexporter.integrationtest\bin\debug\net7.0\githubdotnetresultsexporter.integrationtest.dll" id="40317061-c52a-db54-da38-85aa0579694c">
+      <Execution id="d5a3e367-4d1e-4870-b472-3b030a22ca17" />
+      <TestMethod codeBase="D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\bin\Debug\net7.0\GithubDotnetResultsExporter.IntegrationTest.dll" adapterTypeName="executor://nunit3testexecutor/" className="GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest" name="Test_Pass_2" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="2b39e78f-d23c-2b46-3881-1ea7497d4566" executionId="cbabdd41-4f0b-4e71-b2e5-ec7b6104e4a2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="40317061-c52a-db54-da38-85aa0579694c" executionId="d5a3e367-4d1e-4870-b472-3b030a22ca17" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="2" executed="2" passed="0" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started&#xD;
+Running selected tests in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\bin\Debug\net7.0\GithubDotnetResultsExporter.IntegrationTest.dll&#xD;
+   NUnit3TestExecutor discovered 2 of 2 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.5.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
