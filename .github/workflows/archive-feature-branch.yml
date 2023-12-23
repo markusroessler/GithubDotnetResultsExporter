@@ -1,26 +1,36 @@
 name: archive-feature-branch
 
 on:
-  pull_request:
-    types: [closed]
+  workflow_call:
+    inputs:
+      git-branch:
+        required: true
+        type: string
+  
+  workflow_dispatch:
+    inputs:
+      git-branch:
+        description: 'git branch to archive'
+        required: true
+        type: string
 
 permissions:
   contents: write
 
 jobs:
   archive-feature-branch:
-    if: startsWith(github.head_ref, 'feature/') && ${{ github.event.pull_request.merged }}
+    if: startsWith(inputs.git-branch, 'feature/') && ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ inputs.git-branch }}
 
       - name: Create archive ref
         run: |
-          git update-ref "refs/archive/${{ github.head_ref }}" "${{ github.head_ref }}"
+          git update-ref "refs/archive/${{ inputs.git-branch }}" "${{ inputs.git-branch }}"
           git push origin refs/archive/*:refs/archive/*
 
       - name: Delete feature branch
-        run: git push -d origin "${{ github.head_ref }}"
+        run: git push -d origin "${{ inputs.git-branch }}"

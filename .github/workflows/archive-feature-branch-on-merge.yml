@@ -1,0 +1,9 @@
+name: archive-feature-branch-on-merge
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  call-archive-workflow:
+    uses: ./.github/workflows/archive-feature-branch.yml
