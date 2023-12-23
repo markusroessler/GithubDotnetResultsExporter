@@ -9,6 +9,6 @@ permissions:
   
 jobs:
   call-archive-workflow:
-    uses: markusroessler/Github.Actions.Workflows/.github/workflows/archive-feature-branch.yml@develop
+    uses: markusroessler/Github.Actions.Workflows/.github/workflows/archive-feature-branch.yml@v1
     with:
       git-branch: ${{ github.head_ref }}
