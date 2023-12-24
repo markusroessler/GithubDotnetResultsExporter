@@ -122,7 +122,7 @@ internal static class GithubDotnetResultsExporterModelOps
             result.AppendLine(
                 $"""
                 {symbol} [{fileUriText}]({fileUri}) 
-                {sarifResult.Message.Text}  
+                ```{sarifResult.Message.Text}```  
 
                 """);
         }
