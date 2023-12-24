@@ -37,6 +37,7 @@ public class GithubDotnetResultsExporterIntegrationTest
     [Test]
     public void Test_ExportResults()
     {
+        CopyBuildResultsSarifToSlnDir("GithubDotnetResultsExporter.IntegrationTest.sample-compiler-diagnostics.sarif");
         CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.SampleTestResults.trx");
 
         var args = new string[]
@@ -53,9 +54,28 @@ public class GithubDotnetResultsExporterIntegrationTest
         });
 
         var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
+        // Console.WriteLine(summaryText);
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
+        :x: [FileProvider.cs#L20](https://github.com/GithubDotnetResultsExporter.Model/FileProvider.cs#L20) 
+        Blabla failure  
+
+        :warning: [FileProvider.cs#L20](https://github.com/GithubDotnetResultsExporter.Model/FileProvider.cs#L20) 
+        Non-nullable field '_foobar' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.  
+
+        :warning: [FileProvider.cs#L18](https://github.com/GithubDotnetResultsExporter.Model/FileProvider.cs#L18) 
+        The field 'FileProvider._foobar' is never used  
+
+        🛈 [FileProvider.cs#L25](https://github.com/GithubDotnetResultsExporter.Model/FileProvider.cs#L25) 
+        Member 'EnumerateSarifFiles' does not access instance data and can be marked as static  
+
+        🛈 [FileProvider.cs#L30](https://github.com/GithubDotnetResultsExporter.Model/FileProvider.cs#L30) 
+        Member 'EnumerateTrxFiles' does not access instance data and can be marked as static  
+
+        🛈 [FileProvider.cs#L35](https://github.com/GithubDotnetResultsExporter.Model/FileProvider.cs#L35) 
+        Member 'AppendTextToFile' does not access instance data and can be marked as static  
+
         ## Test Results
         failed: 2  
         skipped: 3  
@@ -253,6 +273,14 @@ public class GithubDotnetResultsExporterIntegrationTest
         var assembly = typeof(GithubDotnetResultsExporterIntegrationTest).Assembly;
         using var testResultsStream = assembly.GetManifestResourceStream(trxName);
         using var outputStream = File.OpenWrite(Path.Combine(_testResultsDir, "TestResults.trx"));
+        testResultsStream.CopyTo(outputStream);
+    }
+
+    private void CopyBuildResultsSarifToSlnDir(string sarifName)
+    {
+        var assembly = typeof(GithubDotnetResultsExporterIntegrationTest).Assembly;
+        using var testResultsStream = assembly.GetManifestResourceStream(sarifName);
+        using var outputStream = File.OpenWrite(Path.Combine(_slnDir, "compiler-diagnostics.sarif"));
         testResultsStream.CopyTo(outputStream);
     }
 }
