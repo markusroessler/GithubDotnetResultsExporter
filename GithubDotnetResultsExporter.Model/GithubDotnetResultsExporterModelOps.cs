@@ -87,7 +87,7 @@ internal static class GithubDotnetResultsExporterModelOps
             EndColumn = physicalLocation.Region.EndColumn,
             SarifLevel = result.Level,
             Message = result.Message.Text,
-            RawDetails = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest, workingDirectory).ToString()
+            RawDetails = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest).ToString()
         };
     }
 
@@ -96,7 +96,7 @@ internal static class GithubDotnetResultsExporterModelOps
         return Path.GetRelativePath(workingDirectory, physicalLocation.ArtifactLocation.Uri.LocalPath);
     }
 
-    private static Uri ToGithubFileUri(string relativePath, int startLine, GithubDotnetResultsExporterRequest collectorRequest, string workingDirectory)
+    private static Uri ToGithubFileUri(string relativePath, int startLine, GithubDotnetResultsExporterRequest collectorRequest)
     {
         return new Uri($"{collectorRequest.GithubServerUrl}/{collectorRequest.GithubRepo}/blob/{collectorRequest.GithubRefName}/{relativePath.Replace("\\", "/")}#L{startLine}");
     }
@@ -110,7 +110,7 @@ internal static class GithubDotnetResultsExporterModelOps
         {
             var physicalLocation = sarifResult.Locations.First().PhysicalLocation;
             var relativePath = ToRelativePath(physicalLocation, workingDirectory);
-            var fileUri = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest, workingDirectory);
+            var fileUri = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest);
             var fileUriText = $"{fileUri.Segments.LastOrDefault()}{fileUri.Fragment}";
             var symbol = sarifResult.Level switch
             {
@@ -121,7 +121,7 @@ internal static class GithubDotnetResultsExporterModelOps
 
             result.AppendLine(
                 $"""
-                {symbol} [{fileUriText}]({fileUri}) 
+                {symbol} [{fileUriText}]({fileUri})  
                 {sarifResult.Message.Text}  
 
                 """);
