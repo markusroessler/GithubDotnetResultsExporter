@@ -15,7 +15,7 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "file:///D:/Entwicklung/DotNet/GithubDotnetResultsExporter/GithubDotnetResultsExporter.Model/FileProvider.cs"
+                  "uri": "file://{SLN_DIR}/GithubDotnetResultsExporter.Model/FileProvider.cs"
                 },
                 "region": {
                   "startLine": 20,
@@ -30,7 +30,7 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "file:///D:/Entwicklung/DotNet/GithubDotnetResultsExporter/GithubDotnetResultsExporter.Model/FileProvider.cs"
+                  "uri": "file://{SLN_DIR}/GithubDotnetResultsExporter.Model/FileProvider.cs"
                 },
                 "region": {
                   "startLine": 18,
@@ -56,7 +56,7 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "file:///D:/Entwicklung/DotNet/GithubDotnetResultsExporter/GithubDotnetResultsExporter.Model/FileProvider.cs"
+                  "uri": "file://{SLN_DIR}/GithubDotnetResultsExporter.Model/FileProvider.cs"
                 },
                 "region": {
                   "startLine": 18,
@@ -82,7 +82,7 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "file:///D:/Entwicklung/DotNet/GithubDotnetResultsExporter/GithubDotnetResultsExporter.Model/FileProvider.cs"
+                  "uri": "file://{SLN_DIR}/GithubDotnetResultsExporter.Model/FileProvider.cs"
                 },
                 "region": {
                   "startLine": 25,
@@ -108,7 +108,7 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "file:///D:/Entwicklung/DotNet/GithubDotnetResultsExporter/GithubDotnetResultsExporter.Model/FileProvider.cs"
+                  "uri": "file://{SLN_DIR}/GithubDotnetResultsExporter.Model/FileProvider.cs"
                 },
                 "region": {
                   "startLine": 30,
@@ -134,7 +134,7 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "file:///D:/Entwicklung/DotNet/GithubDotnetResultsExporter/GithubDotnetResultsExporter.Model/FileProvider.cs"
+                  "uri": "file://{SLN_DIR}/GithubDotnetResultsExporter.Model/FileProvider.cs"
                 },
                 "region": {
                   "startLine": 35,
@@ -160,7 +160,7 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "file:///D:/Entwicklung/DotNet/GithubDotnetResultsExporter/GithubDotnetResultsExporter.Model/FileProvider.cs"
+                  "uri": "file://{SLN_DIR}/GithubDotnetResultsExporter.Model/FileProvider.cs"
                 },
                 "region": {
                   "startLine": 20,
@@ -175,7 +175,7 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "file:///D:/Entwicklung/DotNet/GithubDotnetResultsExporter/GithubDotnetResultsExporter.Model/FileProvider.cs"
+                  "uri": "file://{SLN_DIR}/GithubDotnetResultsExporter.Model/FileProvider.cs"
                 },
                 "region": {
                   "startLine": 18,
