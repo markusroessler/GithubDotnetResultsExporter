@@ -1,7 +1,6 @@
 <Project>
-    <PropertyGroup>
-      <AnalysisMode>All</AnalysisMode>
-      <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="MRoessler.DotnetAnalyzerConfig" Version="1.0.0-alpha.5"/>
+    </ItemGroup>
 </Project>
   
