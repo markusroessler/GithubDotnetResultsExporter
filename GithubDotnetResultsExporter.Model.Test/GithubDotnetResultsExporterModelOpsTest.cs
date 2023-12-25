@@ -149,10 +149,10 @@ public class GithubDotnetResultsExporterModelOpsTest
             """
             ## Build Results
             :warning: [Foobar.cs#L1](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Foobar.cs#L1)  
-            ```Warning Message```  
+            Warning Message  
 
             :x: [Blub.cs#L1](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Blub.cs#L1)  
-            ```Error Message```  
+            Error Message  
 
 
             """));
