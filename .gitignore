@@ -482,4 +482,3 @@ Backup.Playground/compress-test
 compiler-diagnostics.sarif
 github-output.txt
 github-step-summary.md
-.config/dotnet-tools.json
