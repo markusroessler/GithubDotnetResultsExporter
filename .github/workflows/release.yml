@@ -46,10 +46,12 @@ jobs:
         git tag -a "release/${{ inputs.release-version }}" -m "Release ${{ inputs.release-version }} [skip ci]"
         git push origin "refs/tags/release/${{ inputs.release-version }}"
 
+    - name: Restore
+      run: dotnet restore --locked-mode -p:Configuration=Release
+
     - name: Build
       id: build
-      run: |
-        dotnet build -p:Configuration=Release -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
+      run: dotnet build --no-restore -p:Configuration=Release -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
 
     - name: Test
       if: always()
