@@ -21,14 +21,14 @@
       "MRoessler.DotnetAnalyzerConfig": {
         "type": "Direct",
         "requested": "[1.*-a*, )",
-        "resolved": "1.0.0-alpha.7",
-        "contentHash": "VnW/gXHAD6N+rpDHLCl530+b6vhZErH5ADQ/vU/YSeo57rKJFLjNACV0xgWm30LIDzIlbtMJuFY1fa18Vwodkw=="
+        "resolved": "1.0.0-alpha.8",
+        "contentHash": "o92NXE8ZVjmcxu/xLly5nXKsj05GDvxZMgwL5nks0db5bmT4BD2w8NEcZRDDK/8YBZDHxanwmAlMTnhwbHsH8Q=="
       },
       "MRoessler.DotnetAnalyzerConfig.Test": {
         "type": "Direct",
-        "requested": "[1.0.0-alpha.1, )",
-        "resolved": "1.0.0-alpha.1",
-        "contentHash": "2IwFusj+lsibv1N4QoJ5z2JUZJ7OkUI6Dtog3ezr6JDtEPy/qiliIfAAHCpFwjevQ3+cSO25+5Y2wQ56k8UalQ=="
+        "requested": "[1.*-a*, )",
+        "resolved": "1.0.0-alpha.2",
+        "contentHash": "nwauj5LH3OnTXQVCT1XVtqRoFQs193UWVRW2atMpM4YziRth3im3tczoDEwQm6OE/sfHFb13ovjfNef64pLfnw=="
       },
       "NUnit": {
         "type": "Direct",
