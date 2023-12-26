@@ -267,11 +267,11 @@ internal static class GithubDotnetResultsExporterModelOps
         var testMethod1 = result1.TestDef.TestMethod;
         var testMethod2 = result2.TestDef.TestMethod;
 
-        compare = testMethod1.className.CompareTo(testMethod2.className);
+        compare = string.CompareOrdinal(testMethod1.className, testMethod2.className);
         if (compare != 0)
             return compare;
 
-        return testMethod1.name.CompareTo(testMethod2.name);
+        return string.CompareOrdinal(testMethod1.name, testMethod2.name);
     }
 
     internal static GithubChecksApiOutput MapToOutput(FailureLevel logLevel)
