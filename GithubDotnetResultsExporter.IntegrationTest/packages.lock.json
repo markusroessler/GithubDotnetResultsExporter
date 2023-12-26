@@ -21,8 +21,8 @@
       "MRoessler.DotnetAnalyzerConfig": {
         "type": "Direct",
         "requested": "[1.*-alpha*, )",
-        "resolved": "1.0.0-alpha.8",
-        "contentHash": "o92NXE8ZVjmcxu/xLly5nXKsj05GDvxZMgwL5nks0db5bmT4BD2w8NEcZRDDK/8YBZDHxanwmAlMTnhwbHsH8Q=="
+        "resolved": "1.0.0-alpha.9",
+        "contentHash": "Wjd8p0C0QjZ8Vg2+69roRrJp4HSfJw37VzvXNIooh3Ljev0MIwYZfSuW2c/yuPimwdPSGrA827ztVqTWT76fiA=="
       },
       "MRoessler.DotnetAnalyzerConfig.Test": {
         "type": "Direct",
