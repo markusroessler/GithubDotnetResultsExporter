@@ -31,7 +31,7 @@ internal sealed class TestRunProvider
                 XmlResolver = null
             };
             var xmlReader = XmlReader.Create(fileStream, settings);
-            return (TestRunType?)serializer.Deserialize(xmlReader) ?? throw new Exception("XmlSerializer.Deserialize returned null");
+            return (TestRunType?)serializer.Deserialize(xmlReader) ?? throw new InvalidOperationException("XmlSerializer.Deserialize returned null");
         }).ToList();
     }
 }
