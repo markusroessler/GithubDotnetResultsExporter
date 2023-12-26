@@ -189,7 +189,7 @@
           "properties": {
             "warningLevel": 1
           }
-        },
+        }
       ],
       "properties": {
         "analyzerExecutionTime": "1.078"

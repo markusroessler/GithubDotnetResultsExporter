@@ -116,6 +116,13 @@ internal static class GithubDotnetResultsExporterModelOps
                 _ => "🛈",
             };
 
+            var ruleHyperlink = "";
+            var ruleId = sarifResult.RuleId;
+            if (ruleId != null)
+                ruleHyperlink = $" ([{ruleId}](https://www.google.com/search?q={ruleId}))";
+
+            var ruleMessageLine = $"{sarifResult.Message.Text}{ruleHyperlink}";
+
             var physicalLocation = sarifResult.Locations?.FirstOrDefault()?.PhysicalLocation;
             if (physicalLocation != null)
             {
@@ -126,7 +133,7 @@ internal static class GithubDotnetResultsExporterModelOps
                 result.AppendLine(CultureInfo.CurrentCulture,
                     $"""
                     {symbol} [{fileUriText}]({fileUri})  
-                    {sarifResult.Message.Text}  
+                    {ruleMessageLine}  
 
                     """);
             }
@@ -134,7 +141,7 @@ internal static class GithubDotnetResultsExporterModelOps
             {
                 result.AppendLine(CultureInfo.CurrentCulture,
                     $"""
-                    {symbol} {sarifResult.Message.Text}  
+                    {symbol} {ruleMessageLine}  
 
                     """);
             }
