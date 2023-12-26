@@ -113,6 +113,35 @@ internal static class GithubDotnetResultsExporterModelOps
         var result = new StringBuilder();
         result.AppendLine("## Build Results");
 
+        var errorCount = 0;
+        var warningCount = 0;
+        var noteCount = 0;
+        foreach (var sarifResult in sarifResults)
+        {
+            switch (sarifResult.Level)
+            {
+                case FailureLevel.Error:
+                    errorCount++;
+                    break;
+
+                case FailureLevel.Warning:
+                    warningCount++;
+                    break;
+
+                default:
+                    noteCount++;
+                    break;
+            }
+        }
+
+        result.AppendLine(collectorRequest.CultureInfo,
+            $"""
+            errors: {errorCount:N0}  
+            warnings: {warningCount:N0}  
+            notes: {noteCount:N0}
+
+            """);
+
         foreach (var sarifResult in sarifResults)
         {
             var symbol = sarifResult.Level switch

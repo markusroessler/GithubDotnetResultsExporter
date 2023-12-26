@@ -156,6 +156,10 @@ public class GithubDotnetResultsExporterModelOpsTest
         Assert.That(markdown, Is.EqualTo(
             """
             ## Build Results
+            errors: 1  
+            warnings: 2  
+            notes: 0
+
             :warning: [Foobar.cs#L1](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Foobar.cs#L1)  
             Warning Message ([CS8618](https://www.google.com/search?q=CS8618))  
 
