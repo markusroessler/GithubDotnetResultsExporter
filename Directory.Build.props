@@ -1,6 +1,6 @@
 <Project>
     <ItemGroup>
-      <PackageReference Include="MRoessler.DotnetAnalyzerConfig" Version="1.0.0-alpha.5"/>
+      <PackageReference Include="MRoessler.DotnetAnalyzerConfig" Version="1.0.0-alpha.6"/>
     </ItemGroup>
 </Project>
   
