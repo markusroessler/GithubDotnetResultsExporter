@@ -38,16 +38,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
     
-    - name: Pack nuget package
-      if: always()
-      run: dotnet pack GithubDotnetResultsExporter.Csl -p:Configuration=Debug -p:Version=1.0.0-local.1
-
     - name: Install dotnet tools
       if: always()
-      run: |
-        dotnet new tool-manifest
-        dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.2.0
-        dotnet tool install --add-source ./GithubDotnetResultsExporter.Csl/bin/Debug GithubDotnetResultsExporter --version 1.0.0-local.1 --no-cache
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.2.0
 
     - name: Test
       if: always()
@@ -55,7 +48,7 @@ jobs:
 
     - name: Collect Build Results
       if: always()
-      run: dotnet export-dotnet-results-for-github --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }} --culture "de-DE"
+      run: dotnet run --project GithubDotnetResultsExporter.Csl -- --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }} --culture "de-DE"
 
     - name: Generate Coverage Report
       if: always()
