@@ -123,7 +123,7 @@ internal static class GithubDotnetResultsExporterModelOps
                 var fileUri = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest);
                 var fileUriText = $"{fileUri.Segments.LastOrDefault()}{fileUri.Fragment}";
 
-                result.AppendLine(
+                result.AppendLine(CultureInfo.CurrentCulture,
                     $"""
                     {symbol} [{fileUriText}]({fileUri})  
                     {sarifResult.Message.Text}  
@@ -132,7 +132,7 @@ internal static class GithubDotnetResultsExporterModelOps
             }
             else
             {
-                result.AppendLine(
+                result.AppendLine(CultureInfo.CurrentCulture,
                     $"""
                     {symbol} {sarifResult.Message.Text}  
 
@@ -167,11 +167,11 @@ internal static class GithubDotnetResultsExporterModelOps
             skipCount += counter.total - counter.executed;
         }
 
-        result.AppendLine(
+        result.AppendLine(CultureInfo.CurrentCulture,
             $"""
-            failed: {failCount}  
-            skipped: {skipCount}  
-            passed: {successCount}
+            failed: {failCount:N0}  
+            skipped: {skipCount:N0}  
+            passed: {successCount:N0}
 
             """);
 
@@ -238,7 +238,7 @@ internal static class GithubDotnetResultsExporterModelOps
                 }
             }
 
-            result.AppendLine($"""
+            result.AppendLine(CultureInfo.CurrentCulture, $"""
                 <details><summary>{symbol} {testDef.TestMethod.className}.{testDef.TestMethod.name}</summary>
 
                 {errorText}{stdOutText}{stdErrText}

@@ -1,7 +1,9 @@
+using GithubDotnetResultsExporter.Model.Vstst;
 using Microsoft.CodeAnalysis.Sarif;
 
 namespace GithubDotnetResultsExporter.Model.Test;
 
+[SetCulture("de-DE")]
 public class GithubDotnetResultsExporterModelOpsTest
 {
 
@@ -163,6 +165,47 @@ public class GithubDotnetResultsExporterModelOpsTest
 
 
             """));
+    }
+
+    [Test]
+    public void Test_CreateSummaryMarkdown_TestRuns()
+    {
+        var testRun = new TestRunType
+        {
+            Items = new object[]
+            {
+                new TestRunTypeResultSummary
+                {
+                    Items = new object[]
+                    {
+                        new CountersType { total = 2000, executed = 1999, passed = 1500 }
+                    }
+                },
+                new TestDefinitionType
+                {
+                    Items = Array.Empty<object>()
+                },
+                new ResultsType
+                {
+                    Items = Array.Empty<object>()
+                }
+            }
+        };
+        var testRuns = new List<TestRunType> { testRun };
+
+        var result = GithubDotnetResultsExporterModelOps.CreateSummaryMarkdown(testRuns);
+        Console.WriteLine(result);
+
+        Assert.That(result, Is.EqualTo(
+            """
+            ## Test Results
+            failed: 499  
+            skipped: 1  
+            passed: 1.500
+
+
+            """
+        ));
     }
 
 }
