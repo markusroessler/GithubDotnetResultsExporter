@@ -150,7 +150,9 @@ internal static class GithubDotnetResultsExporterModelOps
         var result = new StringBuilder();
         result.AppendLine("## Test Results");
 
-        var counters = testRuns
+        var testRunsList = testRuns.ToList();
+
+        var counters = testRunsList
             .Select(testRun => testRun.Items.OfType<TestRunTypeResultSummary>().First())
             .Select(summary => summary.Items.OfType<CountersType>().First())
             .ToList();
@@ -175,7 +177,7 @@ internal static class GithubDotnetResultsExporterModelOps
 
             """);
 
-        var unitTestsPerId = testRuns
+        var unitTestsPerId = testRunsList
             .Select(testRun => testRun.Items.OfType<TestDefinitionType>().First())
             .SelectMany(testDef => testDef.Items.OfType<UnitTestType>())
             .ToImmutableDictionary(test => test.id);
