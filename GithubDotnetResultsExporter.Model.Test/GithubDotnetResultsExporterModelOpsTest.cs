@@ -1,9 +1,9 @@
+using System.Globalization;
 using GithubDotnetResultsExporter.Model.Vstst;
 using Microsoft.CodeAnalysis.Sarif;
 
 namespace GithubDotnetResultsExporter.Model.Test;
 
-[SetCulture("de-DE")]
 public class GithubDotnetResultsExporterModelOpsTest
 {
 
@@ -58,7 +58,7 @@ public class GithubDotnetResultsExporterModelOpsTest
             }
         };
 
-        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop");
+        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop", new CultureInfo("de-DE"));
 
         var requests = GithubDotnetResultsExporterModelOps.MapToAnnotationRequests(sarifResults, collectorRequest, "/repo");
 
@@ -148,7 +148,7 @@ public class GithubDotnetResultsExporterModelOpsTest
             }
         };
 
-        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop");
+        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop", new CultureInfo("de-DE"));
 
         var markdown = GithubDotnetResultsExporterModelOps.CreateSummaryMarkdown(sarifResults, collectorRequest, "/repo");
         // Console.WriteLine(markdown);
@@ -194,7 +194,7 @@ public class GithubDotnetResultsExporterModelOpsTest
         };
         var testRuns = new List<TestRunType> { testRun };
 
-        var result = GithubDotnetResultsExporterModelOps.CreateSummaryMarkdown(testRuns);
+        var result = GithubDotnetResultsExporterModelOps.CreateSummaryMarkdown(testRuns, new CultureInfo("de-DE"));
         Console.WriteLine(result);
 
         Assert.That(result, Is.EqualTo(

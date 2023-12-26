@@ -1,3 +1,47 @@
+# Params
+## --export-checks-action-params
+true to export the following variables for use with https://github.com/LouisBrunner/checks-action  
+
+```bash
+checks-action-conclusion
+checks-action-output
+checks-action-annotations
+```
+default: false
+
+## --export-step-summary
+true to export a step summary for build and test results
+default: false
+
+## --github-server-url (required)
+used to construct repo file urls  
+example:
+```bash
+${{ github.server_url }}
+```
+default: ''
+
+## --github-repo (required)
+used to construct repo file urls  
+example:
+```bash
+${{ github.repository }}
+```
+default: ''
+
+## --github-ref-name (required)
+used to construct repo file urls  
+example:
+```bash
+${{ github.ref_name }}
+```
+default: ''
+
+## --culture
+used to format the output  
+example: 'de-DE'  
+default: CultureInfo.CurrentCulture
+
 # Howto test local
 ```bash
 dotnet pack GithubDotnetResultsExporter.Csl -p:Version=1.0.0-local.1

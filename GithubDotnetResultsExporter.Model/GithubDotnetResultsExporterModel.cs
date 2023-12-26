@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Globalization;
+using System.Text.Json;
 using GithubDotnetResultsExporter.Model.Vstst;
 using Microsoft.CodeAnalysis.Sarif;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,11 +46,11 @@ public sealed class GithubDotnetResultsExporterModel
 
             var trxFiles = _fileProvider.EnumerateTrxFiles(workingDir);
             var testRuns = _testRunProvider.LoadTestRuns(trxFiles);
-            summaryMarkdown += CreateSummaryMarkdown(testRuns);
+            summaryMarkdown += CreateSummaryMarkdown(testRuns, collectorRequest.CultureInfo);
 
             _fileProvider.AppendTextToFile(githubStepSummaryFile, summaryMarkdown);
         }
     }
 }
 
-internal sealed record GithubDotnetResultsExporterRequest(bool exportChecksActionParams, bool exportStepSummary, string GithubServerUrl, string GithubRepo, string GithubRefName);
+internal sealed record GithubDotnetResultsExporterRequest(bool exportChecksActionParams, bool exportStepSummary, string GithubServerUrl, string GithubRepo, string GithubRefName, CultureInfo CultureInfo);

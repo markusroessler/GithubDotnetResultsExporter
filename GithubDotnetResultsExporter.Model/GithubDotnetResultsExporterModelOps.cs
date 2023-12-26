@@ -22,6 +22,7 @@ internal static class GithubDotnetResultsExporterModelOps
         string? githubServerUrl = null;
         string? githubRepo = null;
         string? githubRefName = null;
+        var cultureInfo = CultureInfo.CurrentCulture;
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -42,6 +43,11 @@ internal static class GithubDotnetResultsExporterModelOps
                 case "--github-ref-name":
                     githubRefName = args.ElementAtOrDefault(++i);
                     break;
+                case "--culture":
+                    var cultureInfoStr = args.ElementAtOrDefault(++i);
+                    if (cultureInfoStr != null)
+                        cultureInfo = new CultureInfo(cultureInfoStr);
+                    break;
                 default:
                     throw new ArgumentException($"unknown arg {args[i]}");
             }
@@ -56,7 +62,7 @@ internal static class GithubDotnetResultsExporterModelOps
         if (githubRefName == null)
             throw new ArgumentException("missing argument: --github-ref-name");
 
-        return new(exportChecksActionParams, exportStepSummary, githubServerUrl, githubRepo, githubRefName);
+        return new(exportChecksActionParams, exportStepSummary, githubServerUrl, githubRepo, githubRefName, cultureInfo);
     }
 
     internal static IList<Result> GetSarifResults(IEnumerable<SarifLog> sarifLogs)
@@ -130,7 +136,7 @@ internal static class GithubDotnetResultsExporterModelOps
                 var fileUri = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest);
                 var fileUriText = $"{fileUri.Segments.LastOrDefault()}{fileUri.Fragment}";
 
-                result.AppendLine(CultureInfo.CurrentCulture,
+                result.AppendLine(collectorRequest.CultureInfo,
                     $"""
                     {symbol} [{fileUriText}]({fileUri})  
                     {ruleMessageLine}  
@@ -139,7 +145,7 @@ internal static class GithubDotnetResultsExporterModelOps
             }
             else
             {
-                result.AppendLine(CultureInfo.CurrentCulture,
+                result.AppendLine(collectorRequest.CultureInfo,
                     $"""
                     {symbol} {ruleMessageLine}  
 
@@ -152,7 +158,7 @@ internal static class GithubDotnetResultsExporterModelOps
 
     private readonly record struct TestDefAndResult(UnitTestType TestDef, TestResultType TestResult);
 
-    internal static string CreateSummaryMarkdown(IEnumerable<TestRunType> testRuns)
+    internal static string CreateSummaryMarkdown(IEnumerable<TestRunType> testRuns, CultureInfo cultureInfo)
     {
         var result = new StringBuilder();
         result.AppendLine("## Test Results");
@@ -176,7 +182,7 @@ internal static class GithubDotnetResultsExporterModelOps
             skipCount += counter.total - counter.executed;
         }
 
-        result.AppendLine(CultureInfo.CurrentCulture,
+        result.AppendLine(cultureInfo,
             $"""
             failed: {failCount:N0}  
             skipped: {skipCount:N0}  
@@ -247,7 +253,7 @@ internal static class GithubDotnetResultsExporterModelOps
                 }
             }
 
-            result.AppendLine(CultureInfo.CurrentCulture, $"""
+            result.AppendLine(cultureInfo, $"""
                 <details><summary>{symbol} {testDef.TestMethod.className}.{testDef.TestMethod.name}</summary>
 
                 {errorText}{stdOutText}{stdErrText}
