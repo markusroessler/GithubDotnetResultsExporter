@@ -32,10 +32,11 @@ jobs:
     - name: Init nuget source
       run: dotnet nuget add source --username markusroessler --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/markusroessler/index.json"
 
+    - name: Restore
+      run: dotnet restore --locked-mode
+
     - name: Build
-      id: build
-      run: |
-        dotnet build -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
+      run: dotnet build --no-restore -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
     
     - name: Pack nuget package
       if: always()
