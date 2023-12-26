@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 using GithubDotnetResultsExporter.Model.Vstst;
 using Microsoft.Extensions.Logging;
@@ -23,8 +24,14 @@ internal sealed class TestRunProvider
         return files.Select(file =>
         {
             _logger.LogInformation("Loading trx file: {File}", file);
-            using var myFileStream = new FileStream(file, FileMode.Open);
-            return (TestRunType?)serializer.Deserialize(myFileStream) ?? throw new Exception("XmlSerializer.Deserialize returned null");
+            using var fileStream = new FileStream(file, FileMode.Open);
+            var settings = new XmlReaderSettings
+            {
+                DtdProcessing = DtdProcessing.Ignore,
+                XmlResolver = null
+            };
+            var xmlReader = XmlReader.Create(fileStream, settings);
+            return (TestRunType?)serializer.Deserialize(xmlReader) ?? throw new Exception("XmlSerializer.Deserialize returned null");
         }).ToList();
     }
 }
