@@ -74,10 +74,13 @@ jobs:
     - name: Publish Github Release
       uses: ncipollo/release-action@v1
       with:
+        name: ${{ inputs.release-version }}
         tag: "release/${{ inputs.release-version }}"
         artifacts: GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg
         generateReleaseNotes: true
         draft: false
+        prerelease: ${{ github.ref_name != 'main' }}
+        makeLatest: ${{ github.ref_name == 'main' }}
 
     - name: Upload Test Report
       if: always()
