@@ -100,6 +100,7 @@ public class GithubDotnetResultsExporterModelOpsTest
             {
                 Level = FailureLevel.Warning,
                 Message = new Message {Text = "Warning Message" },
+                RuleId = "CS8618",
                 Locations = new List<Location>
                 {
                     new Location
@@ -150,13 +151,13 @@ public class GithubDotnetResultsExporterModelOpsTest
         var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop");
 
         var markdown = GithubDotnetResultsExporterModelOps.CreateSummaryMarkdown(sarifResults, collectorRequest, "/repo");
-        Console.WriteLine(markdown);
+        // Console.WriteLine(markdown);
 
         Assert.That(markdown, Is.EqualTo(
             """
             ## Build Results
             :warning: [Foobar.cs#L1](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Foobar.cs#L1)  
-            Warning Message  
+            Warning Message ([CS8618](https://www.google.com/search?q=CS8618))  
 
             :warning: Warning without location  
 
