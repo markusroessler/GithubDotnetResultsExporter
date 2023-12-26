@@ -109,10 +109,16 @@ internal static class GithubDotnetResultsExporterModelOps
 
         foreach (var sarifResult in sarifResults)
         {
-            var physicalLocation = sarifResult.Locations.First().PhysicalLocation;
-            var relativePath = ToRelativePath(physicalLocation, workingDirectory);
-            var fileUri = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest);
-            var fileUriText = $"{fileUri.Segments.LastOrDefault()}{fileUri.Fragment}";
+            var physicalLocation = sarifResult.Locations?.FirstOrDefault()?.PhysicalLocation;
+            var fileHyperlink = "";
+            if (physicalLocation != null)
+            {
+                var relativePath = ToRelativePath(physicalLocation, workingDirectory);
+                var fileUri = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest);
+                var fileUriText = $"{fileUri.Segments.LastOrDefault()}{fileUri.Fragment}";
+                fileHyperlink = $"[{fileUriText}]({fileUri})  ";
+            }
+
             var symbol = sarifResult.Level switch
             {
                 FailureLevel.Error => ":x:",
@@ -122,7 +128,7 @@ internal static class GithubDotnetResultsExporterModelOps
 
             result.AppendLine(
                 $"""
-                {symbol} [{fileUriText}]({fileUri})  
+                {symbol} {fileHyperlink}
                 {sarifResult.Message.Text}  
 
                 """);

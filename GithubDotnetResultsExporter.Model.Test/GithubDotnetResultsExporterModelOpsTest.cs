@@ -118,6 +118,11 @@ public class GithubDotnetResultsExporterModelOpsTest
             },
             new Result
             {
+                Level = FailureLevel.Warning,
+                Message = new Message {Text = "Warning without location" },
+            },
+            new Result
+            {
                 Level = FailureLevel.Error,
                 Message = new Message {Text = "Error Message" },
                 Locations = new List<Location>
@@ -150,6 +155,9 @@ public class GithubDotnetResultsExporterModelOpsTest
             ## Build Results
             :warning: [Foobar.cs#L1](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Foobar.cs#L1)  
             Warning Message  
+
+            :warning: 
+            Warning without location  
 
             :x: [Blub.cs#L1](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Blub.cs#L1)  
             Error Message  
