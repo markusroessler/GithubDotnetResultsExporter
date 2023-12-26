@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -27,10 +28,10 @@ internal static class GithubDotnetResultsExporterModelOps
             switch (args[i])
             {
                 case "--export-checks-action-params":
-                    exportChecksActionParams = Convert.ToBoolean(args.ElementAtOrDefault(++i));
+                    exportChecksActionParams = Convert.ToBoolean(args.ElementAtOrDefault(++i), CultureInfo.InvariantCulture);
                     break;
                 case "--export-step-summary":
-                    exportStepSummary = Convert.ToBoolean(args.ElementAtOrDefault(++i));
+                    exportStepSummary = Convert.ToBoolean(args.ElementAtOrDefault(++i), CultureInfo.InvariantCulture);
                     break;
                 case "--github-server-url":
                     githubServerUrl = args.ElementAtOrDefault(++i);
@@ -42,18 +43,18 @@ internal static class GithubDotnetResultsExporterModelOps
                     githubRefName = args.ElementAtOrDefault(++i);
                     break;
                 default:
-                    throw new Exception($"unknown arg {args[i]}");
+                    throw new ArgumentException($"unknown arg {args[i]}");
             }
         }
 
         if (githubServerUrl == null)
-            throw new Exception("missing argument: --github-server-url");
+            throw new ArgumentException("missing argument: --github-server-url");
 
         if (githubRepo == null)
-            throw new Exception("missing argument: --github-repo");
+            throw new ArgumentException("missing argument: --github-repo");
 
         if (githubRefName == null)
-            throw new Exception("missing argument: --github-ref-name");
+            throw new ArgumentException("missing argument: --github-ref-name");
 
         return new(exportChecksActionParams, exportStepSummary, githubServerUrl, githubRepo, githubRefName);
     }
