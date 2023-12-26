@@ -8,22 +8,37 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 public class GithubDotnetResultsExporterIntegrationTest
 {
 
+    private string _tempDir;
+    private string _slnDir;
+    private string _testResultsDir;
+    private TestEnvironment _environment;
+
+    [SetUp]
+    public void Setup()
+    {
+        _tempDir = Path.Combine(Environment.CurrentDirectory, "test-temp", TestContext.CurrentContext.Test.MethodName);
+        if (Directory.Exists(_tempDir))
+            Directory.Delete(_tempDir, recursive: true);
+        Directory.CreateDirectory(_tempDir);
+
+        _slnDir = Path.Combine(_tempDir, "TestSln");
+        if (Directory.Exists(_slnDir))
+            Directory.Delete(_slnDir, recursive: true);
+
+        _testResultsDir = Path.Combine(_slnDir, "TestResults");
+        Directory.CreateDirectory(_testResultsDir);
+
+        _environment = new TestEnvironment
+        {
+            CurrentDirectory = _slnDir
+        };
+    }
+
     [Test]
     public void Test_ExportResults()
     {
-        var slnDir = Path.Combine(Environment.CurrentDirectory, "TestSln");
-        if (Directory.Exists(slnDir))
-            Directory.Delete(slnDir, recursive: true);
-
-        var testResultsDir = Path.Combine(slnDir, "TestResults");
-        Directory.CreateDirectory(testResultsDir);
-
-        {
-            var assembly = typeof(GithubDotnetResultsExporterIntegrationTest).Assembly;
-            using var testResultsStream = assembly.GetManifestResourceStream("GithubDotnetResultsExporter.IntegrationTest.SampleTestResults.trx")!;
-            using var outputStream = File.OpenWrite(Path.Combine(testResultsDir, "TestResults.trx"));
-            testResultsStream.CopyTo(outputStream);
-        }
+        CopyBuildResultsSarifToSlnDir("GithubDotnetResultsExporter.IntegrationTest.sample-compiler-diagnostics.sarif");
+        CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.SampleTestResults.trx");
 
         var args = new string[]
         {
@@ -33,17 +48,34 @@ public class GithubDotnetResultsExporterIntegrationTest
             "--export-step-summary", "true"
         };
 
-        var environment = new TestEnvironment();
-
         Program.ExportResults(args, services =>
         {
-            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(environment));
+            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(_environment));
         });
 
-        var summaryText = File.ReadAllText(environment.GithubStepSummaryFile);
+        var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
+        // Console.WriteLine(summaryText);
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
+        :x: [FileProvider.cs#L20](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L20)  
+        Blabla failure  
+
+        :warning: [FileProvider.cs#L20](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L20)  
+        Non-nullable field '_foobar' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.  
+
+        :warning: [FileProvider.cs#L18](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L18)  
+        The field 'FileProvider._foobar' is never used  
+
+        🛈 [FileProvider.cs#L25](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L25)  
+        Member 'EnumerateSarifFiles' does not access instance data and can be marked as static  
+
+        🛈 [FileProvider.cs#L30](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L30)  
+        Member 'EnumerateTrxFiles' does not access instance data and can be marked as static  
+
+        🛈 [FileProvider.cs#L35](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L35)  
+        Member 'AppendTextToFile' does not access instance data and can be marked as static  
+
         ## Test Results
         failed: 2  
         skipped: 3  
@@ -131,5 +163,124 @@ public class GithubDotnetResultsExporterIntegrationTest
         </details>
 
         """.Replace("\r\n", "\n")));
+    }
+
+    [Test]
+    public void Test_ExportResults_OnetimeSetupFail()
+    {
+        CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.OneTimeSetUpFailSampleTestResults.trx");
+
+        var args = new string[]
+        {
+            "--github-server-url", "https://github.com",
+            "--github-repo", "markusroessler/GithubDotnetResultsExporter",
+            "--github-ref-name", "develop",
+            "--export-step-summary", "true"
+        };
+
+        Program.ExportResults(args, services =>
+        {
+            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(_environment));
+        });
+
+        var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
+
+        Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
+        ## Build Results
+        ## Test Results
+        failed: 1  
+        skipped: 0  
+        passed: 0
+        
+        <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetupFailSampleTest.Test_Pass</summary>
+
+        **Error**  
+        ```
+        OneTimeSetUp: OneTimeSetUp failed
+           at GithubDotnetResultsExporter.IntegrationTest.SetupFailSampleTest.OneTimeSetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetupFailSampleTest.cs:line 13
+
+
+        ```
+
+        </details>
+
+        """.Replace("\r\n", "\n")));
+    }
+
+    [Test]
+    public void Test_ExportResults_SetupFail()
+    {
+        CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTestResults.trx");
+
+        var args = new string[]
+        {
+            "--github-server-url", "https://github.com",
+            "--github-repo", "markusroessler/GithubDotnetResultsExporter",
+            "--github-ref-name", "develop",
+            "--export-step-summary", "true"
+        };
+
+        Program.ExportResults(args, services =>
+        {
+            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(_environment));
+        });
+
+        var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
+        // Console.WriteLine(summaryText);
+
+        // note: don't know why the stacktrace of the second test method differs from the first one ("at InvokeStub_SetUpFailSampleTest")
+        Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
+        ## Build Results
+        ## Test Results
+        failed: 2  
+        skipped: 0  
+        passed: 0
+        
+        <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.Test_Pass</summary>
+
+        **Error**  
+        ```
+        SetUp failed
+           at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14
+
+        1)    at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14
+
+
+        ```
+
+        </details>
+        <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.Test_Pass_2</summary>
+
+        **Error**  
+        ```
+        SetUp failed
+           at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14
+           at InvokeStub_SetUpFailSampleTest.SetUp(Object, Object, IntPtr*)
+
+        1)    at GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.SetUp() in D:\Entwicklung\DotNet\GithubDotnetResultsExporter\GithubDotnetResultsExporter.IntegrationTest\SetUpFailSampleTest.cs:line 14
+           at InvokeStub_SetUpFailSampleTest.SetUp(Object, Object, IntPtr*)
+
+
+        ```
+
+        </details>
+
+        """.Replace("\r\n", "\n")));
+    }
+
+    private void CopyTestResultsTrxToTestDir(string trxName)
+    {
+        var assembly = typeof(GithubDotnetResultsExporterIntegrationTest).Assembly;
+        using var testResultsStream = assembly.GetManifestResourceStream(trxName);
+        using var outputStream = File.OpenWrite(Path.Combine(_testResultsDir, "TestResults.trx"));
+        testResultsStream.CopyTo(outputStream);
+    }
+
+    private void CopyBuildResultsSarifToSlnDir(string sarifName)
+    {
+        var assembly = typeof(GithubDotnetResultsExporterIntegrationTest).Assembly;
+        using var reader = new StreamReader(assembly.GetManifestResourceStream(sarifName));
+        var content = reader.ReadToEnd().Replace("{SLN_DIR}", _slnDir.Replace("\\", "/"));
+        File.WriteAllText(Path.Combine(_slnDir, "compiler-diagnostics.sarif"), content);
     }
 }

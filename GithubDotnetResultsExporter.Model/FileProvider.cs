@@ -11,9 +11,9 @@ internal sealed class FileProvider
 
     public string WorkingDirectory => _environment.CurrentDirectory;
 
-    public string GithubOutputFile => _environment.GetEnvironmentVariable("GITHUB_OUTPUT") ?? throw new Exception("GITHUB_OUTPUT not defined");
+    public string GithubOutputFile => _environment.GetEnvironmentVariable("GITHUB_OUTPUT") ?? throw new InvalidOperationException("GITHUB_OUTPUT not defined");
 
-    public string GithubStepSummaryFile => _environment.GetEnvironmentVariable("GITHUB_STEP_SUMMARY") ?? throw new Exception("GITHUB_STEP_SUMMARY not defined");
+    public string GithubStepSummaryFile => _environment.GetEnvironmentVariable("GITHUB_STEP_SUMMARY") ?? throw new InvalidOperationException("GITHUB_STEP_SUMMARY not defined");
 
 
     public FileProvider(IEnvironment environment)

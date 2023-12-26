@@ -1,0 +1,14 @@
+name: Archive feature branch (after merge)
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+  
+jobs:
+  call-archive-workflow:
+    uses: markusroessler/Github.Actions.Workflows/.github/workflows/archive-feature-branch.yml@1.0.0
+    with:
+      git-branch: ${{ github.head_ref }}
