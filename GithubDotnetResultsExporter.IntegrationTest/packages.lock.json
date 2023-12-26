@@ -24,6 +24,12 @@
         "resolved": "1.0.0-alpha.6",
         "contentHash": "OaV48YrVIc7QiQm/6x5wpH4FWGSgcamBik92aD9/GIvmUk2Y5c8gL4WLfASPSuCO1aVOJMsjegnDOqpLXW3KUA=="
       },
+      "MRoessler.DotnetAnalyzerConfig.Test": {
+        "type": "Direct",
+        "requested": "[1.0.0-alpha.1, )",
+        "resolved": "1.0.0-alpha.1",
+        "contentHash": "2IwFusj+lsibv1N4QoJ5z2JUZJ7OkUI6Dtog3ezr6JDtEPy/qiliIfAAHCpFwjevQ3+cSO25+5Y2wQ56k8UalQ=="
+      },
       "NUnit": {
         "type": "Direct",
         "requested": "[3.14.0, )",
