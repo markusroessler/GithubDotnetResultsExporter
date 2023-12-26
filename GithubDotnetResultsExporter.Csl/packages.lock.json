@@ -39,9 +39,9 @@
       },
       "MRoessler.DotnetAnalyzerConfig": {
         "type": "Direct",
-        "requested": "[1.0.0-alpha.6, )",
-        "resolved": "1.0.0-alpha.6",
-        "contentHash": "OaV48YrVIc7QiQm/6x5wpH4FWGSgcamBik92aD9/GIvmUk2Y5c8gL4WLfASPSuCO1aVOJMsjegnDOqpLXW3KUA=="
+        "requested": "[1.*-a*, )",
+        "resolved": "1.0.0-alpha.7",
+        "contentHash": "VnW/gXHAD6N+rpDHLCl530+b6vhZErH5ADQ/vU/YSeo57rKJFLjNACV0xgWm30LIDzIlbtMJuFY1fa18Vwodkw=="
       },
       "Microsoft.CSharp": {
         "type": "Transitive",
@@ -606,7 +606,7 @@
       "githubdotnetresultsexporter.model": {
         "type": "Project",
         "dependencies": {
-          "MRoessler.DotnetAnalyzerConfig": "[1.0.0-alpha.6, )",
+          "MRoessler.DotnetAnalyzerConfig": "[1.*-a*, )",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "[7.0.0, )",
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.1, )",
           "Sarif.Sdk": "[4.4.0, )"
