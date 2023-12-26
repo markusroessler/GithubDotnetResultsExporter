@@ -18,6 +18,18 @@
           "Microsoft.TestPlatform.TestHost": "17.8.0"
         }
       },
+      "MRoessler.DotnetAnalyzerConfig": {
+        "type": "Direct",
+        "requested": "[1.*, )",
+        "resolved": "1.0.0",
+        "contentHash": "j9Z4szmqInFoIaRL7y20PvmD1Uk9KPCjrDXNcXIHJ0PsvNOaI2SVpoo8zi9hZ3KoZpksG/EDcgCNae0I+9dAuQ=="
+      },
+      "MRoessler.DotnetAnalyzerConfig.Test": {
+        "type": "Direct",
+        "requested": "[1.*, )",
+        "resolved": "1.0.0",
+        "contentHash": "XmSeO7/gLCdbZIvn+h1wQ2koRDBrZpX5neSDwHhy6ksPCUAsNcJrbGu80s9UepLlbk2mYOONnblpnKJsu6vKDQ=="
+      },
       "NUnit": {
         "type": "Direct",
         "requested": "[3.14.0, )",
@@ -237,6 +249,7 @@
         "type": "Project",
         "dependencies": {
           "GithubDotnetResultsExporter.Model": "[1.0.0, )",
+          "MRoessler.DotnetAnalyzerConfig": "[1.*, )",
           "Microsoft.Extensions.DependencyInjection": "[7.0.0, )",
           "Microsoft.Extensions.Logging": "[7.0.0, )",
           "Microsoft.Extensions.Logging.Console": "[7.0.0, )"
@@ -245,6 +258,7 @@
       "githubdotnetresultsexporter.model": {
         "type": "Project",
         "dependencies": {
+          "MRoessler.DotnetAnalyzerConfig": "[1.*, )",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "[7.0.0, )",
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.1, )",
           "Sarif.Sdk": "[4.4.0, )"

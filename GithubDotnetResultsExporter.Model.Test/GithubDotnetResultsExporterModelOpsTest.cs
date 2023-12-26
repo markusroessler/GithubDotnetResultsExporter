@@ -1,7 +1,9 @@
+using GithubDotnetResultsExporter.Model.Vstst;
 using Microsoft.CodeAnalysis.Sarif;
 
 namespace GithubDotnetResultsExporter.Model.Test;
 
+[SetCulture("de-DE")]
 public class GithubDotnetResultsExporterModelOpsTest
 {
 
@@ -118,6 +120,11 @@ public class GithubDotnetResultsExporterModelOpsTest
             },
             new Result
             {
+                Level = FailureLevel.Warning,
+                Message = new Message {Text = "Warning without location" },
+            },
+            new Result
+            {
                 Level = FailureLevel.Error,
                 Message = new Message {Text = "Error Message" },
                 Locations = new List<Location>
@@ -151,11 +158,54 @@ public class GithubDotnetResultsExporterModelOpsTest
             :warning: [Foobar.cs#L1](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Foobar.cs#L1)  
             Warning Message  
 
+            :warning: Warning without location  
+
             :x: [Blub.cs#L1](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Blub.cs#L1)  
             Error Message  
 
 
             """));
+    }
+
+    [Test]
+    public void Test_CreateSummaryMarkdown_TestRuns()
+    {
+        var testRun = new TestRunType
+        {
+            Items = new object[]
+            {
+                new TestRunTypeResultSummary
+                {
+                    Items = new object[]
+                    {
+                        new CountersType { total = 2000, executed = 1999, passed = 1500 }
+                    }
+                },
+                new TestDefinitionType
+                {
+                    Items = Array.Empty<object>()
+                },
+                new ResultsType
+                {
+                    Items = Array.Empty<object>()
+                }
+            }
+        };
+        var testRuns = new List<TestRunType> { testRun };
+
+        var result = GithubDotnetResultsExporterModelOps.CreateSummaryMarkdown(testRuns);
+        Console.WriteLine(result);
+
+        Assert.That(result, Is.EqualTo(
+            """
+            ## Test Results
+            failed: 499  
+            skipped: 1  
+            passed: 1.500
+
+
+            """
+        ));
     }
 
 }

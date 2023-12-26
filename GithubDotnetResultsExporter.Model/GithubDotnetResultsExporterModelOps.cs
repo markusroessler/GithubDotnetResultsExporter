@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -27,10 +28,10 @@ internal static class GithubDotnetResultsExporterModelOps
             switch (args[i])
             {
                 case "--export-checks-action-params":
-                    exportChecksActionParams = Convert.ToBoolean(args.ElementAtOrDefault(++i));
+                    exportChecksActionParams = Convert.ToBoolean(args.ElementAtOrDefault(++i), CultureInfo.InvariantCulture);
                     break;
                 case "--export-step-summary":
-                    exportStepSummary = Convert.ToBoolean(args.ElementAtOrDefault(++i));
+                    exportStepSummary = Convert.ToBoolean(args.ElementAtOrDefault(++i), CultureInfo.InvariantCulture);
                     break;
                 case "--github-server-url":
                     githubServerUrl = args.ElementAtOrDefault(++i);
@@ -42,18 +43,18 @@ internal static class GithubDotnetResultsExporterModelOps
                     githubRefName = args.ElementAtOrDefault(++i);
                     break;
                 default:
-                    throw new Exception($"unknown arg {args[i]}");
+                    throw new ArgumentException($"unknown arg {args[i]}");
             }
         }
 
         if (githubServerUrl == null)
-            throw new Exception("missing argument: --github-server-url");
+            throw new ArgumentException("missing argument: --github-server-url");
 
         if (githubRepo == null)
-            throw new Exception("missing argument: --github-repo");
+            throw new ArgumentException("missing argument: --github-repo");
 
         if (githubRefName == null)
-            throw new Exception("missing argument: --github-ref-name");
+            throw new ArgumentException("missing argument: --github-ref-name");
 
         return new(exportChecksActionParams, exportStepSummary, githubServerUrl, githubRepo, githubRefName);
     }
@@ -108,10 +109,6 @@ internal static class GithubDotnetResultsExporterModelOps
 
         foreach (var sarifResult in sarifResults)
         {
-            var physicalLocation = sarifResult.Locations.First().PhysicalLocation;
-            var relativePath = ToRelativePath(physicalLocation, workingDirectory);
-            var fileUri = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest);
-            var fileUriText = $"{fileUri.Segments.LastOrDefault()}{fileUri.Fragment}";
             var symbol = sarifResult.Level switch
             {
                 FailureLevel.Error => ":x:",
@@ -119,12 +116,28 @@ internal static class GithubDotnetResultsExporterModelOps
                 _ => "🛈",
             };
 
-            result.AppendLine(
-                $"""
-                {symbol} [{fileUriText}]({fileUri})  
-                {sarifResult.Message.Text}  
+            var physicalLocation = sarifResult.Locations?.FirstOrDefault()?.PhysicalLocation;
+            if (physicalLocation != null)
+            {
+                var relativePath = ToRelativePath(physicalLocation, workingDirectory);
+                var fileUri = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest);
+                var fileUriText = $"{fileUri.Segments.LastOrDefault()}{fileUri.Fragment}";
 
-                """);
+                result.AppendLine(CultureInfo.CurrentCulture,
+                    $"""
+                    {symbol} [{fileUriText}]({fileUri})  
+                    {sarifResult.Message.Text}  
+
+                    """);
+            }
+            else
+            {
+                result.AppendLine(CultureInfo.CurrentCulture,
+                    $"""
+                    {symbol} {sarifResult.Message.Text}  
+
+                    """);
+            }
         }
 
         return result.ToString();
@@ -137,7 +150,9 @@ internal static class GithubDotnetResultsExporterModelOps
         var result = new StringBuilder();
         result.AppendLine("## Test Results");
 
-        var counters = testRuns
+        var testRunsList = testRuns.ToList();
+
+        var counters = testRunsList
             .Select(testRun => testRun.Items.OfType<TestRunTypeResultSummary>().First())
             .Select(summary => summary.Items.OfType<CountersType>().First())
             .ToList();
@@ -154,15 +169,15 @@ internal static class GithubDotnetResultsExporterModelOps
             skipCount += counter.total - counter.executed;
         }
 
-        result.AppendLine(
+        result.AppendLine(CultureInfo.CurrentCulture,
             $"""
-            failed: {failCount}  
-            skipped: {skipCount}  
-            passed: {successCount}
+            failed: {failCount:N0}  
+            skipped: {skipCount:N0}  
+            passed: {successCount:N0}
 
             """);
 
-        var unitTestsPerId = testRuns
+        var unitTestsPerId = testRunsList
             .Select(testRun => testRun.Items.OfType<TestDefinitionType>().First())
             .SelectMany(testDef => testDef.Items.OfType<UnitTestType>())
             .ToImmutableDictionary(test => test.id);
@@ -225,7 +240,7 @@ internal static class GithubDotnetResultsExporterModelOps
                 }
             }
 
-            result.AppendLine($"""
+            result.AppendLine(CultureInfo.CurrentCulture, $"""
                 <details><summary>{symbol} {testDef.TestMethod.className}.{testDef.TestMethod.name}</summary>
 
                 {errorText}{stdOutText}{stdErrText}
@@ -252,11 +267,11 @@ internal static class GithubDotnetResultsExporterModelOps
         var testMethod1 = result1.TestDef.TestMethod;
         var testMethod2 = result2.TestDef.TestMethod;
 
-        compare = testMethod1.className.CompareTo(testMethod2.className);
+        compare = string.CompareOrdinal(testMethod1.className, testMethod2.className);
         if (compare != 0)
             return compare;
 
-        return testMethod1.name.CompareTo(testMethod2.name);
+        return string.CompareOrdinal(testMethod1.name, testMethod2.name);
     }
 
     internal static GithubChecksApiOutput MapToOutput(FailureLevel logLevel)
