@@ -109,16 +109,6 @@ internal static class GithubDotnetResultsExporterModelOps
 
         foreach (var sarifResult in sarifResults)
         {
-            var physicalLocation = sarifResult.Locations?.FirstOrDefault()?.PhysicalLocation;
-            var fileHyperlink = "";
-            if (physicalLocation != null)
-            {
-                var relativePath = ToRelativePath(physicalLocation, workingDirectory);
-                var fileUri = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest);
-                var fileUriText = $"{fileUri.Segments.LastOrDefault()}{fileUri.Fragment}";
-                fileHyperlink = $"[{fileUriText}]({fileUri})  ";
-            }
-
             var symbol = sarifResult.Level switch
             {
                 FailureLevel.Error => ":x:",
@@ -126,12 +116,28 @@ internal static class GithubDotnetResultsExporterModelOps
                 _ => "🛈",
             };
 
-            result.AppendLine(
-                $"""
-                {symbol} {fileHyperlink}
-                {sarifResult.Message.Text}  
+            var physicalLocation = sarifResult.Locations?.FirstOrDefault()?.PhysicalLocation;
+            if (physicalLocation != null)
+            {
+                var relativePath = ToRelativePath(physicalLocation, workingDirectory);
+                var fileUri = ToGithubFileUri(relativePath, physicalLocation.Region.StartLine, collectorRequest);
+                var fileUriText = $"{fileUri.Segments.LastOrDefault()}{fileUri.Fragment}";
 
-                """);
+                result.AppendLine(
+                    $"""
+                    {symbol} [{fileUriText}]({fileUri})  
+                    {sarifResult.Message.Text}  
+
+                    """);
+            }
+            else
+            {
+                result.AppendLine(
+                    $"""
+                    {symbol} {sarifResult.Message.Text}  
+
+                    """);
+            }
         }
 
         return result.ToString();
