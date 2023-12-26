@@ -20,7 +20,7 @@ internal sealed class SarifLogProvider
     {
         return files.Select(file =>
         {
-            _logger.LogInformation("Loading sarif log: {file}", file);
+            _logger.LogInformation("Loading sarif log: {File}", file);
             return SarifLog.Load(file);
         }).ToList();
     }

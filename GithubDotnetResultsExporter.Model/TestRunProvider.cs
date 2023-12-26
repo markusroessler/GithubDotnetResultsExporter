@@ -22,7 +22,7 @@ internal sealed class TestRunProvider
         var serializer = new XmlSerializer(typeof(TestRunType));
         return files.Select(file =>
         {
-            _logger.LogInformation("Loading trx file: {file}", file);
+            _logger.LogInformation("Loading trx file: {File}", file);
             using var myFileStream = new FileStream(file, FileMode.Open);
             return (TestRunType?)serializer.Deserialize(myFileStream) ?? throw new Exception("XmlSerializer.Deserialize returned null");
         }).ToList();
