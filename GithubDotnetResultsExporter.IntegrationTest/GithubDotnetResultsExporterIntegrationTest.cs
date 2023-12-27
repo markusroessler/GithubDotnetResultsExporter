@@ -58,6 +58,12 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
+        |||
+        |:---|---:|
+        | Errors | 1 |
+        | Warnings | 2 |
+        | Notes | 3 |
+
         :x: [FileProvider.cs#L20](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L20)  
         Blabla failure ([CS8618](https://www.google.com/search?q=CS8618))  
 
@@ -77,9 +83,11 @@ public class GithubDotnetResultsExporterIntegrationTest
         Member 'AppendTextToFile' does not access instance data and can be marked as static ([CA1822](https://www.google.com/search?q=CA1822))  
 
         ## Test Results
-        failed: 2  
-        skipped: 3  
-        passed: 2
+        |||
+        |:---|---:|
+        | Failed | 2 |
+        | Skipped | 3 |
+        | Passed | 2 |
         
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail</summary>
 
@@ -187,10 +195,18 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
+        |||
+        |:---|---:|
+        | Errors | 0 |
+        | Warnings | 0 |
+        | Notes | 0 |
+
         ## Test Results
-        failed: 1  
-        skipped: 0  
-        passed: 0
+        |||
+        |:---|---:|
+        | Failed | 1 |
+        | Skipped | 0 |
+        | Passed | 0 |
         
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetupFailSampleTest.Test_Pass</summary>
 
@@ -231,10 +247,18 @@ public class GithubDotnetResultsExporterIntegrationTest
         // note: don't know why the stacktrace of the second test method differs from the first one ("at InvokeStub_SetUpFailSampleTest")
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
+        |||
+        |:---|---:|
+        | Errors | 0 |
+        | Warnings | 0 |
+        | Notes | 0 |
+
         ## Test Results
-        failed: 2  
-        skipped: 0  
-        passed: 0
+        |||
+        |:---|---:|
+        | Failed | 2 |
+        | Skipped | 0 |
+        | Passed | 0 |
         
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.Test_Pass</summary>
 

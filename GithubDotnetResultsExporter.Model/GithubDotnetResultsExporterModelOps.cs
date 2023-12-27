@@ -113,6 +113,37 @@ internal static class GithubDotnetResultsExporterModelOps
         var result = new StringBuilder();
         result.AppendLine("## Build Results");
 
+        var errorCount = 0;
+        var warningCount = 0;
+        var noteCount = 0;
+        foreach (var sarifResult in sarifResults)
+        {
+            switch (sarifResult.Level)
+            {
+                case FailureLevel.Error:
+                    errorCount++;
+                    break;
+
+                case FailureLevel.Warning:
+                    warningCount++;
+                    break;
+
+                default:
+                    noteCount++;
+                    break;
+            }
+        }
+
+        result.AppendLine(collectorRequest.CultureInfo,
+            $"""
+            |||
+            |:---|---:|
+            | Errors | {errorCount:N0} |
+            | Warnings | {warningCount:N0} |
+            | Notes | {noteCount:N0} |
+
+            """);
+
         foreach (var sarifResult in sarifResults)
         {
             var symbol = sarifResult.Level switch
@@ -184,9 +215,11 @@ internal static class GithubDotnetResultsExporterModelOps
 
         result.AppendLine(cultureInfo,
             $"""
-            failed: {failCount:N0}  
-            skipped: {skipCount:N0}  
-            passed: {successCount:N0}
+            |||
+            |:---|---:|
+            | Failed | {failCount:N0} |
+            | Skipped | {skipCount:N0} |
+            | Passed | {successCount:N0} |
 
             """);
 
