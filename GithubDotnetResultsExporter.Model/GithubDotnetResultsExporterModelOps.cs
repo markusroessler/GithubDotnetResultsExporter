@@ -215,9 +215,11 @@ internal static class GithubDotnetResultsExporterModelOps
 
         result.AppendLine(cultureInfo,
             $"""
-            failed: {failCount:N0}  
-            skipped: {skipCount:N0}  
-            passed: {successCount:N0}
+            |||
+            |:---|---:|
+            | Failed | {failCount:N0} |
+            | Skipped | {skipCount:N0} |
+            | Passed | {successCount:N0} |
 
             """);
 

@@ -83,9 +83,11 @@ public class GithubDotnetResultsExporterIntegrationTest
         Member 'AppendTextToFile' does not access instance data and can be marked as static ([CA1822](https://www.google.com/search?q=CA1822))  
 
         ## Test Results
-        failed: 2  
-        skipped: 3  
-        passed: 2
+        |||
+        |:---|---:|
+        | Failed | 2 |
+        | Skipped | 3 |
+        | Passed | 2 |
         
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail</summary>
 
@@ -200,9 +202,11 @@ public class GithubDotnetResultsExporterIntegrationTest
         | Notes | 0 |
 
         ## Test Results
-        failed: 1  
-        skipped: 0  
-        passed: 0
+        |||
+        |:---|---:|
+        | Failed | 1 |
+        | Skipped | 0 |
+        | Passed | 0 |
         
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetupFailSampleTest.Test_Pass</summary>
 
@@ -250,9 +254,11 @@ public class GithubDotnetResultsExporterIntegrationTest
         | Notes | 0 |
 
         ## Test Results
-        failed: 2  
-        skipped: 0  
-        passed: 0
+        |||
+        |:---|---:|
+        | Failed | 2 |
+        | Skipped | 0 |
+        | Passed | 0 |
         
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.Test_Pass</summary>
 

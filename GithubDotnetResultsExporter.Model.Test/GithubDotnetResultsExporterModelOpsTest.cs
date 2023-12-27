@@ -206,9 +206,11 @@ public class GithubDotnetResultsExporterModelOpsTest
         Assert.That(result, Is.EqualTo(
             """
             ## Test Results
-            failed: 499  
-            skipped: 1  
-            passed: 1.500
+            |||
+            |:---|---:|
+            | Failed | 499 |
+            | Skipped | 1 |
+            | Passed | 1.500 |
 
 
             """
