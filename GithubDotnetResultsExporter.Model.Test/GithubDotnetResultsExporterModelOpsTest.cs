@@ -1,9 +1,9 @@
+using System.Globalization;
 using GithubDotnetResultsExporter.Model.Vstst;
 using Microsoft.CodeAnalysis.Sarif;
 
 namespace GithubDotnetResultsExporter.Model.Test;
 
-[SetCulture("de-DE")]
 public class GithubDotnetResultsExporterModelOpsTest
 {
 
@@ -58,7 +58,7 @@ public class GithubDotnetResultsExporterModelOpsTest
             }
         };
 
-        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop");
+        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop", new CultureInfo("de-DE"));
 
         var requests = GithubDotnetResultsExporterModelOps.MapToAnnotationRequests(sarifResults, collectorRequest, "/repo");
 
@@ -100,6 +100,7 @@ public class GithubDotnetResultsExporterModelOpsTest
             {
                 Level = FailureLevel.Warning,
                 Message = new Message {Text = "Warning Message" },
+                RuleId = "CS8618",
                 Locations = new List<Location>
                 {
                     new Location
@@ -147,16 +148,22 @@ public class GithubDotnetResultsExporterModelOpsTest
             }
         };
 
-        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop");
+        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop", new CultureInfo("de-DE"));
 
         var markdown = GithubDotnetResultsExporterModelOps.CreateSummaryMarkdown(sarifResults, collectorRequest, "/repo");
-        Console.WriteLine(markdown);
+        // Console.WriteLine(markdown);
 
         Assert.That(markdown, Is.EqualTo(
             """
             ## Build Results
+            |||
+            |:---|---:|
+            | Errors | 1 |
+            | Warnings | 2 |
+            | Notes | 0 |
+
             :warning: [Foobar.cs#L1](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/project/Foobar.cs#L1)  
-            Warning Message  
+            Warning Message ([CS8618](https://www.google.com/search?q=CS8618))  
 
             :warning: Warning without location  
 
@@ -193,15 +200,17 @@ public class GithubDotnetResultsExporterModelOpsTest
         };
         var testRuns = new List<TestRunType> { testRun };
 
-        var result = GithubDotnetResultsExporterModelOps.CreateSummaryMarkdown(testRuns);
+        var result = GithubDotnetResultsExporterModelOps.CreateSummaryMarkdown(testRuns, new CultureInfo("de-DE"));
         Console.WriteLine(result);
 
         Assert.That(result, Is.EqualTo(
             """
             ## Test Results
-            failed: 499  
-            skipped: 1  
-            passed: 1.500
+            |||
+            |:---|---:|
+            | Failed | 499 |
+            | Skipped | 1 |
+            | Passed | 1.500 |
 
 
             """

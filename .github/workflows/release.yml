@@ -23,10 +23,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup .NET Core SDK 7.0.x
+    - name: Setup .NET Core SDK 8.0.x
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '7.0.x'
+        dotnet-version: '8.0.x'
         cache: true
         cache-dependency-path: "*/packages.lock.json"
      
@@ -46,10 +46,14 @@ jobs:
         git tag -a "release/${{ inputs.release-version }}" -m "Release ${{ inputs.release-version }} [skip ci]"
         git push origin "refs/tags/release/${{ inputs.release-version }}"
 
+    - name: Restore
+      run: | 
+        dotnet restore --locked-mode -p:Configuration=Release
+        dotnet tool restore
+        
     - name: Build
       id: build
-      run: |
-        dotnet build -p:Configuration=Release -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
+      run: dotnet build --no-restore -p:Configuration=Release -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
 
     - name: Test
       if: always()
@@ -61,15 +65,14 @@ jobs:
     - name: Push nuget package
       run: dotnet nuget push GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
 
-    - name: Install dotnet tools
+    - name: Install package as tool
       if: always()
-      run: |
-        dotnet tool install --global GithubDotnetResultsExporter --version ${{ inputs.release-version }}
+      run: dotnet tool install --global GithubDotnetResultsExporter --version ${{ inputs.release-version }}
 
     - name: Collect Build Results
       id: collect-build-results
       if: always()
-      run: export-dotnet-results-for-github --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }}
+      run: export-dotnet-results-for-github --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }} --culture "de-DE"
 
     - name: Publish Github Release
       uses: ncipollo/release-action@v1

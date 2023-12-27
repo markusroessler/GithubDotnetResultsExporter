@@ -58,28 +58,36 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
+        |||
+        |:---|---:|
+        | Errors | 1 |
+        | Warnings | 2 |
+        | Notes | 3 |
+
         :x: [FileProvider.cs#L20](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L20)  
-        Blabla failure  
+        Blabla failure ([CS8618](https://www.google.com/search?q=CS8618))  
 
         :warning: [FileProvider.cs#L20](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L20)  
-        Non-nullable field '_foobar' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.  
+        Non-nullable field '_foobar' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. ([CS8618](https://www.google.com/search?q=CS8618))  
 
         :warning: [FileProvider.cs#L18](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L18)  
-        The field 'FileProvider._foobar' is never used  
+        The field 'FileProvider._foobar' is never used ([CS0169](https://www.google.com/search?q=CS0169))  
 
         🛈 [FileProvider.cs#L25](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L25)  
-        Member 'EnumerateSarifFiles' does not access instance data and can be marked as static  
+        Member 'EnumerateSarifFiles' does not access instance data and can be marked as static ([CA1822](https://www.google.com/search?q=CA1822))  
 
         🛈 [FileProvider.cs#L30](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L30)  
-        Member 'EnumerateTrxFiles' does not access instance data and can be marked as static  
+        Member 'EnumerateTrxFiles' does not access instance data and can be marked as static ([CA1822](https://www.google.com/search?q=CA1822))  
 
         🛈 [FileProvider.cs#L35](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L35)  
-        Member 'AppendTextToFile' does not access instance data and can be marked as static  
+        Member 'AppendTextToFile' does not access instance data and can be marked as static ([CA1822](https://www.google.com/search?q=CA1822))  
 
         ## Test Results
-        failed: 2  
-        skipped: 3  
-        passed: 2
+        |||
+        |:---|---:|
+        | Failed | 2 |
+        | Skipped | 3 |
+        | Passed | 2 |
         
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail</summary>
 
@@ -187,10 +195,18 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
+        |||
+        |:---|---:|
+        | Errors | 0 |
+        | Warnings | 0 |
+        | Notes | 0 |
+
         ## Test Results
-        failed: 1  
-        skipped: 0  
-        passed: 0
+        |||
+        |:---|---:|
+        | Failed | 1 |
+        | Skipped | 0 |
+        | Passed | 0 |
         
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetupFailSampleTest.Test_Pass</summary>
 
@@ -231,10 +247,18 @@ public class GithubDotnetResultsExporterIntegrationTest
         // note: don't know why the stacktrace of the second test method differs from the first one ("at InvokeStub_SetUpFailSampleTest")
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
+        |||
+        |:---|---:|
+        | Errors | 0 |
+        | Warnings | 0 |
+        | Notes | 0 |
+
         ## Test Results
-        failed: 2  
-        skipped: 0  
-        passed: 0
+        |||
+        |:---|---:|
+        | Failed | 2 |
+        | Skipped | 0 |
+        | Passed | 0 |
         
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.Test_Pass</summary>
 
