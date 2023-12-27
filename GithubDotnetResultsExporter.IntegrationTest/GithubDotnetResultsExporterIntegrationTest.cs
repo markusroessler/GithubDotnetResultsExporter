@@ -58,9 +58,11 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
-        errors: 1  
-        warnings: 2  
-        notes: 3
+        |||
+        |:---|---:|
+        | Errors | 1 |
+        | Warnings | 2 |
+        | Notes | 3 |
 
         :x: [FileProvider.cs#L20](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L20)  
         Blabla failure ([CS8618](https://www.google.com/search?q=CS8618))  
@@ -191,9 +193,11 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
-        errors: 0  
-        warnings: 0  
-        notes: 0
+        |||
+        |:---|---:|
+        | Errors | 0 |
+        | Warnings | 0 |
+        | Notes | 0 |
 
         ## Test Results
         failed: 1  
@@ -239,9 +243,11 @@ public class GithubDotnetResultsExporterIntegrationTest
         // note: don't know why the stacktrace of the second test method differs from the first one ("at InvokeStub_SetUpFailSampleTest")
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
         ## Build Results
-        errors: 0  
-        warnings: 0  
-        notes: 0
+        |||
+        |:---|---:|
+        | Errors | 0 |
+        | Warnings | 0 |
+        | Notes | 0 |
 
         ## Test Results
         failed: 2  

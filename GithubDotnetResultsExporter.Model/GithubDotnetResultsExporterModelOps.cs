@@ -136,9 +136,11 @@ internal static class GithubDotnetResultsExporterModelOps
 
         result.AppendLine(collectorRequest.CultureInfo,
             $"""
-            errors: {errorCount:N0}  
-            warnings: {warningCount:N0}  
-            notes: {noteCount:N0}
+            |||
+            |:---|---:|
+            | Errors | {errorCount:N0} |
+            | Warnings | {warningCount:N0} |
+            | Notes | {noteCount:N0} |
 
             """);
 
