@@ -217,4 +217,47 @@ public class GithubDotnetResultsExporterModelOpsTest
         ));
     }
 
+    [Test]
+    public void Test_GetSarifResults()
+    {
+        var sarifLogs = new List<SarifLog>
+        {
+            new SarifLog
+            {
+                Runs = new List<Run>
+                {
+                    new Run
+                    {
+                        Results = new List<Result>
+                        {
+                            new Result
+                            {
+                                Level = FailureLevel.Warning,
+                                Message = new Message {Text = "warning message" },
+                                Suppressions = new List<Suppression>
+                                {
+                                    new() { Kind = SuppressionKind.None }
+                                }
+                            },
+                            new Result
+                            {
+                                Level = FailureLevel.Warning,
+                                Message = new Message {Text = "suppressed warning message" },
+                                Suppressions = new List<Suppression>
+                                {
+                                    new() { Kind = SuppressionKind.InSource }
+                                }
+                            },
+                        }
+                    }
+                }
+            }
+        };
+
+        var results = GithubDotnetResultsExporterModelOps.GetSarifResults(sarifLogs);
+
+        Assert.That(results, Has.Count.EqualTo(1));
+        Assert.That(results[0].Message.Text, Is.EqualTo("warning message"));
+    }
+
 }

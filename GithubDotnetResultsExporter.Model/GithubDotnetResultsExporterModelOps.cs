@@ -69,6 +69,7 @@ internal static class GithubDotnetResultsExporterModelOps
     {
         return sarifLogs
             .SelectMany(log => log.Results())
+            .Where(result => (result.Suppressions?.All(s => s.Kind == SuppressionKind.None)).GetValueOrDefault(true))
             .OrderByDescending(result => result.Level)
             .ToList();
     }
