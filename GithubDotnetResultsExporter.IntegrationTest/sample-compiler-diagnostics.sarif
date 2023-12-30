@@ -189,6 +189,40 @@
           "properties": {
             "warningLevel": 1
           }
+        },
+        {
+          "ruleId": "CA1044",
+          "ruleIndex": 26,
+          "level": "warning",
+          "message": {
+            "text": "Because property OutputEncoding is write-only, either add a property getter with an accessibility that is greater than or equal to its setter or convert this property into a method"
+          },
+          "suppressions": [
+            {
+              "kind": "inSource",
+              "properties": {
+                "suppressionType": "Pragma Directive"
+              }
+            }
+          ],
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Entwicklung/DotNet/BackupDotnetConsole/MRoessler.ConsoleSupport/IConsole.cs"
+                },
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 14,
+                  "endLine": 16,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
         }
       ],
       "properties": {
