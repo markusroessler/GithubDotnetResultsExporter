@@ -292,6 +292,47 @@ public class GithubDotnetResultsExporterIntegrationTest
         """.Replace("\r\n", "\n")));
     }
 
+    [Test]
+    public void Test_ExportResults_Empty()
+    {
+        CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.EmptySampleTestResults.trx");
+
+        var args = new string[]
+        {
+            "--github-server-url", "https://github.com",
+            "--github-repo", "markusroessler/GithubDotnetResultsExporter",
+            "--github-ref-name", "develop",
+            "--export-step-summary", "true"
+        };
+
+        Program.ExportResults(args, services =>
+        {
+            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(_environment));
+        });
+
+        var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
+        // Console.WriteLine(summaryText);
+
+        // note: don't know why the stacktrace of the second test method differs from the first one ("at InvokeStub_SetUpFailSampleTest")
+        Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
+        ## Build Results
+        |||
+        |:---|---:|
+        | Errors | 0 |
+        | Warnings | 0 |
+        | Notes | 0 |
+
+        ## Test Results
+        |||
+        |:---|---:|
+        | Failed | 0 |
+        | Skipped | 0 |
+        | Passed | 0 |
+        
+        
+        """.Replace("\r\n", "\n")));
+    }
+
     private void CopyTestResultsTrxToTestDir(string trxName)
     {
         var assembly = typeof(GithubDotnetResultsExporterIntegrationTest).Assembly;

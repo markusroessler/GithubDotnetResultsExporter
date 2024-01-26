@@ -225,12 +225,12 @@ internal static class GithubDotnetResultsExporterModelOps
             """);
 
         var unitTestsPerId = testRunsList
-            .Select(testRun => testRun.Items.OfType<TestDefinitionType>().First())
+            .SelectMany(testRun => testRun.Items.OfType<TestDefinitionType>()) // cardinality 0-1
             .SelectMany(testDef => testDef.Items.OfType<UnitTestType>())
             .ToImmutableDictionary(test => test.id);
 
         var testResults = testRuns
-            .Select(testRun => testRun.Items.OfType<ResultsType>().First())
+            .SelectMany(testRun => testRun.Items.OfType<ResultsType>()) // cardinality 0-1
             .SelectMany(testRun => testRun.Items.OfType<UnitTestResultType>())
             .Select(testResult => new TestDefAndResult(unitTestsPerId[testResult.testId], testResult))
             .Order(Comparer<TestDefAndResult>.Create(CompareUnitTestResults))

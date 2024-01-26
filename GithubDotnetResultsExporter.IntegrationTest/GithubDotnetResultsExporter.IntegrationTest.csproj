@@ -26,6 +26,7 @@
     <EmbeddedResource Include="SampleTestResults.trx" />
     <EmbeddedResource Include="OneTimeSetUpFailSampleTestResults.trx" />
     <EmbeddedResource Include="SetUpFailSampleTestResults.trx" />
+    <EmbeddedResource Include="EmptySampleTestResults.trx" />
     <EmbeddedResource Include="sample-compiler-diagnostics.sarif" />
   </ItemGroup>
 
