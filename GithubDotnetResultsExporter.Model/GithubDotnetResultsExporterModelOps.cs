@@ -15,6 +15,9 @@ namespace GithubDotnetResultsExporter.Model;
 
 internal static class GithubDotnetResultsExporterModelOps
 {
+
+    private const string InfoSymbol = "🛈";
+
     internal static GithubDotnetResultsExporterRequest ParseArgs(string[] args)
     {
         var exportChecksActionParams = false;
@@ -150,12 +153,13 @@ internal static class GithubDotnetResultsExporterModelOps
 
         AppendSarifResults(severeSarifResults, result, collectorRequest, workingDirectory);
 
-        result.AppendLine("<details><summary>Notes</summary>");
+        result.AppendLine($"<details><summary>{InfoSymbol} Notes</summary>\n");
         AppendSarifResults(noteSarifResults, result, collectorRequest, workingDirectory);
-        result.AppendLine("</details>");
+        result.AppendLine("\n</details>\n");
 
         return result.ToString();
     }
+
 
     private static void AppendSarifResults(List<Result> sarifResults, StringBuilder result,
          GithubDotnetResultsExporterRequest collectorRequest, string workingDirectory)
@@ -166,7 +170,7 @@ internal static class GithubDotnetResultsExporterModelOps
             {
                 FailureLevel.Error => ":x:",
                 FailureLevel.Warning => ":warning:",
-                _ => "🛈",
+                _ => InfoSymbol,
             };
 
             var ruleHyperlink = "";
