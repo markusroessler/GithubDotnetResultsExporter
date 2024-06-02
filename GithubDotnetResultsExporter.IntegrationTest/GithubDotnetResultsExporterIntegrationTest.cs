@@ -73,6 +73,8 @@ public class GithubDotnetResultsExporterIntegrationTest
         :warning: [FileProvider.cs#L18](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L18)  
         The field 'FileProvider._foobar' is never used ([CS0169](https://www.google.com/search?q=CS0169))  
 
+        <details><summary>🛈 Notes</summary>
+        
         🛈 [FileProvider.cs#L25](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L25)  
         Member 'EnumerateSarifFiles' does not access instance data and can be marked as static ([CA1822](https://www.google.com/search?q=CA1822))  
 
@@ -81,6 +83,8 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         🛈 [FileProvider.cs#L35](https://github.com/markusroessler/GithubDotnetResultsExporter/blob/develop/GithubDotnetResultsExporter.Model/FileProvider.cs#L35)  
         Member 'AppendTextToFile' does not access instance data and can be marked as static ([CA1822](https://www.google.com/search?q=CA1822))  
+
+        </details>
 
         ## Test Results
         |||

@@ -153,9 +153,12 @@ internal static class GithubDotnetResultsExporterModelOps
 
         AppendSarifResults(severeSarifResults, result, collectorRequest, workingDirectory);
 
-        result.AppendLine($"<details><summary>{InfoSymbol} Notes</summary>\n");
-        AppendSarifResults(noteSarifResults, result, collectorRequest, workingDirectory);
-        result.AppendLine("\n</details>\n");
+        if (noteSarifResults.Count > 0)
+        {
+            result.AppendLine($"<details><summary>{InfoSymbol} Notes</summary>\n");
+            AppendSarifResults(noteSarifResults, result, collectorRequest, workingDirectory);
+            result.AppendLine("</details>\n");
+        }
 
         return result.ToString();
     }
