@@ -145,6 +145,21 @@ internal static class GithubDotnetResultsExporterModelOps
 
             """);
 
+        var noteSarifResults = sarifResults.Where(x => x.Level == FailureLevel.Note).ToList();
+        var severeSarifResults = sarifResults.Where(x => x.Level != FailureLevel.Note).ToList();
+
+        AppendSarifResults(severeSarifResults, result, collectorRequest, workingDirectory);
+
+        result.AppendLine("<details><summary>Notes</summary>");
+        AppendSarifResults(noteSarifResults, result, collectorRequest, workingDirectory);
+        result.AppendLine("</details>");
+
+        return result.ToString();
+    }
+
+    private static void AppendSarifResults(List<Result> sarifResults, StringBuilder result,
+         GithubDotnetResultsExporterRequest collectorRequest, string workingDirectory)
+    {
         foreach (var sarifResult in sarifResults)
         {
             var symbol = sarifResult.Level switch
@@ -184,8 +199,6 @@ internal static class GithubDotnetResultsExporterModelOps
                     """);
             }
         }
-
-        return result.ToString();
     }
 
     private readonly record struct TestDefAndResult(UnitTestType TestDef, TestResultType TestResult);
@@ -298,7 +311,7 @@ internal static class GithubDotnetResultsExporterModelOps
         return result.ToString();
     }
 
-    private static List<string> TestOutcomeOrder = new()
+    private static readonly List<string> TestOutcomeOrder = new()
     {
         "Failed",
         "NotExecuted",
