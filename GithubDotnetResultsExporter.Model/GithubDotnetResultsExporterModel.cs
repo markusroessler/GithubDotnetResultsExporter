@@ -13,6 +13,8 @@ public sealed class GithubDotnetResultsExporterModel
     private readonly SarifLogProvider _sarifLogProvider;
     private readonly TestRunProvider _testRunProvider;
 
+    private string _foobar;
+
     public GithubDotnetResultsExporterModel(IServiceProvider serviceProvider)
     {
         _fileProvider = serviceProvider.GetRequiredService<FileProvider>();
