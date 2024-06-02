@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/GithubDotnetResultsExporter.Csl/bin/Debug/net7.0/GithubDotnetResultsExporter.Csl.dll",
+            "program": "${workspaceFolder}/GithubDotnetResultsExporter.Csl/bin/Debug/net8.0/GithubDotnetResultsExporter.Csl.dll",
             "args": [
                 "--github-server-url", "https://github.com",
                 "--github-repo", "markusroessler/GithubDotnetResultsExporter",

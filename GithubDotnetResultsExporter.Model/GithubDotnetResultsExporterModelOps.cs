@@ -15,6 +15,9 @@ namespace GithubDotnetResultsExporter.Model;
 
 internal static class GithubDotnetResultsExporterModelOps
 {
+
+    private const string InfoSymbol = "🛈";
+
     internal static GithubDotnetResultsExporterRequest ParseArgs(string[] args)
     {
         var exportChecksActionParams = false;
@@ -145,13 +148,32 @@ internal static class GithubDotnetResultsExporterModelOps
 
             """);
 
+        var noteSarifResults = sarifResults.Where(x => x.Level == FailureLevel.Note).ToList();
+        var severeSarifResults = sarifResults.Where(x => x.Level != FailureLevel.Note).ToList();
+
+        AppendSarifResults(severeSarifResults, result, collectorRequest, workingDirectory);
+
+        if (noteSarifResults.Count > 0)
+        {
+            result.AppendLine($"<details><summary>{InfoSymbol} Notes</summary>\n");
+            AppendSarifResults(noteSarifResults, result, collectorRequest, workingDirectory);
+            result.AppendLine("</details>\n");
+        }
+
+        return result.ToString();
+    }
+
+
+    private static void AppendSarifResults(List<Result> sarifResults, StringBuilder result,
+         GithubDotnetResultsExporterRequest collectorRequest, string workingDirectory)
+    {
         foreach (var sarifResult in sarifResults)
         {
             var symbol = sarifResult.Level switch
             {
                 FailureLevel.Error => ":x:",
                 FailureLevel.Warning => ":warning:",
-                _ => "🛈",
+                _ => InfoSymbol,
             };
 
             var ruleHyperlink = "";
@@ -184,8 +206,6 @@ internal static class GithubDotnetResultsExporterModelOps
                     """);
             }
         }
-
-        return result.ToString();
     }
 
     private readonly record struct TestDefAndResult(UnitTestType TestDef, TestResultType TestResult);
@@ -298,7 +318,7 @@ internal static class GithubDotnetResultsExporterModelOps
         return result.ToString();
     }
 
-    private static List<string> TestOutcomeOrder = new()
+    private static readonly List<string> TestOutcomeOrder = new()
     {
         "Failed",
         "NotExecuted",
