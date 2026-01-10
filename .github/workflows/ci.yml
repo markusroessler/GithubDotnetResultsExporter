@@ -45,7 +45,7 @@ jobs:
 
     - name: Collect Build Results
       if: always()
-      run: dotnet run --project GithubDotnetResultsExporter.Csl -- --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }} --culture "de-DE"
+      run: dotnet run --project GithubDotnetResultsExporter.Csl --framework net10.0 -- --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }} --culture "de-DE"
 
     - name: Generate Coverage Report
       if: always()
