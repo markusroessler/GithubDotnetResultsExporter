@@ -28,8 +28,8 @@
             },
             "suppressJITOptimizations": true,
             "env": {
-                "GITHUB_OUTPUT": "D:/Entwicklung/DotNet/GithubDotnetResultsExporter/github-output.txt",
-                "GITHUB_STEP_SUMMARY": "D:/Entwicklung/DotNet/GithubDotnetResultsExporter/github-step-summary.md"
+                "GITHUB_OUTPUT": "${workspaceFolder}/github-output.txt",
+                "GITHUB_STEP_SUMMARY": "${workspaceFolder}/github-step-summary.md"
             }
         },
         {
