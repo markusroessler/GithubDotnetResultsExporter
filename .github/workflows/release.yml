@@ -71,7 +71,7 @@ jobs:
     - name: Collect Build Results
       id: collect-build-results
       if: always()
-      run: export-dotnet-results-for-github --framework net10.0 --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }} --culture "de-DE"
+      run: export-dotnet-results-for-github --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }} --culture "de-DE"
 
     - name: Publish Github Release
       uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
