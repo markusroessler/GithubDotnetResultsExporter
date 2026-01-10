@@ -41,10 +41,14 @@ public class SampleTests
     }
 
     [Test]
-    [Timeout(100)]
-    public void Test_Timeout()
+    [CancelAfter(100)]
+    public void Test_Timeout(CancellationToken cancellationToken)
     {
-        Thread.Sleep(1000);
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            Thread.Sleep(10);
+        }
+        cancellationToken.ThrowIfCancellationRequested();
     }
 
     [Test]

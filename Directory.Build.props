@@ -1,10 +1,10 @@
 <Project>
     <ItemGroup>
-      <PackageReference Include="MRoessler.DotnetAnalyzerConfig" Version="1.*"/>
+      <PackageReference Include="MRoessler.DotnetAnalyzerConfig"/>
     </ItemGroup>
 
     <ItemGroup Condition="$(ProjectName.EndsWith('Test'))">
-      <PackageReference Include="MRoessler.DotnetAnalyzerConfig.Test" Version="1.*" />
+      <PackageReference Include="MRoessler.DotnetAnalyzerConfig.Test" />
     </ItemGroup>
 </Project>
   
