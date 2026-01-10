@@ -16,25 +16,24 @@ jobs:
   release:
     name: Release ${{ inputs.release-version }}
     runs-on: ubuntu-latest
-
+    
     env:
       NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+      NUGET_MROESSLER_GITHUB_PWD: ${{ secrets.GITHUB_TOKEN }}
+      DOTNET_VERSION: 10.0.101
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
-    - name: Setup .NET Core SDK 8.0.x
-      uses: actions/setup-dotnet@v3
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602 # v5.0.1
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: ${{ env.DOTNET_VERSION }}
         cache: true
-        cache-dependency-path: "*/packages.lock.json"
+        cache-dependency-path: "*/*.csproj"
      
     - name: Remove setup-dotnet problem matcher
       run: echo "::remove-matcher owner=csc::"
-
-    - name: Init nuget source
-      run: dotnet nuget add source --username markusroessler --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/markusroessler/index.json"
 
     - name: Git Config
       run: |
@@ -63,7 +62,7 @@ jobs:
       run: dotnet pack GithubDotnetResultsExporter.Csl -p:Configuration=Release -p:Version=${{ inputs.release-version }}
 
     - name: Push nuget package
-      run: dotnet nuget push GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+      run: dotnet nuget push GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "mroessler.github"
 
     - name: Install package as tool
       if: always()
@@ -75,7 +74,7 @@ jobs:
       run: export-dotnet-results-for-github --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }} --culture "de-DE"
 
     - name: Publish Github Release
-      uses: ncipollo/release-action@v1
+      uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
       with:
         name: ${{ inputs.release-version }}
         tag: "release/${{ inputs.release-version }}"
@@ -87,7 +86,7 @@ jobs:
 
     - name: Upload Test Report
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
         name: GithubDotnetResultsExporter-release-test-report
         path: '**/TestResults/*.html'

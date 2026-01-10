@@ -1,0 +1,5 @@
+[*.{cs,vb}]
+
+# TODO move to MRoessler.DotnetAnalyzerConfig
+# CA1873: Avoid potentially expensive logging
+dotnet_diagnostic.CA1873.severity = suggestion
