@@ -1,72 +1,19 @@
 name: CI Build
 
-on: 
-  push: 
-  workflow_dispatch:
-
+on: [push, workflow_dispatch]
 permissions:
-  contents: read
+  contents: write
   packages: read
 
 jobs:
-  build-and-test:
-    name: Build-Job
-    runs-on: ubuntu-latest
+  debug-build:
+    uses: ./.github/workflows/build-and-test.yml
+    secrets: inherit
+    with:
+      build-config: Debug
 
-    env:
-      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
-      NUGET_MROESSLER_GITHUB_PWD: ${{ secrets.GITHUB_TOKEN }}
-      DOTNET_VERSION: 10.0.101
-      
-    steps:
-    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@9a946fdbd5fb07b82b2f5a4466058b876ab72bb2 # v5.3.0
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-        cache: true
-        cache-dependency-path: "*/*.csproj"
-
-    - name: Remove setup-dotnet problem matcher
-      run: echo "::remove-matcher owner=csc::"
-
-    - name: Restore
-      run: |
-        dotnet restore --locked-mode
-        dotnet tool restore
-
-    - name: Build
-      run: dotnet build --no-restore -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
-    
-    - name: Test
-      if: always()
-      run: dotnet test --logger:html --logger:"trx;LogFileName=TestResults.trx" --collect:"XPlat Code Coverage" --settings coverlet.runsettings --no-build
-
-    - name: Collect Build Results
-      if: always()
-      run: dotnet run --project GithubDotnetResultsExporter.Csl --framework net10.0 -- --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }} --culture "de-DE"
-
-    - name: Generate Coverage Report
-      if: always()
-      run: dotnet reportgenerator
-    
-    - name: Upload Coverage Report
-      if: always()
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-      with:
-        name: GithubDotnetResultsExporter-ci-coverage-report
-        path: TestResults/coverage-report
-
-    - name: Upload Test Report
-      if: always()
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-      with:
-        name: GithubDotnetResultsExporter-ci-test-report
-        path: '**/TestResults/*.html'
-
-    - name: Publish Coverage Results
-      if: always()
-      run: | 
-        echo "## Coverage Results" >> $GITHUB_STEP_SUMMARY
-        cat TestResults/coverage-report/SummaryGithub.md | sed -e 's/# Summary//g' >> $GITHUB_STEP_SUMMARY
+  release-build:
+    uses: ./.github/workflows/build-and-test.yml
+    secrets: inherit
+    with:
+      build-config: Release

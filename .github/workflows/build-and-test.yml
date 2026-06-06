@@ -1,0 +1,112 @@
+name: Build and Test
+
+on:
+  workflow_call:
+    inputs:
+      build-config:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  packages: read
+
+env:
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+  NUGET_MROESSLER_GITHUB_PWD: ${{ secrets.NUGET_READ }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Configure Git
+        run: bash .github/scripts/configure-git.sh
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@9a946fdbd5fb07b82b2f5a4466058b876ab72bb2 # v5.3.0
+        with:
+          dotnet-version: ${{ vars.DOTNET_VERSION }}
+          cache: true
+          cache-dependency-path: "*/*.csproj"
+
+      - name: Remove setup-dotnet problem matcher
+        run: bash .github/scripts/remove-net-problem-matcher.sh
+      
+      - name: Restore
+        run: dotnet restore
+
+      - name: Restore tools
+        run: dotnet tool restore
+      
+      - name: Build
+        id: build
+        run: dotnet build -c:${{ inputs.build-config }} -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1" --no-restore
+
+      - name: Collect build results
+        id: collect-build-results
+        if: always()
+        run: bash .github/scripts/collect-build-results.sh use_dotnet_run ${{ github.server_url }} ${{ github.repository }} ${{ github.ref_name }}
+
+      - name: Publish lines of code
+        if: always()
+        run: bash .github/scripts/print-lines-of-code.sh >> $GITHUB_STEP_SUMMARY
+
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+    
+    - name: Configure Git
+      run: bash .github/scripts/configure-git.sh
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@9a946fdbd5fb07b82b2f5a4466058b876ab72bb2 # v5.3.0
+      with:
+        dotnet-version: ${{ vars.DOTNET_VERSION }}
+        cache: true
+        cache-dependency-path: "*/*.csproj"
+
+    - name: Remove setup-dotnet problem matcher
+      run: bash .github/scripts/remove-net-problem-matcher.sh
+
+    - name: Restore tools
+      run: dotnet tool restore
+    
+    - name: Restore
+      run: dotnet restore
+
+    - name: Build
+      id: build
+      run: dotnet build -c:${{ inputs.build-config }} --no-restore -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
+    
+    - name: Test
+      if: always()
+      run: bash .github/scripts/test.sh ${{ inputs.build-config }} ci.runsettings
+
+    - name: Collect build results
+      id: collect-build-results
+      if: always()
+      run: bash .github/scripts/collect-build-results.sh use_dotnet_run ${{ github.server_url }} ${{ github.repository }} ${{ github.ref_name }}
+    
+    - name: Generate coverage report
+      if: inputs.build-config == 'Debug'
+      run: dotnet reportgenerator
+    
+    - name: Upload test report
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      with:
+        name: GithubDotnetResultsExporter-${{ inputs.build-config }}-test-report
+        path: TestResults
+
+    - name: Publish coverage results
+      if: inputs.build-config == 'Debug'
+      run: | 
+        echo "## Coverage Results" >> $GITHUB_STEP_SUMMARY
+        cat TestResults/coverage-report/SummaryGithub.md | sed -e 's/# Summary//g' >> $GITHUB_STEP_SUMMARY

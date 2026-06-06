@@ -8,70 +8,62 @@ on:
         required: true
         default: ''
 
+      skip-build-and-test:
+        type: boolean
+        description: skip the build-and-test job?
+        required: true
+        default: false
+
 permissions:
   contents: write
   packages: write
 
+env:
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+  NUGET_MROESSLER_GITHUB_PWD: ${{ secrets.GITHUB_TOKEN }}
+
+
 jobs:
-  release:
+  release-build:
+    uses: ./.github/workflows/build-and-test.yml
+    secrets: inherit
+    if: ${{ !inputs.skip-build-and-test }}
+    with:
+      build-config: Release
+
+  publish:
     name: Release ${{ inputs.release-version }}
     runs-on: ubuntu-latest
     
-    env:
-      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
-      NUGET_MROESSLER_GITHUB_PWD: ${{ secrets.GITHUB_TOKEN }}
-      DOTNET_VERSION: 10.0.101
-
     steps:
     - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+    
+    - name: Configure Git
+      run: bash .github/scripts/configure-git.sh
 
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@9a946fdbd5fb07b82b2f5a4466058b876ab72bb2 # v5.3.0
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        dotnet-version: ${{ var.DOTNET_VERSION }}
         cache: true
         cache-dependency-path: "*/*.csproj"
      
     - name: Remove setup-dotnet problem matcher
-      run: echo "::remove-matcher owner=csc::"
+      run: bash .github/scripts/remove-net-problem-matcher.sh
 
-    - name: Git Config
-      run: |
-        git config --global user.name 'Github Actions'
-        git config --global user.email 'github.actions@users.noreply.github.com'
+    - name: Restore
+      run: dotnet restore
     
+    - name: Restore tools
+      run: dotnet tool restore
+        
+    - name: Pack nuget package
+      run: dotnet pack GithubDotnetResultsExporter.Csl -p:Configuration=Release -p:Version=${{ inputs.release-version }} --no-restore
+
     - name: Create Tag
       run: |
         git tag -a "release/${{ inputs.release-version }}" -m "Release ${{ inputs.release-version }} [skip ci]"
         git push origin "refs/tags/release/${{ inputs.release-version }}"
-
-    - name: Restore
-      run: | 
-        dotnet restore --locked-mode -p:Configuration=Release
-        dotnet tool restore
-        
-    - name: Build
-      id: build
-      run: dotnet build --no-restore -p:Configuration=Release -p:ErrorLog="compiler-diagnostics.sarif%2Cversion=2.1"
-
-    - name: Test
-      if: always()
-      run: dotnet test -p:Configuration=Release --logger:html --logger:"trx;LogFileName=TestResults/TestResults.trx" --no-build
-
-    - name: Pack nuget package
-      run: dotnet pack GithubDotnetResultsExporter.Csl -p:Configuration=Release -p:Version=${{ inputs.release-version }}
-
-    - name: Push nuget package
-      run: dotnet nuget push GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "mroessler.github"
-
-    - name: Install package as tool
-      if: always()
-      run: dotnet tool install --global GithubDotnetResultsExporter --version ${{ inputs.release-version }}
-
-    - name: Collect Build Results
-      id: collect-build-results
-      if: always()
-      run: export-dotnet-results-for-github --export-step-summary true --github-server-url ${{ github.server_url }} --github-repo ${{ github.repository }} --github-ref-name ${{ github.ref_name }} --culture "de-DE"
 
     - name: Publish Github Release
       uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
@@ -83,6 +75,18 @@ jobs:
         draft: false
         prerelease: ${{ github.ref_name != 'main' }}
         makeLatest: ${{ github.ref_name == 'main' }}
+
+    - name: Push nuget package
+      run: dotnet nuget push GithubDotnetResultsExporter.Csl/bin/Release/GithubDotnetResultsExporter.${{ inputs.release-version }}.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "mroessler.github"
+
+    - name: Install package as tool
+      if: always()
+      run: dotnet tool install --global GithubDotnetResultsExporter --version ${{ inputs.release-version }}
+
+    - name: Collect Build Results
+      id: collect-build-results
+      if: always()
+      run: bash .github/scripts/collect-build-results.sh use_installed ${{ github.server_url }} ${{ github.repository }} ${{ github.ref_name }}
 
     - name: Upload Test Report
       if: always()
