@@ -49,7 +49,7 @@ jobs:
       - name: Collect build results
         id: collect-build-results
         if: always()
-        run: bash .github/scripts/collect-build-results.sh use_dotnet_run ${{ github.server_url }} ${{ github.repository }} ${{ github.ref_name }}
+        run: bash .github/scripts/collect-build-results.sh use_dotnet_run ${{ github.server_url }} ${{ github.repository }} ${{ github.ref_name }} "build"
 
       - name: Publish lines of code
         if: always()
@@ -93,7 +93,7 @@ jobs:
     - name: Collect build results
       id: collect-build-results
       if: always()
-      run: bash .github/scripts/collect-build-results.sh use_dotnet_run ${{ github.server_url }} ${{ github.repository }} ${{ github.ref_name }}
+      run: bash .github/scripts/collect-build-results.sh use_dotnet_run ${{ github.server_url }} ${{ github.repository }} ${{ github.ref_name }} "test"
     
     - name: Generate coverage report
       if: inputs.build-config == 'Debug'

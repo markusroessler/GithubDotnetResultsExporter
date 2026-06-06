@@ -88,4 +88,4 @@ jobs:
     - name: Collect Build Results
       id: collect-build-results
       if: always()
-      run: bash .github/scripts/collect-build-results.sh use_installed ${{ github.server_url }} ${{ github.repository }} ${{ github.ref_name }}
+      run: bash .github/scripts/collect-build-results.sh use_installed ${{ github.server_url }} ${{ github.repository }} ${{ github.ref_name }} "build"
