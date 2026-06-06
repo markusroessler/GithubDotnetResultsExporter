@@ -103,7 +103,7 @@ jobs:
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: GithubDotnetResultsExporter-${{ inputs.build-config }}-test-report
-        path: TestResults
+        path: '**/TestResults'
 
     - name: Publish coverage results
       if: inputs.build-config == 'Debug'
