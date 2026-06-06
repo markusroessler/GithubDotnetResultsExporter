@@ -180,6 +180,62 @@ public class GithubDotnetResultsExporterIntegrationTest
     }
 
     [Test]
+    public void Test_ExportResults_SkipTestResults()
+    {
+        CopyBuildResultsSarifToSlnDir("GithubDotnetResultsExporter.IntegrationTest.sample-compiler-diagnostics.sarif");
+        CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.SampleTestResults.trx");
+
+        var args = new string[]
+        {
+            "--github-server-url", "https://github.com",
+            "--github-repo", "markusroessler/GithubDotnetResultsExporter",
+            "--github-ref-name", "develop",
+            "--export-step-summary", "true",
+            "--step-summary-content-types", "build"
+        };
+
+        Program.ExportResults(args, services =>
+        {
+            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(_environment));
+        });
+
+        var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
+        // Console.WriteLine(summaryText);
+
+        Assert.That(summaryText, Does.Contain("Build Results"));
+        Assert.That(summaryText, Does.Not.Contain("Test Results"));
+    }
+
+
+    [Test]
+    public void Test_ExportResults_SkipBuildResults()
+    {
+        CopyBuildResultsSarifToSlnDir("GithubDotnetResultsExporter.IntegrationTest.sample-compiler-diagnostics.sarif");
+        CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.SampleTestResults.trx");
+
+        var args = new string[]
+        {
+            "--github-server-url", "https://github.com",
+            "--github-repo", "markusroessler/GithubDotnetResultsExporter",
+            "--github-ref-name", "develop",
+            "--export-step-summary", "true",
+            "--step-summary-content-types", "test"
+        };
+
+        Program.ExportResults(args, services =>
+        {
+            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(_environment));
+        });
+
+        var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
+        // Console.WriteLine(summaryText);
+
+        Assert.That(summaryText, Does.Not.Contain("Build Results"));
+        Assert.That(summaryText, Does.Contain("Test Results"));
+    }
+
+
+    [Test]
     public void Test_ExportResults_OnetimeSetupFail()
     {
         CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.OneTimeSetUpFailSampleTestResults.trx");

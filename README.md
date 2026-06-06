@@ -13,6 +13,10 @@ default: false
 true to export a step summary for build and test results
 default: false
 
+## --step-summary-content-types
+results to contain in the step summary
+default: "build, test"
+
 ## --github-server-url (required)
 used to construct repo file urls  
 example:

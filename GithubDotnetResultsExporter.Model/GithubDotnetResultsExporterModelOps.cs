@@ -15,14 +15,18 @@ namespace GithubDotnetResultsExporter.Model;
 
 internal static class GithubDotnetResultsExporterModelOps
 {
-
     private const string InfoSymbol = "🛈";
     private const string ErrorSymbol = ":x:";
+
+    private const string BuildResultsType = "build";
+    private const string TestResultsType = "test";
+    internal static readonly IReadOnlySet<string> SupportedStepSummaryContentTypes = new HashSet<string> { BuildResultsType, TestResultsType };
 
     internal static GithubDotnetResultsExporterRequest ParseArgs(string[] args)
     {
         var exportChecksActionParams = false;
         var exportStepSummary = false;
+        IReadOnlySet<string> stepSummaryContentTypes = new HashSet<string> { BuildResultsType, TestResultsType };
         string? githubServerUrl = null;
         string? githubRepo = null;
         string? githubRefName = null;
@@ -37,6 +41,9 @@ internal static class GithubDotnetResultsExporterModelOps
                     break;
                 case "--export-step-summary":
                     exportStepSummary = Convert.ToBoolean(args.ElementAtOrDefault(++i), CultureInfo.InvariantCulture);
+                    break;
+                case "--step-summary-content-types":
+                    stepSummaryContentTypes = ParseStepSummaryContentTypes(args.ElementAtOrDefault(++i));
                     break;
                 case "--github-server-url":
                     githubServerUrl = args.ElementAtOrDefault(++i);
@@ -66,8 +73,25 @@ internal static class GithubDotnetResultsExporterModelOps
         if (githubRefName == null)
             throw new ArgumentException("missing argument: --github-ref-name");
 
-        return new(exportChecksActionParams, exportStepSummary, githubServerUrl, githubRepo, githubRefName, cultureInfo);
+        return new(exportChecksActionParams, exportStepSummary, stepSummaryContentTypes, githubServerUrl, githubRepo, githubRefName, cultureInfo);
     }
+
+    private static IReadOnlySet<string> ParseStepSummaryContentTypes(string? arg)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(arg);
+
+        var types = arg.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        foreach (var type in types)
+        {
+            if (!SupportedStepSummaryContentTypes.Contains(type))
+                throw new ArgumentException($"invalid content type: {type} - supported: {string.Join(", ", SupportedStepSummaryContentTypes)}");
+        }
+
+        return types.ToHashSet();
+    }
+
+    internal static bool ShouldExportBuildResults(IReadOnlySet<string> stepSummaryContentTypes) => stepSummaryContentTypes.Contains(BuildResultsType);
+    internal static bool ShouldExportTestResults(IReadOnlySet<string> stepSummaryContentTypes) => stepSummaryContentTypes.Contains(TestResultsType);
 
     internal static IList<Result> GetSarifResults(IEnumerable<SarifLog> sarifLogs)
     {

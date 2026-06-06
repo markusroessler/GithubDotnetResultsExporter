@@ -6,7 +6,6 @@ namespace GithubDotnetResultsExporter.Model.Test;
 
 public class GithubDotnetResultsExporterModelOpsTest
 {
-
     [Test]
     public void Test_MapToAnnotationRequests()
     {
@@ -58,7 +57,8 @@ public class GithubDotnetResultsExporterModelOpsTest
             }
         };
 
-        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop", new CultureInfo("de-DE"));
+        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, GithubDotnetResultsExporterModelOps.SupportedStepSummaryContentTypes,
+            "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop", new CultureInfo("de-DE"));
 
         var requests = GithubDotnetResultsExporterModelOps.MapToAnnotationRequests(sarifResults, collectorRequest, "/repo");
 
@@ -148,7 +148,8 @@ public class GithubDotnetResultsExporterModelOpsTest
             }
         };
 
-        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop", new CultureInfo("de-DE"));
+        var collectorRequest = new GithubDotnetResultsExporterRequest(true, true, GithubDotnetResultsExporterModelOps.SupportedStepSummaryContentTypes,
+            "https://github.com", "markusroessler/GithubDotnetResultsExporter", "develop", new CultureInfo("de-DE"));
 
         var markdown = GithubDotnetResultsExporterModelOps.CreateSummaryMarkdown(sarifResults, collectorRequest, "/repo");
         // Console.WriteLine(markdown);

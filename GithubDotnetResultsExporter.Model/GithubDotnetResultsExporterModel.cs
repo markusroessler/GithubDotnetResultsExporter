@@ -42,11 +42,19 @@ public sealed class GithubDotnetResultsExporterModel
 
         if (collectorRequest.ExportStepSummary)
         {
-            var summaryMarkdown = CreateSummaryMarkdown(sarifResults, collectorRequest, workingDir);
+            var summaryMarkdown = "";
 
-            var trxFiles = _fileProvider.EnumerateTrxFiles(workingDir);
-            var testRuns = _testRunProvider.LoadTestRuns(trxFiles);
-            summaryMarkdown += CreateSummaryMarkdown(testRuns, collectorRequest.CultureInfo);
+            if (ShouldExportBuildResults(collectorRequest.StepSummaryContentTypes))
+            {
+                summaryMarkdown += CreateSummaryMarkdown(sarifResults, collectorRequest, workingDir);
+            }
+
+            if (ShouldExportTestResults(collectorRequest.StepSummaryContentTypes))
+            {
+                var trxFiles = _fileProvider.EnumerateTrxFiles(workingDir);
+                var testRuns = _testRunProvider.LoadTestRuns(trxFiles);
+                summaryMarkdown += CreateSummaryMarkdown(testRuns, collectorRequest.CultureInfo);
+            }
 
             _fileProvider.AppendTextToFile(githubStepSummaryFile, summaryMarkdown);
         }
@@ -54,5 +62,5 @@ public sealed class GithubDotnetResultsExporterModel
 }
 
 internal sealed record GithubDotnetResultsExporterRequest(
-    bool ExportChecksActionParams, bool ExportStepSummary,
+    bool ExportChecksActionParams, bool ExportStepSummary, IReadOnlySet<string> StepSummaryContentTypes,
     string GithubServerUrl, string GithubRepo, string GithubRefName, CultureInfo CultureInfo);
