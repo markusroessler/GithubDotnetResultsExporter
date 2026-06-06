@@ -17,6 +17,7 @@ internal static class GithubDotnetResultsExporterModelOps
 {
 
     private const string InfoSymbol = "🛈";
+    private const string ErrorSymbol = ":x:";
 
     internal static GithubDotnetResultsExporterRequest ParseArgs(string[] args)
     {
@@ -114,9 +115,6 @@ internal static class GithubDotnetResultsExporterModelOps
 
     internal static string CreateSummaryMarkdown(IList<Result> sarifResults, GithubDotnetResultsExporterRequest collectorRequest, string workingDirectory)
     {
-        var result = new StringBuilder();
-        result.AppendLine("## Build Results");
-
         var errorCount = 0;
         var warningCount = 0;
         var noteCount = 0;
@@ -137,6 +135,11 @@ internal static class GithubDotnetResultsExporterModelOps
                     break;
             }
         }
+
+        var result = new StringBuilder();
+
+        var headerSymbol = errorCount > 0 ? $" {ErrorSymbol}" : "";
+        result.AppendLine(collectorRequest.CultureInfo, $"##{headerSymbol} Build Results");
 
         result.AppendLine(collectorRequest.CultureInfo,
             $"""
@@ -171,7 +174,7 @@ internal static class GithubDotnetResultsExporterModelOps
         {
             var symbol = sarifResult.Level switch
             {
-                FailureLevel.Error => ":x:",
+                FailureLevel.Error => ErrorSymbol,
                 FailureLevel.Warning => ":warning:",
                 _ => InfoSymbol,
             };
@@ -241,7 +244,6 @@ internal static class GithubDotnetResultsExporterModelOps
             | Failed | {failCount:N0} |
             | Skipped | {skipCount:N0} |
             | Passed | {successCount:N0} |
-
             """);
 
         var unitTestsPerId = testRunsList
@@ -256,13 +258,17 @@ internal static class GithubDotnetResultsExporterModelOps
             .Order(Comparer<TestDefAndResult>.Create(CompareUnitTestResults))
             .ToList();
 
+        var hasTestResults = testResults.Count > 0;
+        if (hasTestResults)
+            result.AppendLine("<details><summary><b>Details</b></summary>");
+
         foreach (var (testDef, testResult) in testResults)
         {
             var symbol = testResult.outcome switch
             {
                 "Passed" => ":heavy_check_mark:",
                 "NotExecuted" => ":zzz:",
-                _ => ":x:",
+                _ => ErrorSymbol,
             };
 
             var output = testResult.Items?.OfType<OutputType>().FirstOrDefault();
@@ -314,6 +320,9 @@ internal static class GithubDotnetResultsExporterModelOps
                 </details>
                 """);
         }
+
+        if (hasTestResults)
+            result.AppendLine("</details>");
 
         return result.ToString();
     }
