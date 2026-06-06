@@ -13,7 +13,7 @@ permissions:
 
 env:
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
-  NUGET_MROESSLER_GITHUB_PWD: ${{ secrets.NUGET_READ }}
+  NUGET_MROESSLER_GITHUB_PWD: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
