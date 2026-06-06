@@ -155,7 +155,7 @@ public class GithubDotnetResultsExporterModelOpsTest
 
         Assert.That(markdown, Is.EqualTo(
             """
-            ## Build Results
+            ## :x: Build Results
             |||
             |:---|---:|
             | Errors | 1 |
@@ -205,7 +205,7 @@ public class GithubDotnetResultsExporterModelOpsTest
 
         Assert.That(result, Is.EqualTo(
             """
-            ## Test Results
+            ## :x: Test Results
             |||
             |:---|---:|
             | Failed | 499 |

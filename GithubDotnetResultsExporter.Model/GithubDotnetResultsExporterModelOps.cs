@@ -215,9 +215,6 @@ internal static class GithubDotnetResultsExporterModelOps
 
     internal static string CreateSummaryMarkdown(IEnumerable<TestRunType> testRuns, CultureInfo cultureInfo)
     {
-        var result = new StringBuilder();
-        result.AppendLine("## Test Results");
-
         var testRunsList = testRuns.ToList();
 
         var counters = testRunsList
@@ -237,6 +234,11 @@ internal static class GithubDotnetResultsExporterModelOps
             skipCount += counter.total - counter.executed;
         }
 
+        var result = new StringBuilder();
+
+        var headerSymbol = failCount > 0 ? $" {ErrorSymbol}" : "";
+        result.AppendLine(cultureInfo, $"##{headerSymbol} Test Results");
+
         result.AppendLine(cultureInfo,
             $"""
             |||
@@ -244,6 +246,7 @@ internal static class GithubDotnetResultsExporterModelOps
             | Failed | {failCount:N0} |
             | Skipped | {skipCount:N0} |
             | Passed | {successCount:N0} |
+            
             """);
 
         var unitTestsPerId = testRunsList

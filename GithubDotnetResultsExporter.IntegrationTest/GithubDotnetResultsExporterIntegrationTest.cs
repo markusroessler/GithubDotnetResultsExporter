@@ -57,7 +57,7 @@ public class GithubDotnetResultsExporterIntegrationTest
         // Console.WriteLine(summaryText);
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
-        ## Build Results
+        ## :x: Build Results
         |||
         |:---|---:|
         | Errors | 1 |
@@ -86,13 +86,14 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         </details>
 
-        ## Test Results
+        ## :x: Test Results
         |||
         |:---|---:|
         | Failed | 2 |
         | Skipped | 3 |
         | Passed | 2 |
         
+        <details><summary><b>Details</b></summary>
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail</summary>
 
         **Error**  
@@ -173,6 +174,7 @@ public class GithubDotnetResultsExporterIntegrationTest
         ```
 
         </details>
+        </details>
 
         """.Replace("\r\n", "\n")));
     }
@@ -205,13 +207,14 @@ public class GithubDotnetResultsExporterIntegrationTest
         | Warnings | 0 |
         | Notes | 0 |
 
-        ## Test Results
+        ## :x: Test Results
         |||
         |:---|---:|
         | Failed | 1 |
         | Skipped | 0 |
         | Passed | 0 |
         
+        <details><summary><b>Details</b></summary>
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetupFailSampleTest.Test_Pass</summary>
 
         **Error**  
@@ -222,6 +225,7 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         ```
 
+        </details>
         </details>
 
         """.Replace("\r\n", "\n")));
@@ -257,13 +261,14 @@ public class GithubDotnetResultsExporterIntegrationTest
         | Warnings | 0 |
         | Notes | 0 |
 
-        ## Test Results
+        ## :x: Test Results
         |||
         |:---|---:|
         | Failed | 2 |
         | Skipped | 0 |
         | Passed | 0 |
         
+        <details><summary><b>Details</b></summary>
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.Test_Pass</summary>
 
         **Error**  
@@ -291,6 +296,7 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         ```
 
+        </details>
         </details>
 
         """.Replace("\r\n", "\n")));
