@@ -89,10 +89,3 @@ jobs:
       id: collect-build-results
       if: always()
       run: bash .github/scripts/collect-build-results.sh use_installed ${{ github.server_url }} ${{ github.repository }} ${{ github.ref_name }}
-
-    - name: Upload Test Report
-      if: always()
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-      with:
-        name: GithubDotnetResultsExporter-release-test-report
-        path: '**/TestResults/*.html'
