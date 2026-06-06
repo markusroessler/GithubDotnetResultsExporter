@@ -29,7 +29,7 @@ public sealed class GithubDotnetResultsExporterModel
         var sarifResults = GetSarifResults(sarifLogs);
         var githubStepSummaryFile = _fileProvider.GithubStepSummaryFile;
 
-        if (collectorRequest.exportChecksActionParams)
+        if (collectorRequest.ExportChecksActionParams)
         {
             var annotationRequests = MapToAnnotationRequests(sarifResults, collectorRequest, workingDir);
             var maxLevel = GetMaxLevel(annotationRequests);
@@ -40,17 +40,27 @@ public sealed class GithubDotnetResultsExporterModel
             _fileProvider.AppendTextToFile(githubOutputFile, $"checks-action-annotations={JsonSerializer.Serialize(annotationRequests)}\n");
         }
 
-        if (collectorRequest.exportStepSummary)
+        if (collectorRequest.ExportStepSummary)
         {
-            var summaryMarkdown = CreateSummaryMarkdown(sarifResults, collectorRequest, workingDir);
+            var summaryMarkdown = "";
 
-            var trxFiles = _fileProvider.EnumerateTrxFiles(workingDir);
-            var testRuns = _testRunProvider.LoadTestRuns(trxFiles);
-            summaryMarkdown += CreateSummaryMarkdown(testRuns, collectorRequest.CultureInfo);
+            if (ShouldExportBuildResults(collectorRequest.StepSummaryContentTypes))
+            {
+                summaryMarkdown += CreateSummaryMarkdown(sarifResults, collectorRequest, workingDir);
+            }
+
+            if (ShouldExportTestResults(collectorRequest.StepSummaryContentTypes))
+            {
+                var trxFiles = _fileProvider.EnumerateTrxFiles(workingDir);
+                var testRuns = _testRunProvider.LoadTestRuns(trxFiles);
+                summaryMarkdown += CreateSummaryMarkdown(testRuns, collectorRequest.CultureInfo);
+            }
 
             _fileProvider.AppendTextToFile(githubStepSummaryFile, summaryMarkdown);
         }
     }
 }
 
-internal sealed record GithubDotnetResultsExporterRequest(bool exportChecksActionParams, bool exportStepSummary, string GithubServerUrl, string GithubRepo, string GithubRefName, CultureInfo CultureInfo);
+internal sealed record GithubDotnetResultsExporterRequest(
+    bool ExportChecksActionParams, bool ExportStepSummary, IReadOnlySet<string> StepSummaryContentTypes,
+    string GithubServerUrl, string GithubRepo, string GithubRefName, CultureInfo CultureInfo);

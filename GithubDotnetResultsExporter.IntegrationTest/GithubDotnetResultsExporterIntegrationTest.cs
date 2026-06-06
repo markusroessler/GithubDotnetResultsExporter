@@ -57,7 +57,7 @@ public class GithubDotnetResultsExporterIntegrationTest
         // Console.WriteLine(summaryText);
 
         Assert.That(summaryText.Replace("\r\n", "\n"), Is.EqualTo("""
-        ## Build Results
+        ## :x: Build Results
         |||
         |:---|---:|
         | Errors | 1 |
@@ -86,13 +86,14 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         </details>
 
-        ## Test Results
+        ## :x: Test Results
         |||
         |:---|---:|
         | Failed | 2 |
         | Skipped | 3 |
         | Passed | 2 |
         
+        <details><summary><b>Details</b></summary>
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.GithubDotnetResultsExporterIntegrationTest.Test_Fail</summary>
 
         **Error**  
@@ -173,9 +174,66 @@ public class GithubDotnetResultsExporterIntegrationTest
         ```
 
         </details>
+        </details>
 
         """.Replace("\r\n", "\n")));
     }
+
+    [Test]
+    public void Test_ExportResults_SkipTestResults()
+    {
+        CopyBuildResultsSarifToSlnDir("GithubDotnetResultsExporter.IntegrationTest.sample-compiler-diagnostics.sarif");
+        CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.SampleTestResults.trx");
+
+        var args = new string[]
+        {
+            "--github-server-url", "https://github.com",
+            "--github-repo", "markusroessler/GithubDotnetResultsExporter",
+            "--github-ref-name", "develop",
+            "--export-step-summary", "true",
+            "--step-summary-content-types", "build"
+        };
+
+        Program.ExportResults(args, services =>
+        {
+            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(_environment));
+        });
+
+        var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
+        // Console.WriteLine(summaryText);
+
+        Assert.That(summaryText, Does.Contain("Build Results"));
+        Assert.That(summaryText, Does.Not.Contain("Test Results"));
+    }
+
+
+    [Test]
+    public void Test_ExportResults_SkipBuildResults()
+    {
+        CopyBuildResultsSarifToSlnDir("GithubDotnetResultsExporter.IntegrationTest.sample-compiler-diagnostics.sarif");
+        CopyTestResultsTrxToTestDir("GithubDotnetResultsExporter.IntegrationTest.SampleTestResults.trx");
+
+        var args = new string[]
+        {
+            "--github-server-url", "https://github.com",
+            "--github-repo", "markusroessler/GithubDotnetResultsExporter",
+            "--github-ref-name", "develop",
+            "--export-step-summary", "true",
+            "--step-summary-content-types", "test"
+        };
+
+        Program.ExportResults(args, services =>
+        {
+            services.Replace(ServiceDescriptor.Singleton<IEnvironment>(_environment));
+        });
+
+        var summaryText = File.ReadAllText(_environment.GithubStepSummaryFile);
+        // Console.WriteLine(summaryText);
+
+        Assert.That(summaryText, Does.Not.Contain("Build Results"));
+        Assert.That(summaryText, Does.Contain("Test Results"));
+    }
+
 
     [Test]
     public void Test_ExportResults_OnetimeSetupFail()
@@ -205,13 +263,14 @@ public class GithubDotnetResultsExporterIntegrationTest
         | Warnings | 0 |
         | Notes | 0 |
 
-        ## Test Results
+        ## :x: Test Results
         |||
         |:---|---:|
         | Failed | 1 |
         | Skipped | 0 |
         | Passed | 0 |
         
+        <details><summary><b>Details</b></summary>
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetupFailSampleTest.Test_Pass</summary>
 
         **Error**  
@@ -222,6 +281,7 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         ```
 
+        </details>
         </details>
 
         """.Replace("\r\n", "\n")));
@@ -257,13 +317,14 @@ public class GithubDotnetResultsExporterIntegrationTest
         | Warnings | 0 |
         | Notes | 0 |
 
-        ## Test Results
+        ## :x: Test Results
         |||
         |:---|---:|
         | Failed | 2 |
         | Skipped | 0 |
         | Passed | 0 |
         
+        <details><summary><b>Details</b></summary>
         <details><summary>:x: GithubDotnetResultsExporter.IntegrationTest.SetUpFailSampleTest.Test_Pass</summary>
 
         **Error**  
@@ -291,6 +352,7 @@ public class GithubDotnetResultsExporterIntegrationTest
 
         ```
 
+        </details>
         </details>
 
         """.Replace("\r\n", "\n")));

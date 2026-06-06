@@ -15,13 +15,18 @@ namespace GithubDotnetResultsExporter.Model;
 
 internal static class GithubDotnetResultsExporterModelOps
 {
-
     private const string InfoSymbol = "🛈";
+    private const string ErrorSymbol = ":x:";
+
+    private const string BuildResultsType = "build";
+    private const string TestResultsType = "test";
+    internal static readonly IReadOnlySet<string> SupportedStepSummaryContentTypes = new HashSet<string> { BuildResultsType, TestResultsType };
 
     internal static GithubDotnetResultsExporterRequest ParseArgs(string[] args)
     {
         var exportChecksActionParams = false;
         var exportStepSummary = false;
+        IReadOnlySet<string> stepSummaryContentTypes = new HashSet<string> { BuildResultsType, TestResultsType };
         string? githubServerUrl = null;
         string? githubRepo = null;
         string? githubRefName = null;
@@ -36,6 +41,9 @@ internal static class GithubDotnetResultsExporterModelOps
                     break;
                 case "--export-step-summary":
                     exportStepSummary = Convert.ToBoolean(args.ElementAtOrDefault(++i), CultureInfo.InvariantCulture);
+                    break;
+                case "--step-summary-content-types":
+                    stepSummaryContentTypes = ParseStepSummaryContentTypes(args.ElementAtOrDefault(++i));
                     break;
                 case "--github-server-url":
                     githubServerUrl = args.ElementAtOrDefault(++i);
@@ -65,8 +73,25 @@ internal static class GithubDotnetResultsExporterModelOps
         if (githubRefName == null)
             throw new ArgumentException("missing argument: --github-ref-name");
 
-        return new(exportChecksActionParams, exportStepSummary, githubServerUrl, githubRepo, githubRefName, cultureInfo);
+        return new(exportChecksActionParams, exportStepSummary, stepSummaryContentTypes, githubServerUrl, githubRepo, githubRefName, cultureInfo);
     }
+
+    private static IReadOnlySet<string> ParseStepSummaryContentTypes(string? arg)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(arg);
+
+        var types = arg.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        foreach (var type in types)
+        {
+            if (!SupportedStepSummaryContentTypes.Contains(type))
+                throw new ArgumentException($"invalid content type: {type} - supported: {string.Join(", ", SupportedStepSummaryContentTypes)}");
+        }
+
+        return types.ToHashSet();
+    }
+
+    internal static bool ShouldExportBuildResults(IReadOnlySet<string> stepSummaryContentTypes) => stepSummaryContentTypes.Contains(BuildResultsType);
+    internal static bool ShouldExportTestResults(IReadOnlySet<string> stepSummaryContentTypes) => stepSummaryContentTypes.Contains(TestResultsType);
 
     internal static IList<Result> GetSarifResults(IEnumerable<SarifLog> sarifLogs)
     {
@@ -114,9 +139,6 @@ internal static class GithubDotnetResultsExporterModelOps
 
     internal static string CreateSummaryMarkdown(IList<Result> sarifResults, GithubDotnetResultsExporterRequest collectorRequest, string workingDirectory)
     {
-        var result = new StringBuilder();
-        result.AppendLine("## Build Results");
-
         var errorCount = 0;
         var warningCount = 0;
         var noteCount = 0;
@@ -137,6 +159,11 @@ internal static class GithubDotnetResultsExporterModelOps
                     break;
             }
         }
+
+        var result = new StringBuilder();
+
+        var headerSymbol = errorCount > 0 ? $" {ErrorSymbol}" : "";
+        result.AppendLine(collectorRequest.CultureInfo, $"##{headerSymbol} Build Results");
 
         result.AppendLine(collectorRequest.CultureInfo,
             $"""
@@ -171,7 +198,7 @@ internal static class GithubDotnetResultsExporterModelOps
         {
             var symbol = sarifResult.Level switch
             {
-                FailureLevel.Error => ":x:",
+                FailureLevel.Error => ErrorSymbol,
                 FailureLevel.Warning => ":warning:",
                 _ => InfoSymbol,
             };
@@ -212,9 +239,6 @@ internal static class GithubDotnetResultsExporterModelOps
 
     internal static string CreateSummaryMarkdown(IEnumerable<TestRunType> testRuns, CultureInfo cultureInfo)
     {
-        var result = new StringBuilder();
-        result.AppendLine("## Test Results");
-
         var testRunsList = testRuns.ToList();
 
         var counters = testRunsList
@@ -234,6 +258,11 @@ internal static class GithubDotnetResultsExporterModelOps
             skipCount += counter.total - counter.executed;
         }
 
+        var result = new StringBuilder();
+
+        var headerSymbol = failCount > 0 ? $" {ErrorSymbol}" : "";
+        result.AppendLine(cultureInfo, $"##{headerSymbol} Test Results");
+
         result.AppendLine(cultureInfo,
             $"""
             |||
@@ -241,7 +270,7 @@ internal static class GithubDotnetResultsExporterModelOps
             | Failed | {failCount:N0} |
             | Skipped | {skipCount:N0} |
             | Passed | {successCount:N0} |
-
+            
             """);
 
         var unitTestsPerId = testRunsList
@@ -256,13 +285,17 @@ internal static class GithubDotnetResultsExporterModelOps
             .Order(Comparer<TestDefAndResult>.Create(CompareUnitTestResults))
             .ToList();
 
+        var hasTestResults = testResults.Count > 0;
+        if (hasTestResults)
+            result.AppendLine("<details><summary><b>Details</b></summary>");
+
         foreach (var (testDef, testResult) in testResults)
         {
             var symbol = testResult.outcome switch
             {
                 "Passed" => ":heavy_check_mark:",
                 "NotExecuted" => ":zzz:",
-                _ => ":x:",
+                _ => ErrorSymbol,
             };
 
             var output = testResult.Items?.OfType<OutputType>().FirstOrDefault();
@@ -314,6 +347,9 @@ internal static class GithubDotnetResultsExporterModelOps
                 </details>
                 """);
         }
+
+        if (hasTestResults)
+            result.AppendLine("</details>");
 
         return result.ToString();
     }
